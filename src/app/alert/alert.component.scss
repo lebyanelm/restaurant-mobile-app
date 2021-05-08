@@ -1,0 +1,48 @@
+@import '../../variables.scss';
+
+.alert-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 20px;
+
+    .header {
+        font-size: x-large;
+        font-weight: bolder;
+    }
+
+    .sub-header {
+        font-size: large;
+        font-weight: bolder;
+    }
+
+    .message {
+        padding: 10px 0;
+        opacity: 0.5;
+        font-size: small;
+    }
+
+    .buttons {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+        border-top: 4px solid #EEE;
+        
+        button {
+            color: $theme-color;
+            border: none !important;
+            padding: 15px 0;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background: #FFF;
+            flex: 1;
+
+            &:last-child {
+                border-left: $border;
+            }
+        }
+    }
+}

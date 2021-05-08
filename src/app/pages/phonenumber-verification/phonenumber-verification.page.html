@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="page-header">
+    <div class="top-header">
+      <div class="back-button" routerLink="/register" routerDirection="back"><ion-icon class="center" name="close-sharp"></ion-icon></div>
+    </div>
+
+    <div class="header-details">
+      <div class="page-name">Verify your phone number</div>
+    </div>
+  </div>
+
+  <div class="login-register-form-container">
+    <div class="verification-inputs">
+      <input type="tel" placeholder="-" [(ngModel)]="data['1']" [disabled]="isLoading" #FirstNumber>
+      <input type="tel" placeholder="-" [(ngModel)]="data['2']" disabled #SecondNumber>
+      <input type="tel" placeholder="-" [(ngModel)]="data['3']" disabled #ThirdNumber>
+      <input type="tel" placeholder="-" [(ngModel)]="data['4']" disabled #FourthNumber>
+    </div>
+    
+    <span class="error">{{error}}</span>
+    <br>
+    <br>
+
+    <div class="flex">
+      <div>
+        <span>{{phoneNumber}} is not your number? <a routerLink="/register" routerDirection="back">Reset</a></span>
+      </div>
+      <div class="space"></div>
+      <button class="icon-only circular flex" [disabled]="!(data['1'] && data['2'] && data['3'] && data['4']) || isLoading" #LoginButton (click)="verifyPhoneNumber()">
+        <div class="text flex" *ngIf="!isLoading"><ion-icon name="arrow-forward-sharp"></ion-icon></div>
+        <div class="loader" *ngIf="isLoading"></div>
+      </button>
+    </div>
+  </div>
+</ion-content>

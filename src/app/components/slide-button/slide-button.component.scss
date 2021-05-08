@@ -1,0 +1,127 @@
+@import '../../../variables.scss';
+$size: 32;
+
+input {
+    background: transparent;
+    border: none !important;
+    padding: 0;
+
+    &[disabled] {
+        opacity: 0.5;
+    }
+}
+
+@mixin track($color: red, $radius: 0) {
+    &::-webkit-slider-runnable-track {
+        @content;
+        border-radius: $radius;
+        background-color: $color;
+    }
+    &::-moz-range-track {
+        @content;
+        border-radius: $radius;
+        background-color: $color;
+    }
+    &::-moz-focus-outer {
+        border: 0;
+    }
+    &::-ms-track {
+        border: 0;
+        @content;
+        border-radius: $radius;
+        background-color: $color;
+        box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
+        color: transparent;
+    }
+    &::-ms-fill-lower, &::-ms-fill-upper {
+        background-color: transparent;
+    }
+    &::-ms-tooltip {
+        display: none;
+    }
+}
+
+@mixin thumb() {
+    &::-webkit-slider-thumb {
+        appearance: none;
+        @content;
+    }
+    &::-moz-range-thumb {
+        border: 0;
+        @content;
+    }
+    &::-ms-thumb {
+        @content;
+    }
+}
+
+.pullee {
+    width: 90vw;
+    appearance: none;
+    
+    // handle active states
+    &:active {
+        @include thumb() {
+            transform: scale(1.1);
+            cursor: -webkit-grabbing;
+            cursor: -moz-grabbing;
+        }
+    }
+    
+    // accessibility
+    &:focus {
+        outline: none;
+    }
+
+    // thumb styles
+    @include thumb() {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        background: $text-color-on-dark;
+        box-shadow: $shadow;
+        transform-origin: 50% 50%;
+        transform: scale(1);
+        transition: transform ease-out 100ms;
+        cursor: -webkit-grab;
+        cursor: -moz-grab;
+    }
+    
+    // track styles
+    @include track($theme-color, 50px) {
+        height: 50px;
+        padding: .5rem;
+        box-sizing: content-box;
+    }
+}
+
+h1 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.25px;
+}
+
+.center-xy {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    z-index: 10000000;
+
+    .slide-details {
+        position: absolute;
+        top: 45%;
+        left: 80px;
+        transform: translateY(-50%);
+        color: $text-color-on-dark;
+
+        .slider-title {
+            font-weight: bolder;
+        }
+
+        .slider-sub-title {
+            opacity: 0.8;
+        }
+    }
+}

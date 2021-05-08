@@ -1,3 +1,9 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <!-- Top band for IOS Devices -->
+  <div class="top-band" [attr.deviceType]=_platform></div>
+  <audio src="" hidden #Audio></audio>
+  <div class="backlit" *ngIf="isModalOpen"></div>
+
+  <!-- Main content -->
+  <ion-router-outlet id="main-content" [attr.isModalOpen]=isModalOpen></ion-router-outlet>
 </ion-app>

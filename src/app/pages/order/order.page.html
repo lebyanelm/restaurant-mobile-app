@@ -1,0 +1,84 @@
+<ion-content forceOverscroll=false>
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="top-header">
+      <div class="back-button clickable" routerLink="/home" routerDirection="back"><ion-icon class="center" name="arrow-back"></ion-icon></div>
+      <div class="space"></div>
+      <div class="buttons">
+       <div class="button clickable" (click)="removeOrder()">Remove order</div>
+      </div>
+    </div>
+    <div class="header-details">
+    </div>
+  </div>
+
+  <div class="page-content" *ngIf="order">
+    <div class="order-page-top-section">
+      <div class="order-page-top-section-item branch-name">{{ order.branch.name }} Branch</div>
+      <div class="order-page-top-section-item" *ngFor="let addressItem of order.destination.address">{{ addressItem }}</div>
+    </div>
+
+    <div class="order-number-details">
+      <div class="ordernumber">Order {{ order.id }}</div>
+    </div>
+
+    <div class="order-specific-details">
+      <b class="item">{{ order.timeCreated.day }}, </b>
+      <b class="item">{{ order.timeCreated.time }}</b><br>
+      <div class="item">{{ order.promocodeUsed.code ? [order.promocodeUsed.code, ['(-', order.discount, ')'].join('')].join(' ') : 'No Discount' }}</div>
+      <div class="item">{{ order.paymentMethod === undefined ? 'Cash' : 'Online Payment' }}</div>
+      <div class="item">{{ getOrderStatus() }}</div>
+    </div>
+
+    <div class="order-items">
+      <div class="order-item"  *ngFor="let item of order.products">
+        <div class="quantity">{{ item.quantity }}</div>
+        <div>x</div>
+        <div class="order-item-details">
+          <div class="name">{{ item.name }}</div>
+          <div class="sections">
+            <div class="section" *ngIf="extras[item.id]?.length"><b>Extras</b>: {{ extras[item.id].join(', ') }}</div>
+            <div class="section" *ngFor="let section of objectToArray(item.selectedOptions)"><b>{{ section.name }}</b>: {{ section.option }}</div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="order-item-price">R{{ item.price + item.extrasAmount }}</div>
+      </div>
+    </div>
+
+    <div class="order-payment-information">
+      <div class="flex">
+        <b>Delivery Fee</b>
+        <div class="space"></div>
+        <b>R {{ order.deliveryFee.toFixed(2) || 0 }}</b>
+      </div>
+      
+      <div class="flex">
+        <b>Sub Total</b>
+        <div class="space"></div>
+        <b>R {{ (order.totalPrice - (order.VAT + order.deliveryFee)).toFixed(2) }}</b>
+      </div>
+      
+      <div class="flex">
+        <b>VAT</b>
+        <div class="space"></div>
+        <b>R {{ order.VAT.toFixed(2) || 0 }}</b>
+      </div>
+    </div>
+
+    <div class="order-payment-information">
+      <div class="flex">
+        <b>Total Cash Tendered</b>
+        <div class="space"></div>
+        <b>R {{ order.totalPrice }}</b>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <div class=repeat-order-button>
+      <button (click)="repeatOrder()">Repeat Order</button>
+    </div>    
+    
+  </div>
+</ion-content>

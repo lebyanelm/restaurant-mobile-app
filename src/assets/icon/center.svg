@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="169" viewBox="0 0 80 169">
+  <g id="center" transform="translate(-114 -104)">
+    <path id="md-disc" d="M88,48a40,40,0,1,0,40,40A40.019,40.019,0,0,0,88,48Zm0,58a18,18,0,1,1,18-18A17.974,17.974,0,0,1,88,106Z" transform="translate(66 56)"/>
+    <path id="Path_1" data-name="Path 1" d="M9.615,0H45.577a9.615,9.615,0,0,1,9.615,9.615V45.577a9.615,9.615,0,0,1-9.615,9.615H9.615A9.615,9.615,0,0,1,0,45.577V9.615A9.615,9.615,0,0,1,9.615,0Z" transform="translate(126.5 116.5)"/>
+    <circle id="Ellipse_1" data-name="Ellipse 1" cx="9" cy="9" r="9" transform="translate(145 135)"/>
+    <rect id="Rectangle_2" data-name="Rectangle 2" width="8" height="101" transform="translate(150 172)"/>
+  </g>
+</svg>

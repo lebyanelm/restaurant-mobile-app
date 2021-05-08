@@ -1,0 +1,12 @@
+@import "../../../variables.scss";
+
+button {
+    background: $background-color;
+    color: $secondary-color;
+    border: 1px solid gray;
+
+    div.text {
+        width: 100%;
+        text-align: center !important;
+    }
+}

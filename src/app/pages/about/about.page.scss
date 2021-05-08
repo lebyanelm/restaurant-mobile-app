@@ -1,0 +1,19 @@
+@import '../../../variables.scss';
+
+.page-name,
+.description,
+.section {
+    text-align: center;
+}
+
+.description {
+    opacity: 0.5;
+    font-size: small;
+}
+
+.section {
+    margin: 10px 0 20px 0;
+    .title { font-weight: bold; margin-bottom: 5px; color: $theme-color; }
+
+    li { opacity: 0.5; }
+}

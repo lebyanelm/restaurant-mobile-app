@@ -1,0 +1,17 @@
+<div class="message-container" [attr.isOutbound]="type === 'outbound'" [attr.isShowTime]="isShowTime">
+  <div class="avatar-container"*ngIf="type === 'inbound'"><div class="avatar" [style.background-image]="'url(' + chatService.connectedBranch.avatar + ')'"></div></div>
+  <div class="avatar-container"*ngIf="type === 'outbound'"><div class="avatar" [style.background-image]="'url(' + avatar + ')'"></div></div>
+  <div class="message-details-container">
+    <div class="message-sender-details">
+      <div class="message-sender-name">{{ type === 'outbound' ? 'You' : chatService.connectedBranch.businessName }}</div>
+      <div class="message-status" *ngIf="type === 'outbound'" [attr.status]=state> <ion-icon name=checkmark-done-sharp></ion-icon> </div>
+      <div class="message-time">{{ timeCreated.time }}</div>
+      <div class="message-buttons">
+        <div class="message-button">Reply</div>
+        <div class="message-button">Delete</div>
+      </div>
+    </div>
+    <div class="message-attachment" *ngIf="attachments.length > 0 ? true : false" [style.background-image]="'url(' + attachments[0] + ')'"></div>
+    <div class="message-body">{{ body }}</div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "ClanOT";
+  font-weight: lighter;
+  font-display: swap;
+  src: url("./ClanOT-Thin.woff2") format("woff2") !important;
+}
+
+@font-face {
+    font-family: "ClanOT";
+    font-weight: normal;
+    font-display: swap;
+    src: url("./ClanOT-Medium.woff2") format("woff2");
+}
+
+
+@font-face {
+    font-family: "ClanOT";
+    font-weight: bold;
+    font-display: swap;
+    src: url("./ClanOT-Bold.woff2") format("woff2");
+}

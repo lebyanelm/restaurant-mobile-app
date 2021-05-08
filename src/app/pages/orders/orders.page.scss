@@ -1,0 +1,150 @@
+@import "../../../variables.scss";
+
+// Order Items
+.order-items {
+    padding: 0 0;
+    .order-item {
+        padding: 5px 20px;
+        border-top: $border;
+
+        &:last-child {
+            border-bottom: $border;
+        }
+        
+        .order-index {
+            width: fit-content;
+            padding: 0px 5px;
+            font-weight: bold;
+            color: $theme-color;
+            border: $border;
+            float: left;
+        }
+        
+        .left-side {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            .order-price span { opacity: 0.5; }
+            .order-name { transform: translateY(4px); }
+            .order-price { transform: translateY(4px); font-size: 13px !important; }
+            .tag { display: inline-block; padding: 2px 8px; font-size: smaller; font-weight: bold; }
+        }
+
+        .right-side {
+            .minus-button {
+                height: 20px;
+                width: 20px;
+                border-radius: 50px;
+                background: $danger;
+                position: relative;
+
+                ion-icon {
+                    color: $text-color-on-dark;
+                }
+            }
+        }
+    }
+}
+
+// Leaving a note
+.leave-a-note-button {
+    padding: 20px;
+    border: $border;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    position: relative;
+    overflow: hidden;
+    background: transparentize(#EEE, 0.8);
+    
+    span { opacity: 0.5; }
+}
+
+.top-header {
+    background: $background-color;
+}
+
+.order-summary {
+    padding: 10px 0;
+    margin-bottom: 0 !important;
+
+    .summary {
+        padding: 2.5px 20px;
+
+        &.total {
+            padding: 8px 20px 0 20px;
+            margin-top: 8px;
+            position: relative;
+
+            &:before {
+                content: "";
+                display: block;
+                width: 89vw;
+                height: 1px;
+                background: transparentize($text-color-on-light, 0.5);
+                position: absolute;
+                top: 0;
+            }
+        }
+    }
+    
+    .promocode {
+        margin-bottom: 8px;
+    }
+
+    .discount[isDiscountApplied=true] {
+        color: $danger !important;
+    }
+}
+
+.page-content {
+    padding: 0 0 !important;
+    pointer-events: all;
+    
+    &[isMapLoading=true] {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .delivery-time-estimation {
+        font-size: smaller !important;
+    }
+}
+
+.page-header {
+    margin-bottom: 0;
+    padding: 20px;
+
+    .destination-map-snapshot {
+        display: flex;
+        align-items: center;
+        
+        .mapbox-improve-map {
+            display: none;
+        }
+
+        .details {
+            transform: translateX(80px) translateY(43%);
+
+            .address { font-weight: bold; }
+            .description { font-size: small !important; margin-top: 5px;
+                span {
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+
+    .page-name {
+        margin-top: 50px;
+    }
+
+    .mapbox-logo{ display: none; }
+    .mapboxgl-ctrl-logo { display: none !important; }
+    .mapbox-improve-map { display: none; }
+    .mapboxgl-ctrl-compass { display: none; }
+
+    .buttons {
+        background: $background-color;
+    }
+}

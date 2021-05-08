@@ -1,0 +1,132 @@
+<html>
+<head>
+<title>Verified by Visa</title>
+<meta HTTP-EQUIV="Content-Type" content="text/html">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no cache">
+<meta HTTP-EQUIV="Pragma" CONTENT="no cache">
+<meta HTTP-EQUIV="Expires" CONTENT="0">
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=utf-8">
+
+<script type="text/javascript" src="Riskfort/js/json.js"></script>
+<script type="text/javascript" src="Riskfort/js/PluginDetect.js"></script>
+<script type="text/javascript" src="Riskfort/js/swfobject.js"></script>
+<script type="text/javascript" src="Riskfort/js/FlashDetect.js"></script>
+<script language=javascript src="Riskfort/js/ArcotDeviceDNA.js" ></script>
+
+<SCRIPT LANGUAGE="Javascript"  >
+
+function init()
+{
+	document.downloadForm.ABSlog.value = document.downloadForm.ABSlog.value + ";INIT";
+
+	var formObj = document.forms["downloadForm"];
+	var outputFormatType = 0;
+
+	var isLoadApplets = false;
+	var isMESCOn = false;
+	var numberOfIterations = 2;
+	var calibrationDuration = 200;
+	var intervalDelay = 50;
+
+	ArcotDeviceDNA.setOutputFormatType(outputFormatType);
+	ArcotDeviceDNA.setLoadApplets(isLoadApplets);
+	ArcotDeviceDNA.setMESCConfiguration(isMESCOn, numberOfIterations, calibrationDuration, intervalDelay);
+
+	ArcotDeviceDNA.setExternalIP('');
+	ArcotDeviceDNA.initFlashObj('Riskfort', formObj);
+	waitAndSetFlashCookie();
+
+}
+
+var arcotMovieLoadCheckCnt=0;
+var arcotMaxRetries = 1000;
+var ARCOT_RETRY_PERIOD_MSEC = 10;
+
+function waitAndSetFlashCookie()
+{
+	if (isFlashInitialized != 1 && arcotMovieLoadCheckCnt < arcotMaxRetries)
+	{
+		arcotMovieLoadCheckCnt++;
+		setTimeout("waitAndSetFlashCookie()", ARCOT_RETRY_PERIOD_MSEC);
+	}
+	else if (isFlashInitialized == 1)
+	{
+		document.downloadForm.ABSlog.value = document.downloadForm.ABSlog.value + ";FI;"; + arcotMovieLoadCheckCnt;
+		ArcotDeviceDNA.setFlashCookie("RiskfortCookie","");
+		document.downloadForm.ABSlog.value = document.downloadForm.ABSlog.value + ";FNI" + ArcotDeviceDNA.ddnaMsgs;
+	}
+	else
+	{
+		document.downloadForm.ABSlog.value = document.downloadForm.ABSlog.value + ";FNI" + ArcotDeviceDNA.ddnaMsgs;
+		return null;
+	}
+}
+
+function download()
+{
+
+	var CustData ="";
+	if (0000 == 1001)
+	{
+		TheNewWin=window.open("about:blank",'TheNewpop',"height=420,width=390,scrollbars=yes,resizable=no,screenX=550,screenY=150,left=550,top=150");
+		TheNewWin.blur();
+		document.esForm.submit();
+	}
+
+    if ("" == "2" || "" == "4") {
+          init();
+    }
+
+	setTimeout('document.downloadForm.submit()', 100);
+}
+
+function submitForm()
+{
+	document.downloadForm.submit();
+}
+</SCRIPT>
+
+
+</head>
+
+<body TEXT="#51392B" LINK="#cc9966" VLINK="#FF0000" ALINK="#00FF00" onload="download();">
+<br>
+	<div id="flashsetting">
+	<div id ="flashcontent"></div>
+	</div>
+	<div id="cookiediv">
+<br>
+<FORM name="esForm"
+action="https://localhost/vpas/enroll/startminienroll.jsp" method=POST
+target="TheNewpop" AUTOCOMPLETE="OFF">
+<input type="hidden" name="PaReq" value="">
+<input type="hidden" name="locale" value="en_US">
+</FORM>
+
+<form name="downloadForm" action="" method="POST" AUTOCOMPLETE="OFF">
+<table name="dataTable" border="0" cellpadding="0">
+<input type="hidden" name="PaRes" value="eJxVUNEKgkAQ/JXDD7grI4raDkJ9CJLA86EepVtswTvpTv3+Ek+jx5md2ZldKF8OMVX47B1KyNH7qkZG+hQZX/N4u9tHEjLnWidhQOeptXLNVzwGMUPAcZy0GuUGxA9MfFgpC3z35FAzbNCg7Zgh78nWPFhm3eRKsauokYEMkkB+e1gdMs5FciuZeqgyy9WBXexQNaTZPb8yM3mPY9FFDyLcIpY88feCD51SYLM=" >
+<input type="hidden" name="MD" value="">
+<input type="hidden" name="PaReq" value="">
+<input type="hidden" name="ABSlog" value="GPP">
+<!-- Device DNA specific hidden fields -->
+<input type="hidden" name="deviceDNA" value="">
+<input type="hidden" name="executionTime" value="">
+<input type="hidden" name="dnaError" value="">
+<input type="hidden" name="mesc" value="">
+<input type="hidden" name="mescIterationCount" value="0">
+<input type="hidden" name="desc" value="">
+<input type="hidden" name="isDNADone" value="false">
+<input type="hidden" name="arcotFlashCookie" value="">
+<input type="hidden" name="DeviceID" value="">
+<NOSCRIPT>
+<center>
+<H3>Password Authentication Completed...</H3>
+<input type="submit" value="Continue...">
+</center>
+</NOSCRIPT>
+</table>
+</form>
+
+</body>
+</html>

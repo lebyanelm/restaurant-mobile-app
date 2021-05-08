@@ -1,0 +1,52 @@
+<ion-content [scrollY]=false>
+  <div class="driver-navigation-container">
+    <div class="header" [attr.isIosPlatform]="isIosPlatform" [attr.hasDeliveries]="deliveries.length !== 0" [attr.isConnected]=connectionStatus [attr.isReachedMax]=isReachedMax>
+      <div class="header-name">
+        <div class="signout-button ion-activatable" (click)="signOut()">
+          Sign Out
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+        <div class="name" (click)="selectBranch()">
+          <div>{{driverData ? driverData.name : "Connected Branch"}}</div>
+          <div><b>{{activeBranch ? activeBranch.name : 'Tap to set branch'}}</b> <ion-icon style="transform: translateY(3px);" name="caret-forward-circle-outline"></ion-icon></div>
+        </div>
+        <div class="toggle-offline-button ion-activatable" (click)="setDriverConnectionState()">
+          {{ connectionStatus ? 'Go Offline' : 'Go Online' }}
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </div>
+      <div class="delivery-items-list" [attr.hasDeliveryStarted]="isDeliveryStarted">
+        <div class="delivery-item ion-activatable" *ngFor="let deliveryItem of deliveries" (click)="viewDeliveryInstruction({ id: deliveryItem.id, note: deliveryItem.deliveryInstructions });" [attr.isActiveDelivery]="deliveries.indexOf(deliveryItem) === currentDeliveryIndex">
+          <div class="number-icon"><div class="container">
+            <span class="center">{{deliveryItem.index}}</span>
+          </div></div>
+          <div class="delivery-item-details">
+            <div class="delivery-recipient-name">{{deliveryItem.customer}}</div>
+            <div class="delivery-order-number">{{deliveryItem.id}}</div>
+          </div>
+          <div class="space"></div>
+          <ion-icon name="arrow-forward" *ngIf="deliveryItem.deliveryInstructions?.length"></ion-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </div>
+    </div>
+    <app-map [isStatic]=false #Map></app-map>
+  </div>
+  
+
+  <!-- To change to next delivery and start delivery session -->
+  <app-slide-button
+    [disabled]="!isDeliveryAllowed"
+    [title]="isDeliveryStarted ? 'Delivered ✓' : 'Start'"
+    [subTitle]="isDeliveryStarted ? 'Slide for Next' : 'Slide to Start'" #SlideButton></app-slide-button>
+
+  <ion-select [interface]="'action-sheet'" [interfaceOptions]="branchSelectorOptions" #IonSelect>
+    <ion-select-option
+      *ngFor="let branch of branches"
+      [value]=branch>{{branch.name}}</ion-select-option>
+  </ion-select>
+</ion-content>
+
+<ion-footer>
+  
+</ion-footer>

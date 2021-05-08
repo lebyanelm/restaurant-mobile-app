@@ -1,0 +1,100 @@
+<ion-content>
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="top-header">
+      <!-- <div class="back-button clickable" [routerLink]="returnPage ? returnPage : '/home'" routerDirection="back"><ion-icon class="center" name="close"></ion-icon></div> -->
+      <div class="space"></div>
+      <div class="buttons">
+       <div class="button clickable" (click)="basket.clear()">Clear basket</div>
+      </div>
+    </div>
+    <div class="header-details">
+      <div class="destination-map-snapshot flex">
+        <div class="map">
+          <app-map [isStatic]="true" [isSetAutoWidth]="false" [height]=90 [width]="120" [center]="basket.destination ? basket.destination.coords : [0, 0]" [zoom]="13" #Map></app-map>
+        </div>
+        <div class="details">
+          <div class="address" *ngIf="basket.destination">{{basket.destination.address[0]}}</div>
+          <div class="address" *ngIf="!basket.destination">Unable to load location</div>
+          <div class="description" (click)="openAddNoteModal(true)">
+            <b>Delivery Instructions</b>
+            <br>
+            <span>{{basket.deliveryNote ? basket.deliveryNote : 'Add delivery a note'}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="page-name">Your basket items</div>
+    </div>
+  </div>
+
+  <ion-content>
+      <div class="page-content" [attr.isMapLoading]="Map.isLoading">
+        <p class="ion-text-center delivery-time-estimation" *ngIf="basket.basketSummary.eta.lower && basket.basketSummary.eta.upper">DELIVERING TO YOUR DOOR &mdash; {{basket.basketSummary.eta.lower < 60 ? basket.basketSummary.eta.lower : (basket.basketSummary.eta.lower / 60).toFixed(0)}} {{basket.basketSummary.eta.lower < 60 ? 'MIN' : 'HRS'}} - {{basket.basketSummary.eta.upper < 60 ? basket.basketSummary.eta.upper : (basket.basketSummary.eta.upper / 60).toFixed(0)}} {{basket.basketSummary.eta.upper < 60 ? 'MIN' : 'HRS'}}</p>
+        <p class="ion-text-center" style="color: grey;" *ngIf="!basket.count">No items in your orders.</p>
+        <div class="order-items" *ngIf="basket.products.length > 0">
+          <div class="order-item flex" *ngFor="let product of basket.products">
+            <div class="order-index">{{product.quantity}}</div>
+            <div class="left-side" (click)="openProduct(product.id)">
+              <div class="order-name">{{product.name}}</div>
+              <div class="order-price flex">R {{product.price + product.extrasAmount}}</div>
+            </div>
+            <div class="space" (click)="openProduct(product.id)"></div>
+            <div class="right-side" (click)="basket.minusQuantity(product.id)">
+              <div class="minus-button" ><ion-icon class=center name=remove></ion-icon></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="leave-a-note-button ion-activatable" (click)="openAddNoteModal(false)">
+          <b>Restaurant Instructions</b>
+          <br>
+          <span>{{basket.specialInstructions.length ? basket.specialInstructions : 'Leave a note (eg. Extra sauce, extra napkins)'}}</span>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+        
+        <div class="order-summary">
+          <!-- <h5 class="ion-text-center">Order Summary</h5> -->
+          <span class="summary promocode flex" (click)="openPromocodeModal()">
+            <span>Promocode</span>
+            <div class="space"></div>
+            <span class="link" *ngIf="!basket.basketSummary.promocode.code">ENTER</span>
+            <b class="border" *ngIf="basket.basketSummary.promocode.code" (click)="openPromocodeModal(basket.basketSummary.promocode.code)">{{basket.basketSummary.promocode.code}} (-{{basket.basketSummary.promocode.discount}}%)</b>
+          </span>
+  
+          <span class="summary flex">
+            <span>Subtotal</span>
+            <div class="space"></div>
+            <span>R {{basket.basketSummary.orderPrice.toFixed(2)}}</span> 
+          </span>
+  
+          <span class="summary flex discount" [attr.isDiscountApplied]="basket.basketSummary.promocode && basket.basketSummary.promocode.code ? true : false">
+            <span>Discount</span>
+            <div class="space"></div>
+            <span>-R {{basket.basketSummary.discount.toFixed(2)}}</span>
+          </span>
+          
+          <span class="summary flex">
+            <span>Delivery Fee</span>
+            <div class="space"></div>
+            <span>R {{basket.basketSummary.deliveryPayment.toFixed(2)}}</span>
+          </span>
+
+          <span class="summary flex">
+            <span>Tax (15%)</span>
+            <div class="space"></div>
+            <span>R {{basket.basketSummary.tax.toFixed(2)}}</span>
+          </span>
+  
+          <span class="summary flex total">
+            <span><b>Total</b></span>
+            <div class="space"></div>
+            <span><b>R {{basket.basketSummary.totalPayment.toFixed(2)}}</b></span>
+          </span>
+        </div>
+      </div>
+  </ion-content>
+</ion-content>
+
+<ion-footer class="buttons">
+  <button (click)="checkout(returnPage)" [disabled]="basket.count === 0">Checkout</button>
+</ion-footer>

@@ -1,0 +1,65 @@
+<ion-header mode="ios">
+  <div class="header-top flex ion-text-center" [attr.deviceType]="_platform">
+    <div class="action flex"><ion-icon name="location-sharp"></ion-icon></div>
+    <div class="space delivery-address clickable" (click)="changeDeliveryAddress()">
+      <div class="name" *ngIf="basket.destination && basket.destination.address.length > 1">{{basket.destination.address[0]}}, {{basket.destination.address[1]}} <b>{{basket.isDestinationAutoDetect ? ' (Auto-detected)' : ''}}</b></div>
+      <div class="name" *ngIf="basket.destination && basket.destination.address.length == 1">{{basket.destination.address[0]}}</div>
+      <div class="name" *ngIf="!basket.destination">Select your destination</div>
+    </div>
+    <ion-icon name="chevron-down"></ion-icon>
+    <div class="image-border" *ngIf="products.length" [style.background-image]="'url(' + products[0].images[0] + ')'"></div>
+  </div>
+</ion-header>
+
+<ion-content *ngIf="products.length">
+  <ion-refresher slot="fixed" (ionRefresh)="doReload()" #Refresher>
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="lines"
+      refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-slides class="banner" *ngIf="banners" #BannerSlides>
+    <ion-slide *ngFor="let banner of banners">
+      <div class="image" [style.background-image]="'url(' + banner.image + ')'">
+        <div class="bottom">
+          <span class="title">{{banner.title}}</span>
+          <span class="message">{{banner.message}}</span>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+  <div class="banner-slides-buttons" *ngIf="banners.length > 1">
+    <div class="banner-slide-button" (click)="previousSlide()" [attr.isDisabled]="isPreviousDisabled"><ion-icon name="chevron-back"></ion-icon></div>
+    <div class="space"></div>
+    <div class="banner-slide-button" (click)="nextSlide()" [attr.isDisabled]="isNextDisabled"><ion-icon name="chevron-forward"></ion-icon></div>
+  </div>
+
+  <div class="slides-indicator" *ngIf="banners">
+    <div class="inner-container">
+      <div class="slide-indicator-container" *ngFor="let bannerIndex of bannerIndices">
+        <div class="slide-indicator" [attr.isActive]="bannerIndex === currentSlideIndex"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="products">
+    <br>
+    <app-product
+      *ngFor="let product of products"
+      [id]="product.id"
+      [timeCreated]="product.timeCreated"
+      [name]=product.name
+      [description]=product.description
+      [category]=product.category
+      [buys]="product.buys"
+      [views]="product.views"
+      [images]="product.images"
+      [price]="product.price"
+      [dietary]="product.dietary"
+      [expectedPrepareTime]="product.expectedPrepareTime"
+    ></app-product>
+  </div>
+</ion-content>

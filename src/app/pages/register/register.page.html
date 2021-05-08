@@ -1,0 +1,39 @@
+<ion-content>
+  <div class="page-header">
+    <div class="top-header">
+      <div class="back-button" routerLink="/welcome" routerDirection="back"><ion-icon class="center" name="close-sharp"></ion-icon></div>
+    </div>
+
+    <div class="header-details">
+      <div class="page-name">Create an account</div>
+    </div>
+  </div>
+
+  <div class="login-register-form-container">
+    <label for="phonenumber">Your name</label>
+    <input type="text" placeholder="eg. Kelly Brown" [(ngModel)]="data.names" [disabled]="isLoading">
+    
+    <label for="phonenumber">Phone number</label>
+    <input type="text" placeholder="eg. 0123456789" [(ngModel)]="data.phoneNumber" [disabled]="isLoading">
+
+    <label for="password">Password</label>
+    <input type="password" placeholder="eg. verysecret" [(ngModel)]="data.password" [disabled]="isLoading">
+
+    <span class="error">{{error}}</span>
+    <br>
+    <br>
+
+    <div class="flex">
+      <div>
+        <div>Already have an account?</div>
+        <div><a routerLink="/signin">Login</a></div>
+      </div>
+      <div class="space"></div>
+      <button class="icon-only circular flex" [disabled]="!(data.names && data.phoneNumber && data.password.length > 7) || isLoading" #LoginButton (click)="register()">
+        <div class="text flex" *ngIf="!isLoading">Register</div>
+        <div class="loader" *ngIf="isLoading"></div>
+      </button>
+    </div>
+  </div>
+</ion-content>
+

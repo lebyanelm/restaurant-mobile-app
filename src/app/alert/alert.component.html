@@ -1,0 +1,12 @@
+<div class="alert-container">
+    <div class="sub-header">{{options.header}}</div>
+    <div class="message">{{options.message}}</div>
+
+    <div class="buttons" *ngIf="options.buttons">
+        <button *ngFor="let button of options.buttons" (click)="closeAlert(options.buttons.indexOf(button))">{{button.text}}</button>
+    </div>
+
+    <div class="buttons" *ngIf="!options.buttons">
+        <button (click)="closeAlert(0)">Okay</button>
+    </div>
+</div>

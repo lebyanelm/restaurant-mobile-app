@@ -1,0 +1,46 @@
+<ion-content *ngIf="data">
+  <div class="back-button"><ion-icon class="center" name=arrow-back-sharp></ion-icon></div>
+
+  <div class="profile-avatar-container" (click)="getProfilePhoto()">
+    <div class="profile-name">{{ data.names }}</div>
+  </div>
+
+  <!-- Profile details about the user -->
+  <div class="profile-details">
+    <!-- Input fields for updating the account -->
+    <!-- Fullname -->
+    <div class="input">
+      <input type="text" [placeholder]="'Display Name ' + (data.names ? '(' + data.names + ')' : '')" [(ngModel)]="updatedData.names">
+      <div class="description">Your full name, will be visible to restaurant.</div>
+    </div>
+
+    <!-- Phone number -->
+    <div class="input">
+      <input type="text" [placeholder]="'Phone Number ' + (data.phoneNumber ? '(' + data.phoneNumber + ')' : '')" [(ngModel)]="updatedData.phoneNumber">
+      <div class="description">Will be used for contacting you, for sending discounts and order updates.</div>
+    </div>
+
+    <!-- Email address -->
+    <div class="input">
+      <input type="text" [placeholder]="'Email Address ' + (data.emailAddress ? '(' + data.emailAddress + ')' : '')" [(ngModel)]="updatedData.emailAddress">
+      <div class="description">Additional contact detail, for log in alerts and info updates.</div>
+    </div>
+
+    <!-- Email address -->
+    <div class="input">
+      <ion-select type="text" [placeholder]="'Gender ' + (data.gender ? '(' + data.gender + ')' : '')" [(ngModel)]="updatedData.gender">
+        <ion-select-option>Male</ion-select-option>
+        <ion-select-option>Female</ion-select-option>
+        <ion-select-option>Rather not say</ion-select-option>
+      </ion-select>
+      <div class="description">For statistics purposes, not visible to the restaurant.</div>
+    </div>
+
+    <!-- Password reset link -->
+    <div class="password-reset">To set a new password, visit this link to request a reset code.</div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <button (click)="updateProfile()" #UpdateButton>Save Changes</button>
+</ion-footer>

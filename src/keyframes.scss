@@ -1,0 +1,139 @@
+@import "./variables.scss";
+
+@-webkit-keyframes loader {
+    from {
+        -webkit-transform: translate3d(0,0,0) rotate(0deg);
+    } to {
+        -webkit-transform: translate3d(0,0,0) rotate(360deg);
+    }
+}
+
+@keyframes loader {
+    from {
+        transform: translate3d(0,0,0) rotate(0deg);
+    } to {
+        transform: translate3d(0,0,0) rotate(360deg); 
+    }
+}
+
+
+@-webkit-keyframes loader-centered {
+    from {
+        -webkit-transform: translate(-50%, -50%) rotate(0deg);
+    } to {
+        -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes loader-centered {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    } to {
+        transform: translate(-50%, -50%) rotate(360deg); 
+    }
+}
+
+
+@keyframes pulse {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    } to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2);
+    }
+}
+
+@keyframes slide-down-open {
+    from {
+        transform: scaleY(0);
+    } to {
+        transform: scaleY(1)
+    }
+}
+
+@keyframes hide {
+    from {
+        display: none;
+    } to {
+        display: block;
+    }
+}
+
+@keyframes pulsate {
+    from {
+        opacity: 1;
+    } to {
+        opacity: 0.5;
+    }
+}
+
+@keyframes Flash {
+    0% {
+        transform: scale(1.5);
+    } 50% {
+        transform: scale(1);
+    } 75% {
+        transform: scale(1.5);
+    } to {
+        transform: scale(1);
+    }
+}
+
+@keyframes PulsateLocation {
+    from {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    } to {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes LinearLoader {
+    0% {
+        width: 1%;
+        left: 0;
+    } 50% {
+        width: 20%;
+        left: 50%;
+    } 70% {
+        width: 10%;
+    } 100% {
+        width: 0;
+        left: 100%;
+    }
+}
+
+@keyframes LinearLoader {
+    0% {
+        width: 1%;
+        left: 0;
+    } 50% {
+        width: 20%;
+        left: 50%;
+    } 70% {
+        width: 10%;
+    } 100% {
+        width: 0;
+        left: 100%;
+    }
+}
+
+@keyframes ScaleUp {
+    from {
+        transform: scale(1);
+    } to {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes ScaleUpCenter {
+    0% {
+        transform: translate(-50%, -50%) scale(1) ;
+    } 50% {
+        transform: translate(-50%, -50%) scale(2);
+    } 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}

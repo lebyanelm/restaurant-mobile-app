@@ -1,0 +1,59 @@
+<!-- Page Header -->
+<ion-content>
+    <!-- In-App splashscreen to load everything else, including products of the restaurant -->
+    <div class="start-page-container" [attr.isVisible]="isSplashscreenShown">
+        <div class="top-linear-loader" [attr.isLoading]=isLoading></div>
+        
+        <ion-slides>
+            <ion-slide>
+            <div class="wrapper">
+                <div class="brand-logo"><img src="/assets/icon/logo.jpg" alt="Logo"></div>
+            </div>
+            </ion-slide>
+        </ion-slides>
+        
+        <div class="bottom-app-caption">
+            <div class="app-id">{{ appId }}</div>
+        </div>
+    </div>
+    
+    <ion-slides #TabsSlides >
+        <ion-slide><app-products #ProductsComponent></app-products></ion-slide>
+        <ion-slide><app-look></app-look></ion-slide>
+        <ion-slide><app-baskets></app-baskets></ion-slide>
+        <ion-slide><app-account></app-account></ion-slide>
+    </ion-slides>
+</ion-content>
+<ion-footer>
+    <button [disabled]="basket.count === 0" (click)="basketOverview.open('/home')" [attr.isShowButton]="isShowButton">View your Basket</button>
+    <div class="page-tabs" [attr.isEnabled]="!isSplashscreenShown">
+        <div class="tab active tab-0" (click)="changeTab(0)" #HomeLink>
+            <div class="icon">
+                <ion-icon class="filled" name="fast-food"></ion-icon>
+                <ion-icon class="outline" name="fast-food-outline"></ion-icon>
+            </div>
+            <div class="name">Menu</div>
+        </div>
+        <div class="tab tab-1" (click)="changeTab(1)" #LookLink>
+            <div class="icon">
+                <ion-icon class="filled" name="search"></ion-icon>
+                <ion-icon class="outline" name="search-outline"></ion-icon>
+            </div>
+            <div class="name">Look</div>
+        </div>
+        <div class="tab tab-2" (click)="changeTab(2)" #BasketsLink>
+            <div class="icon">
+                <ion-icon class="filled" name="receipt"></ion-icon>
+                <ion-icon class="outline" name="receipt-outline"></ion-icon>
+            </div>
+            <div class="name">Baskets</div>
+        </div>
+        <div class="tab tab-3" (click)="changeTab(3)" #MeLink>
+            <div class="icon">
+                <ion-icon class="filled" name="person"></ion-icon>
+                <ion-icon class="outline" name="person-outline"></ion-icon>
+            </div>
+            <div class="name">Me</div>
+        </div>
+    </div>
+</ion-footer>

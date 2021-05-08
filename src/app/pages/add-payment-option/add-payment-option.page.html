@@ -1,0 +1,55 @@
+<ion-content>
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="buttons flex">
+      <div class="space"></div>
+      <div class="button clickable danger-text" *ngIf="data.id" (click)="deletePaymentMethod(data.id)">Remove card</div>
+    </div>
+    <div class="header-details">
+      <div class="page-name">{{data.id ? 'Edit payment method' : 'Add a payment method'}}</div>
+    </div>
+  </div>
+
+  <ion-content class="ion-padding">
+    <div class="payment-method-loader" [attr.isVisible]="isLoading"></div>
+    
+    <label for="cardholder">Cardholder Name</label>
+    <input class="input" type="text" placeholder="eg. John Doe" [(ngModel)]="data.cardHolder" autofocus=true>
+
+    <br>
+    <br>
+    <label for="cardnumber">Card Number</label>
+    <div class="inputs">
+      <div class="card-icon">
+        <ion-icon name="card-outline" [attr.isVisible]="data.type === undefined"></ion-icon>
+        <img [attr.isVisible]="data.type !== undefined" [src]="'/assets/card-logos/' + data.type + '.png'" height="20px">
+      </div>
+      <input type="tel" placeholder="XXXX" #CardNumberFirst>
+      <input type="tel" placeholder="XXXX" [disabled]="!CardNumberSecond.value.length" #CardNumberSecond>
+      <input type="tel" placeholder="XXXX" [disabled]="!CardNumberThird.value.length" #CardNumberThird>
+      <input type="tel"
+          [placeholder]="data.id ? data.trancutedCardNumber[11] + data.trancutedCardNumber[12] + data.trancutedCardNumber[13] + data.trancutedCardNumber[14] : 'XXXX'"
+          [disabled]="!CardNumberFourth.value.length" #CardNumberFourth>
+    </div>
+
+    <br>
+    <label for="">CVC/CVV Number</label>
+    <input type="tel" class="input" [placeholder]="data.id ? '***' : 'XXX (3 number code behind your card)'" [(ngModel)]="data.cvvNumber">
+    
+    <br>
+    <br>
+    <label for="">Expiry Date</label>
+    <div class="expiry-date-input" [attr.hasError]="isExpiryDateValid">
+      <input type="tel" placeholder="MM" [(ngModel)]="data.expiryMonth" (keyup)="validateExpiryInput(ExpiryMonth, ExpiryYear, false, $event.key === 'Backspace')" #ExpiryMonth>/<input type="tel" placeholder="YY" [(ngModel)]="data.expiryYear" #ExpiryYear (keyup)="validateExpiryInput(ExpiryYear, ExpiryMonth, true, $event.key === 'Backspace')">
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <div class="bottom-text">For security reasons we don't save the card details in raw format, we encrypt them and use tokens to authorize your payments. <a href="https://www.nextify.co.za/payments" target="_blank"> Learn more</a></div>
+  </ion-content>
+</ion-content>
+
+<ion-footer>
+  <button (click)="data.id !== undefined ? saveChanges() : saveCard()" [disabled]="!(CardNumberFirst.value.length === 4 && CardNumberSecond.value.length === 4 && CardNumberThird.value.length === 4 && CardNumberFourth.value.length === 4 && (data.expiryMonth && data.expiryMonth.length) && (data.expiryYear && data.expiryYear.length) && (data.cvvNumber && data.cvvNumber.length)) && (!isLoading || isLoading)">{{data.id !== undefined ? 'Save changes' : 'Save payment method'}}</button>
+</ion-footer>

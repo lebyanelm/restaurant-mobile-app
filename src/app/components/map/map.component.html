@@ -1,0 +1,23 @@
+<!-- <mgl-map
+  [style]="'mapbox://styles/lebyanelm/ck9g6wke427ke1ip1h3z8q71l'"
+  [zoom]="[9]"
+  [center]="[-74.50, 40]">
+</mgl-map> -->
+<div class="map" #MapElement></div>
+
+<div class="loader-container" [attr.data-isPrepareMap]="isPrepareMap" *ngIf="isPrepareMap">
+  <div class="map-loader"></div>
+</div>
+
+<!-- Pointer to show the center of the map -->
+<div class="map-center-cursor" *ngIf="isEmitCenter" [attr.isMoveMap]="isMapMove">
+  <img class="pin" src="/assets/icon/pin.svg">
+  <div class="dot"></div>
+</div>
+
+
+<!-- Location markers -->
+<div class="markers" #MarkersContainer>
+  <!-- Driver marker which is known, shown on the map -->
+  <div class="customer-marker pulse" #DriverMarker><ion-icon class="center" name="navigate"></ion-icon></div>
+</div>

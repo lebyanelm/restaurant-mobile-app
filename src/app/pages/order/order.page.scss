@@ -1,0 +1,79 @@
+@import '../../../variables.scss';
+
+@font-face {
+    font-family: "Barcode";
+    font-weight: normal;
+    font-display: swap;
+    src: url("/assets/fonts/LibreBarcode39-Regular.ttf") format("woff2");
+}
+
+.page-content {
+    transform: translateY(-45px);
+    opacity: 0.7;
+    filter: contrast(10px);
+}
+
+.page-content * {
+    font-family: monospace !important;
+}
+
+.page-content .order-page-top-section {
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px 0;
+    border-bottom: 1px double #000;
+}
+
+.page-content .order-page-top-section .branch-name {
+    font-weight: bolder !important;
+}
+
+// DOUBLE BORDER ITEMS
+.page-content .order-number-details .ordernumber,
+.page-content .order-specific-details,
+.page-content  .order-payment-information {
+    margin-top: 2px;
+    border-top: 1px dashed #000;
+    border-bottom: 1px dashed #000;
+    padding: 10px 0;  
+}
+
+.page-content .order-number-details .ordernumber {
+    font-size: x-large !important;
+    font-weight: bolder !important;
+    text-align: center;
+    font-family: 'Roboto' !important;
+}
+
+.page-content .order-specific-details {
+    text-align: right;
+}
+
+.page-content .order-items .order-item {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #EEE;
+}
+
+.page-content .order-items .order-item .order-item-price {
+    float: right;
+}
+
+.page-content .order-items .order-item .order-item-details .name,
+.page-content .order-items .order-item .order-item-price {
+    font-weight: bolder !important;
+}
+
+// BARCODE
+.barcode {
+    display: block;
+    padding: 20px 0;
+    font-family: 'Libre Barcode 128 Text', cursive !important;
+}
+
+.repeat-order-button,
+.repeat-order-button button {
+    width: 100%;
+}

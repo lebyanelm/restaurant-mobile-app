@@ -1,0 +1,95 @@
+@import '../../../variables.scss';
+
+ion-content {
+    --background: #EEE;
+
+    .container {
+        position: relative;
+        text-align: center;
+        padding: 0 20px;
+        
+        .status-icon {
+            height: 70px;
+            width: 70px;
+            border-radius: 50px;
+            background: #FFF;
+            position: relative;
+            margin: auto auto 20px auto;
+            border: 1px solid #DDD;
+
+            ion-icon {
+                transition: opacity 300ms ease-in-out;
+                font-size: 25px;
+            }
+
+            &[isLoading=true] {
+                &::after {
+                    content: "";
+                    display: block;
+                    height: 100%;
+                    width: 100%;
+                    border: 2px solid transparent;
+                    border-bottom-color: $theme-color;
+                    border-radius: 50px;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    animation: loader-centered 300ms linear infinite;
+                }
+
+                ion-icon[name=hourglass-outline] {
+                    opacity: 1;
+                }
+
+                ion-icon[name=checkmark] {
+                    opacity: 0;
+                }
+
+                ion-icon[name=close] {
+                    opacity: 0;
+                }
+            }
+
+            &[isSuccess=true] {
+                ion-icon[name=checkmark] {
+                    opacity: 1 !important;
+                    color: $success;
+                }
+
+                ion-icon[name=hourglass-outline] {
+                    opacity: 0;
+                }
+
+                ion-icon[name=close] {
+                    opacity: 0;
+                }
+            }
+
+            &[isSuccess=false] {
+                ion-icon[name=checkmark] {
+                    opacity: 0 !important;
+                }
+
+                ion-icon[name=hourglass-outline] {
+                    opacity: 0 !important;
+                }
+
+                ion-icon[name=close] {
+                    opacity: 1 !important;
+                    color: $danger;
+                }
+            }
+        }
+
+        .status {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .status-message {
+            font-size: small !important;
+            opacity: 0.6;
+        }
+    }
+}

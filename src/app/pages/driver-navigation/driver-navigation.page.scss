@@ -1,0 +1,173 @@
+@import '../../../variables.scss';
+
+.header {
+    display: block;
+    width: 100%;
+    position: relative;
+    color: $text-color-on-dark;
+    
+    &[isDeliveryEnabled=true] {
+        height: 62px !important;
+    }
+
+    &[hasDeliveries=true] {
+        .delivery-items-list {
+            border-bottom: 5px solid #555;
+        }
+    }
+
+    &[isConnected=false] {
+        .name { background: #f44336; }
+        .signout-button,
+        .toggle-offline-button {
+            background: transparentize(#f44336, .5);
+        }
+    }
+
+    &[isReachedMax=true] {
+        .name { background: $success !important; }
+        .signout-button,
+        .toggle-offline-button {
+            background: transparentize($success, .5) !important;
+        }
+    }
+
+    .signout-button,
+    .toggle-offline-button {
+        position: absolute;
+        padding: 20px;
+        top: 0;
+        font-weight: bolder;
+        z-index: 10;
+        background: transparentize($theme-color, .5);
+    }
+
+    &[isIosPlatform=true] {
+        padding: 10px 0 0 0;
+        .signout-button,
+        .toggle-offline-button {
+            top: 20px;
+        }
+    }
+    
+    .signout-button {
+        left: 0;
+    }
+    
+    .toggle-offline-button {
+        right: 0 !important;
+    }
+    
+    .name {
+        padding: 15px 20px;
+        text-align: center;
+        background: #000000;
+        width: 100%;
+    }
+
+    .delivery-items-list {
+        color: $text-color-on-light;
+        padding: 0 10px;
+        &:hover {
+            color: red !important;
+        }
+
+        &[deliveryHasStarted=true] {
+            .delivery-item { opacity: 0.7; }
+        }
+
+        .delivery-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 10px;
+
+            &:not(:last-child) {
+                border-bottom: $border;
+            }
+
+            &[isActiveDelivery=true] {
+                opacity: 1 !important;
+                .number-icon { background: $theme-color !important; }
+            }
+
+            .number-icon {
+                margin-right: 10px;
+                .container {
+                    height: 40px;
+                    width: 40px;
+                    background: transparentize($theme-color, 0.5);
+                    border-radius: 50px;
+                    position: relative;
+                    font-size: large;
+                    font-weight: bolder;
+                }
+            }
+
+            .delivery-item-details {
+                .delivery-recipient-name {
+                    font-weight: bolder;
+                }
+
+                .delivery-order-number {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+}
+
+// Slide button to start, go to next delivery, and finish a delivery
+.slider-button {
+    display: block;
+    height: 70px;
+    width: 90%;
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    background: $theme-color;
+    border-radius: 50px;
+    transform: translateX(-50%);
+    z-index: 1000000;
+    color: $text-color-on-dark;
+
+    ion-range {
+        width: 100%;
+        position: absolute;
+        z-index: 1000000;
+        opacity: 0;
+    }
+
+    .slide-button-action {
+        position: absolute;
+        padding: 18px 0;
+        left: 100px;
+        .name {
+            font-size: large;
+            font-weight: bolder;
+        }
+
+        .destination {
+            opacity: 0.5;
+        }
+
+    }
+
+    .handler,
+    .background {
+        position: absolute;
+    }
+
+    .handler {
+        height: 65px;
+        width: 65px;
+        border-radius: 50px;
+        background: #FFF;
+        margin: 2.5px;
+        box-shadow: $shadow;
+    }
+}
+
+// Hide IonSelect
+ion-select {
+    opacity: 0;
+}

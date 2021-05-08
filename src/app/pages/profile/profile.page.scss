@@ -1,0 +1,69 @@
+@import '../../../variables.scss';
+
+///// PROFILE AVATAR CONTAINER
+.profile-avatar-container {
+    height: 300px;
+    width: 100vw;
+    background: #EEE;
+    position: relative;
+}
+
+// BACK BUTTON
+.back-button {
+    --size: 60px;
+    height: var(--size);
+    width: var(--size);
+    background: $theme-color;
+    border-radius: var(--size);
+    position: absolute;
+    top: 40px;
+    left: 20px;
+}
+
+.back-button ion-icon {
+    color: $text-color-on-dark;
+    font-size: 28px;
+}
+
+// NAME OF THE USER
+.profile-avatar-container .profile-name {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: $text-color-on-dark;
+    text-shadow: $shadow;
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+
+///// PROFILE DETAILS SECTION
+.profile-details {
+    margin-top: 20px;
+}
+
+.profile-details .input {
+    padding: 0px 20px;
+}
+
+.profile-details .input input {
+    border: none;
+    padding: 10px 0;
+    border-bottom: 2px solid transparentize($color: #000000, $amount: .5);
+    text-indent: 0px;
+}
+
+.profile-details .input .description {
+    margin-top: 10px;
+    font-size: small;
+    opacity: .7;
+    margin-bottom: 10px;
+}
+
+
+///// PASSWORD RESET LINK
+.password-reset {
+    margin: 20px;
+    color: $secondary-color;
+    font-weight: bolder;
+}

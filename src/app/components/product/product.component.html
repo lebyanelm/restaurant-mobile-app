@@ -1,0 +1,37 @@
+<div class="menu-item" [attr.isHaveTag]="dietary.length > 0">
+    <div class="dietary-tag" *ngIf="dietary.length">{{dietary}}</div>
+    
+    <!-- Top of the product item -->
+    <div class="menu-item-header" *ngIf="data">
+        <!-- To be able to add a product to the favorites list -->
+        <button class="like-button" [attr.isProductHaveImage]="images.length > 0" *ngIf="data" [attr.isLiked]="data.favorites.indexOf(id) !== -1" (click)="likeProduct(id)">
+            <ion-icon class="center" name="heart-outline"></ion-icon>
+            <ion-icon class="center" name="heart"></ion-icon>
+        </button>
+
+        <!-- Picture of the product, starting from the first image -->
+        <ion-slides (click)="openProduct()">
+            <ion-slide class="menu-item-placeholder" [style.background-image]="'url('+ image +')'" *ngFor="let image of images"></ion-slide>
+        </ion-slides>
+    </div>
+
+    <div class="menu-item-footer">
+        <div class="menu-item-name" (click)="openProduct()">
+            <div class="basket-item-indicator" *ngIf="hasProduct(id)"></div>
+            {{name}}
+            <div class="new-stamp" *ngIf="getDaysFromMilliseconds(timeCreated.timestamp) < 2"><span>NEW</span></div>
+        </div>
+
+        <div class="menu-item-description" (click)="openProduct()">
+            {{description}}
+        </div>
+
+        <div class="menu-item-tags">
+            <div class="price"><span>R{{price}}</span></div>
+            <!-- Number of views for a product will always be greater or equal to number of buys but not less. -->
+            <div class="tag" [attr.isFlashing]="(views !== 0 ? ((buys / views) * 5).toFixed(1) : 0) > 2.5"><ion-icon name="flash"></ion-icon> {{views !== 0 ? ((buys / views) * 5).toFixed(1) : 0}} </div>
+            <!-- <div class="tag" style.color="green" *ngIf="expectedPrepareTime.upper !== 0"><span>{{expectedPrepareTime.lower}}&mdash;{{expectedPrepareTime.upper}} min</span></div> -->
+            <div class="tag category">{{category}}</div>
+        </div>
+    </div>
+</div>

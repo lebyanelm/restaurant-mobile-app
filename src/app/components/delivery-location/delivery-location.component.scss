@@ -1,0 +1,78 @@
+@import '../../../variables.scss';
+
+.delivery-location-selector-top {
+    height: 40px;
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+    
+    &::before {
+        content: "";
+        display: block;
+        height: 140%;
+        width: 140%;
+        position: absolute;
+        top: -25%;
+        left: -20%;
+        background: #EEE;
+        filter: blur(25px);
+        z-index: 10;
+    }
+
+    .notch {
+        height: 4px;
+        width: 40px;
+        border-radius: 10px;
+        background: #555;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0 auto;
+        z-index: 10;
+    }
+}
+
+.map-container {
+    position: absolute;
+    z-index: 1;
+
+    &,
+    app-map {
+        width: 100%;
+    }
+
+    & {
+        height: 100%;
+    }
+
+    app-map {
+        height: 90%;
+    }
+}
+
+.bottom-button {
+    padding: 20px;
+    width: 100%;
+    position: absolute;
+    z-index: 10; 
+    bottom: 0;
+
+    .set-button {
+        width: 100%;
+        padding: 10px 13px;
+        font-weight: bold;
+        background: $theme-color;
+        color: $text-color-on-dark;
+        transform: translateY(-15px);
+        
+        span {
+            font-size: small;
+            font-weight: bold;
+        }
+
+        &:active {
+            border-color: transparent;
+        }
+    }
+}

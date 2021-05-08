@@ -1,0 +1,61 @@
+<ion-content [scrollY]="false">
+  <div class="connection-loader" [attr.isDoneLoading]="isChatConnected"></div>
+  <div class="chat-content" *ngIf="chat.connectedBranch">
+    <div class="chat-header ion-activatable" (click)="chat.closeChatModal()">
+      <div class="chat-header-details flex">
+        
+        <div class="chat-details">
+          <div class="chat-status" [attr.isOnline]=chat.hasConnection></div>
+          <div class="chat-name">{{ chat.connectedBranch.name.split(', ')[0] }} branch</div>
+        </div>
+
+        <div class="space"></div>
+
+      </div>
+
+      <div class="space"></div>
+      <ion-icon name="chevron-down"></ion-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+    <div class="chat-messages space" *ngIf="chat.connectedBranch && data.messages && data.messages[chat.connectedBranch.id] || chat.messages && chat.messages.length" #ChatMessages>
+      <app-chat-message
+        *ngFor="let message of data.messages[chat.connectedBranch.id]"
+        [body]="message.body"
+        [id]="message.id"
+        [timeCreated]="message.timeCreated"
+        [state]="message.state"
+        [from]="message.from"
+        [to]="message.to"
+        [attachments]="message.attachments"
+        [type]="message.type"></app-chat-message>
+      <app-chat-message
+        *ngFor="let message of chat.messages"
+        [body]="message.body"
+        [id]="message.id"
+        [timeCreated]="message.timeCreated"
+        [state]="message.state"
+        [from]="message.from"
+        [to]="message.to"
+        [attachments]="message.attachments"
+        [type]="message.type"></app-chat-message>
+    </div>
+
+    <!-- If there aren't any messages -->
+    <div *ngIf="!(chat.connectedBranch && data.messages && data.messages[chat.connectedBranch.id])" #ChatMessages></div>
+    
+    <div class="chat-footer">
+      <div class="reply" *ngIf="message.reply">
+        <div class="reply-data"><b>({{ message.reply.type === 'outbound' ? 'You' : chat.connectedBranch.businessName }}):</b> {{ message.reply.body }}</div>
+        <div class="remove-reply"><ion-icon class="center" name=close></ion-icon></div>
+      </div>
+      <div class="flex">
+        <input type="text" placeholder="Type your message..." [(ngModel)]="message.body">
+        <div class="chat-footer-buttons flex">
+          <input type="file" hidden #FileInput>
+          <div class="chat-footer-button" (click)="selectFileAttachment()">{{ FileInput.files.length ? '1 file' : 'Attach file' }}</div>
+          <div class="chat-footer-button" (click)="sendMessage()">Send</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,116 @@
+<ion-header mode="ios">
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="top-header">
+      <div class="back-button clickable" [routerLink]="return ? return : '/home'" routerDirection="back"><ion-icon class="center" name="arrow-back-sharp"></ion-icon></div>
+      <div class="space"><div class="top-product-name" *ngIf="product">{{product.name}}</div></div>
+      <div class="buttons">
+      <!-- Let users share the product with other users they know -->
+      <div class="button clickable flex like-button" *ngIf="data" (click)="likeProduct()"><ion-icon [name]="data.favorites.includes(product.id) ? 'heart' : 'heart-outline'"></ion-icon> Love this</div>
+      </div>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content>
+    <ion-content class="main-content" *ngIf="product" #MainContent>
+      <div class="page-content padding" *ngIf="product">
+        <div class="product-preview" *ngIf="product.images.length">
+          <ion-slides>
+            <ion-slide *ngFor="let image of product.images">
+              <div class="image" [style.background-image]="'url(' + image + ')'"></div>
+            </ion-slide>
+          </ion-slides>
+        </div>
+        <div class="product-details">
+          <div class="product-name">{{product.name}}</div>
+          <div class="product-description padding-bottom">{{product.description}}</div>
+        </div>
+
+        <div class="separator" *ngIf="product.sides.length">
+          <div class="separator-name flex">Add Sides <div class="space"></div> <span *ngIf="product.noRequiredSides">{{product.noRequiredSides}} Required</span></div>
+          <div class="separator-description">Add more to your order</div>
+        </div>
+        
+        <div class="product-sides">
+          <div class="side flex" *ngFor="let side of sides" (click)="selectSide(side)" [attr.isSelected]="basket.products[product.id] ? basket.products[product.id].sides.indexOf(side.id) !== -1 : false" [attr.isLastChild]="sides.indexOf(side) === sides.length-1">
+            <div class="details flex">
+              <!-- Checkboxes to select the sides -->
+              <div class="checkbox side-checkbox" #Checkbox [attr.checked]="isSideSelected(side.id) || bData.sides.includes(side.id)"></div>
+              <div class="name" [attr.isSelected]="isSideSelected(side.id) || bData.sides.includes(side.id)">{{side.name}}</div>
+            </div>
+            <div class="space"></div>
+            <div class="description price" [attr.isSelected]="isSideSelected(side.id) || bData.sides.includes(side.id)">+ZAR {{side.price}}</div>
+          </div>
+        </div>
+
+        <div class="separator" *ngIf="product && product.extras.length">
+          <div class="separator-name">Add Extras</div>
+          <div class="separator-description">Customize your order</div>
+        </div>
+        
+        <div class="product-sides">
+          <div class="side flex" *ngFor="let extra of extras" (click)="selectExtra(extra)" [attr.isSelected]="basket.products[product.id] ? basket.products[product.id].extras.indexOf(extra.id) !== -1 : false" [attr.isLastChild]="extras.indexOf(extra) === extras.length-1">
+            <div class="details flex">
+              <div class="checkbox extra-checkbox" #Checkbox [attr.checked]="isExtraSelected(extra.id) || bData.extras.includes(extra.id)"></div>
+              <div class="name flex" [attr.isSelected]="isExtraSelected(extra.id) || bData.extras.includes(extra.id)">{{extra.name}}</div>
+            </div>
+            <div class="space"></div>
+            <div class="description price" [attr.isSelected]="isExtraSelected(extra.id) || bData.extras.includes(extra.id)">+ZAR {{extra.price}}</div>
+          </div>
+
+          <!-- When the extras haven't been fully loaded -->
+          <ion-spinner class="extras-loader" name=crescent *ngIf="extras && !extras.length"></ion-spinner>
+        </div>
+
+        <!-- Extra sections -->
+        <div *ngFor="let section of product.sections">
+          <div class="separator">
+            <div class="separator-name flex">{{section.name}}<div class="space"></div> <span *ngIf="section.isRequired">Required</span></div>
+          </div>
+          
+          <div class="product-sides">
+            <div class="side flex" *ngFor="let option of section.options" (click)="selectSectionOption(section, option)">
+              <div class="details flex">
+                <div [class]="section.isMultiSelect ? 'checkbox extra-checkbox' : 'checkbox side-checkbox'" #Checkbox [attr.checked]="inBasket() !== -1 ? (basket.products[inBasket()].selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')] ? basket.products[inBasket()].selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')].includes(option.name) : false) : (bData.selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')] ? bData.selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')].includes(option.name) : false)"></div>
+                <div class="name flex" [attr.isSelected]="inBasket() !== -1 ? (basket.products[inBasket()].selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')] ? basket.products[inBasket()].selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')].includes(option.name) : false) : (bData.selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')] ? bData.selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')].includes(option.name) : false)">{{option.name}}</div>
+              </div>
+              <div class="space"></div>
+              <div class="description price" *ngIf="option.price" [attr.isSelected]="inBasket() !== -1 ? (basket.products[inBasket()].selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')] ? basket.products[inBasket()].selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')].includes(option.name) : false) : (bData.selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')] ? bData.selectedOptions[section.name.replace(returnRegex('\\s', 'g'), '_')].includes(option.name) : false)">ZAR {{option.price}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="separator">
+          <div class="separator-name">Add a note</div>
+          <div class="separator-description">Let the restaurant know how your order should be, you can always add more for each item.</div>
+        </div>
+        <div class="leave-note">
+          <textarea placeholder="Add a note for the restaurant, eg. For Patty Cake add extra Chilli Sauce, no Garlic" [(ngModel)]="basket.specialInstructions"></textarea>
+        </div>
+
+        <div class="quantity-controller">
+          <button class="remove ion-activatable" (click)="removeQuantity()" [disabled]="inBasket() !== -1 ? basket.products[inBasket()].quantity === 0 : bData.quantity === 0">
+            <ion-icon name="remove" class="center"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </button>
+          <b class="quantity">{{inBasket() !== -1 ? basket.products[inBasket()].quantity : (bData.quantity || 1)}}</b>
+          <button class="add ion-activatable" (click)="addQuantity()">
+            <ion-icon name="add" class="center"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </button>
+        </div>
+      </div>
+    </ion-content>
+</ion-content>
+
+<ion-footer class="flex" *ngIf="product">
+  <button class="flex" [disabled]="(inBasket() !== -1 ? product.noRequiredSides > basket.products[inBasket()].sides.length : product.noRequiredSides > bData.sides.length) && !isAddableToBasket" *ngIf="product && inBasket() === -1" (click)="addToBasket()">
+    <div class="space ion-text-center">Add {{bData.quantity || 1}} to Basket</div>
+    <div class="">ZAR {{((product.price * (bData.quantity || 1)) + bData.extrasAmount).toFixed(2)}}</div>
+  </button>
+
+  <button *ngIf="product && inBasket() !== -1" (click)="openBasket()">
+    <div class="space">View my Basket</div>
+  </button>
+</ion-footer>

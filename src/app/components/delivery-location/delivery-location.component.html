@@ -1,0 +1,17 @@
+<div class="delivery-location-selector-top" #TopNotch>
+  <div class="notch"></div>
+</div>
+
+<div class="map-container">
+  <app-map [isSetAutoWidth]=false [isEmitCenter]=true></app-map>
+</div>
+
+<div class="bottom-button">
+  <button class="set-button flex clickable" [disabled]=!selectedAddress.address.length (click)="setLocation()">
+    <span *ngIf="selectedAddress.address.length && selectedAddress.address.length > 1">{{selectedAddress.address[0]}}, {{selectedAddress.address[1]}}</span>
+    <span *ngIf="selectedAddress.address.length && selectedAddress.address.length == 1">{{selectedAddress.address[0]}}</span>
+    <span *ngIf="!selectedAddress.address.length">Move map to start</span>
+    <div class="space"></div>
+    <ion-icon name="arrow-forward"></ion-icon>
+  </button>
+</div>

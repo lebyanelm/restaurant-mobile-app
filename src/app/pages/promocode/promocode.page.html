@@ -1,0 +1,11 @@
+<ion-content>
+    <div class="page-content ion-text-center">
+      <h4>Enter your promocode</h4>
+      <input type="text" placeholder="eg. FRIDAY50" [(ngModel)]="promocode">
+    </div>
+</ion-content>
+
+<ion-footer class="buttons">
+  <button [disabled]="!promocode" (click)="verifyPromocode()">Apply Promocode</button>
+  <!-- <button class="border icon"><ion-icon mode=md name=call></ion-icon></button> -->
+</ion-footer>

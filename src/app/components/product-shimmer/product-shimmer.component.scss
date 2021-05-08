@@ -1,0 +1,59 @@
+@import '../../../variables.scss';
+
+.product-shimmer {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: $border;
+    margin-bottom: 20px;
+
+    .line {
+        height: 15px;
+        width: 100%;
+        background: #EEE;
+        margin: 8px 0;
+
+        &:last-child {
+            width: 40%;
+        }
+    }
+
+    .product-shimmer-header {
+        display: flex;
+        align-items: center;
+
+        .product-shimmer-image {
+            height: 120px;
+            width: 40%;
+            border-radius: 0;
+            border-bottom-right-radius: 100px;
+            background: #EEE;
+            border: none;
+            border-bottom: $border;
+            border-right: $border;
+        }
+
+        .product-shimmer-name {
+            height: 30px;
+            width: 40%;
+            margin-left: 20px;
+            background: #EEE;
+        }
+    }
+
+    .product-shimmer-contents {
+        padding: 0 20px 20px 20px;
+        .product-shimmer-description {
+            width: 100%;
+            padding: 20px 0;
+            
+        }
+    
+        .product-shimmer-price {
+            background: #DDD;
+            width: 60px;
+            height: 20px;
+            margin-top: 20px;
+        }
+    }
+}

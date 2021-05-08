@@ -1,0 +1,86 @@
+<ion-content [scrollY]="false">
+  <div class="account-page-content">
+    <div class="page-profile-header" (click)="routeTo('/profile')">
+      <div class="profile-avatar" *ngIf="data" [style.background-image]="'url()'"></div>
+      <div class="details">
+        <div class="name" *ngIf="data">{{data.names}}</div>
+        <div class="description">View account</div>
+      </div>
+    </div>
+  </div>
+
+  <ion-content class="menu-items-content" [scrollY]="true">
+    <div class="menu-list-items">
+      <div class="menu-item">
+        <div class="icon">
+          <div class="outline"><ion-icon name="heart-outline"></ion-icon></div>
+          <!-- <div class="filled"><ion-icon name="heart"></ion-icon></div> -->
+        </div>
+        <div class="details" (click)="routeTo('/favorites')">
+          <div class="name">Your favorites</div>
+          <div class="description">Your saved favorite items.</div>
+        </div>
+      </div>
+      <div class="menu-item" (click)="routeTo('/payment-methods', {isCheckout: false})">
+        <div class="icon">
+          <div class="outline"><ion-icon name="card-outline"></ion-icon></div>
+          <!-- <div class="filled"><ion-icon name="card"></ion-icon></div> -->
+        </div>
+        <div class="details">
+          <div class="name">Payment</div>
+          <div class="description">Methods of payment for checking out</div>
+        </div>
+      </div>
+      <div class="menu-item" (click)="openChatModal()">
+        <div class="icon">
+          <div class="outline"><ion-icon name="chatbubbles-outline"></ion-icon></div>
+          <!-- <div class="filled"><ion-icon name="chatbubbles"></ion-icon></div> -->
+        </div>
+        <div class="details">
+          <div class="name">Chat with us</div>
+          <div class="description">Ask us what ever you need</div>
+        </div>
+      </div>
+      <div class="menu-item" (click)="routeTo('/store-locator')">
+        <div class="icon">
+          <div class="outline"><ion-icon name="business-outline"></ion-icon></div>
+          <!-- <div class="filled"><ion-icon name="business"></ion-icon></div> -->
+        </div>
+        <div class="details">
+          <div class="name">Stores Locator</div>
+          <div class="description">Know where we are located to give us a visit.</div>
+        </div>
+      </div>
+      <div class="menu-item" (click)="routeTo('/about')">
+        <div class="icon">
+          <div class="outline"><ion-icon name="help-circle-outline"></ion-icon></div>
+          <!-- <div class="filled"><ion-icon name="business"></ion-icon></div> -->
+        </div>
+        <div class="details">
+          <div class="name">About us</div>
+          <div class="description">Get to know us better</div>
+        </div>
+      </div>
+      <div class="menu-item" (click)="copyAppShareUrl()">
+        <div class="icon">
+          <div class="outline"><ion-icon name="megaphone-outline"></ion-icon></div>
+          <!-- <div class="filled"><ion-icon name="megaphone"></ion-icon></div> -->
+        </div>
+        <div class="details">
+          <div class="name">Tell a friend</div>
+          <div class="description">Share us on social media</div>
+        </div>
+      </div>
+      <div class="menu-item log-out" (click)="signout()">
+        <div class="icon">
+          <div class="outline"><ion-icon name="log-out-outline"></ion-icon></div>
+          <!-- <div class="filled"><ion-icon name="log-out"></ion-icon></div> -->
+        </div>
+        <div class="details">
+          <div class="name">Sign out</div>
+          <div class="description"></div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-content>

@@ -1,0 +1,45 @@
+<ion-content>
+  <div class="badger">
+    Grillo's
+  </div>
+
+  <div class="background-image"></div>
+  
+  <div class="center form">
+    <ion-slides [pager]=false #IonSlides>
+      <ion-slide class="ion-slide">
+        <h5 class="ion-text-center">What's your phone number?</h5>
+        <input class="theme" type="tel" placeholder="eg. +27012345678" [attr.data-error]=isError #PhoneNumber>
+      </ion-slide>
+
+      <ion-slide class="ion-slide">
+        <h5 class="ion-text-center">Verify the phone number</h5>
+        <input class="theme" type="tel" placeholder="eg. 0000" [attr.data-error]=isError #VerificationCode>
+      </ion-slide>
+
+      <ion-slide class="ion-slide">
+        <h5 class="ion-text-center">Your name</h5>
+        <input class="theme" type="text" placeholder="eg. John Doe" [attr.data-error]=isError #Names>
+      </ion-slide>
+
+      <ion-slide class="ion-slide">
+        <h5 class="ion-text-center" #HeaderText>Password, almost there</h5>
+        <input class="theme" type="password" placeholder="eg. secretpassword" [attr.data-error]=isError #Password>
+      </ion-slide>
+    </ion-slides>
+    <button class="flex" #NextButton>
+      <span #NextButtonText>Next</span>
+      <div class="space"></div>
+      <ion-icon name="arrow-forward" *ngIf="!isLoading"></ion-icon>
+      <div class="loader light" *ngIf="isLoading"></div>
+    </button>
+    <p class="link" *ngIf="currentSignupStep === 3" (click)="goToForgotPasswordPage()">Forgot password?</p>
+    <p class="gray" [attr.data-error]=isError #Instructions><i>Use the international format, South African format will be used if not.</i> </p>
+
+  </div>
+
+  <div class="bottom-app-caption">
+    <div class="app-id">{{ appId }}</div>
+    <div class="developer">Powered by Nextify.</div>
+  </div>
+</ion-content>

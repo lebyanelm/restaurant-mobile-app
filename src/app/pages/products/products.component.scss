@@ -1,0 +1,168 @@
+@import '../../../variables.scss';
+
+ion-header {
+    --ion-box-shadow: none;
+    .header-top {
+        padding: 10px 20px;
+        text-align: center;
+        border-bottom: 1px solid #EEE;
+
+        &[deviceType=iphone] {
+            padding-top: 30px !important;
+        }
+        
+        .action {
+            opacity: 0.5;
+        }
+
+        ion-icon {
+            margin: 0 8px;
+        }
+        
+        .delivery-address {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            .name {
+                width: 100%;
+                text-align: center;
+            }
+
+            b {
+                color: $theme-color;
+            }
+        }
+    }
+}
+
+ion-content {
+    --padding-bottom: 70px;
+    --banner-height: 100px;
+
+    ion-slides.banner {
+        padding: 0 0 20px 0;
+        width: 100vw;
+        
+        ion-slide,
+        ion-slide > div {
+            display: block !important;
+            width: 100%;
+            height: var(--banner-height);
+            text-align: start;
+            border-radius: 0;
+        }
+
+        .image {
+            background-size: cover !important;
+            background-position: center center;
+            color: $text-color-on-dark;
+            position: relative;
+            background: #EEE;
+
+            span {
+                display: block;
+                text-shadow: 1px 1px 4px rgba(0, 0, 0, 1);
+            }
+
+            span.title {
+                font-weight: bold !important;
+                font-size: larger !important;
+                margin-bottom: 2px;
+            }
+
+            span.message {
+                font-size: small !important;
+            }
+
+            .bottom {
+                position: absolute;
+                bottom: 20px;
+                left: 20px;
+            }
+        }
+    }
+
+    .banner-slides-buttons {
+        display: flex;
+        width: 100%;
+        height: var(--banner-height);
+        position: absolute;
+        transform: translateY(calc(-100% - 20px));
+        z-index: 100000;
+        background-color: transparent;
+    }
+
+    .banner-slides-buttons .banner-slide-button {
+        padding: 20px 2px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparentize($theme-color, 0.5);
+    }
+
+    .banner-slides-buttons .banner-slide-button[isDisabled=true] {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .banner-slides-buttons .banner-slide-button:last-child {
+        right: 0;
+    }
+    
+    .banner-slides-buttons .banner-slide-button ion-icon {
+        color: #FFF;
+        font-size: 25px;
+    }
+
+    .inner-container {
+        display: flex;
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .slides-indicator {
+        display: flex;
+        align-items: end;
+        position: absolute;
+        width: 100%;
+        height: 80px;
+        transform: translateY(calc(-100% - 20px));
+        background: linear-gradient(180deg, transparent, #000);
+        z-index: 10;
+        pointer-events: none;
+
+        .slide-indicator-container {
+            padding: 0 5px;
+        }
+
+        .slide-indicator {
+            height: 5px;
+            width: 20px;
+            background: #EEE;
+            transition: opacity 300ms ease-in-out;
+            opacity: .3;
+
+            &[isActive=true] {
+                opacity: 1;
+            }
+        }
+    }
+
+    .header-text {
+        display: block;
+        font-size: larger;
+        margin-bottom: 20px;
+        margin-left: 15px;
+    }
+
+    ion-refresher-content {
+        padding: 20px auto;
+    }
+}
+
+// RESPONSIVE DESIGNS
+@media screen and (min-width: 700px) {
+    .products { display: grid; grid-template-columns: 32% 33% 33%; gap: 1%; }
+}

@@ -1,0 +1,75 @@
+@import '../../../variables.scss';
+
+.message-container {
+    padding: 10px;
+    border-bottom: 1px solid #EEE;
+    font-size: small !important;
+}
+
+.message-container,
+.message-container .message-details-container .message-sender-details,
+.message-container .message-details-container .message-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.message-container .avatar {
+    height: 40px;
+    width: 40px;
+    background: #EEE;
+    border-radius: 50px;
+}
+
+.message-container .avatar,
+.message-container .message-attachment {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.message-container .message-sender-details .message-sender-name {
+    font-size: 16px !important;
+    font-weight: bolder !important;
+}
+
+.message-container .message-details-container {
+    width: 100%;
+}
+
+.message-container .message-details-container .message-buttons {
+    opacity: 0;
+    transition: opacity 300ms ease-in-out;
+}
+
+.message-container:hover .message-details-container .message-buttons {
+    opacity: 1 !important;
+}
+
+.message-container .message-details-container .message-buttons .message-button {
+    color: $secondary-color;
+    font-weight: bolder;
+}
+
+.message-container .message-details-container .message-status[status="2"] {
+    color: royalblue;
+}
+
+.message-container .message-details-container .message-time  {
+    opacity: 0.7;
+    font-size: small !important;
+}
+
+.message-container .message-attachment {
+    display: block;
+    height: 150px;
+    width: 100%;
+    background: #EEE;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.message-container .message-body {
+    font-weight: 500;
+    opacity: 0.7;
+}
