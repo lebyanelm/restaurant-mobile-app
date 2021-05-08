@@ -13,8 +13,8 @@ import { Marker, Map, LngLatLike, LngLatBounds } from 'mapbox-gl';
 import { Plugins } from '@capacitor/core';
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVieWFuZWxtIiwiYSI6ImNrMDFnNWZpOTJidnEzYnV0MXhiazM4cmYifQ.aOIsfqjRmqjXAfnNc4n2CQ';
 
+// Declare a variable to be able to use the embedded in index.html
 declare let turf;
-console.log(turf);
 
 // tslint:disable: max-line-length
 @Component({
@@ -70,7 +70,7 @@ export class MapComponent implements AfterViewInit {
     private storage: StorageService,
     private sockets: SocketsService
   ) {
-    console.log(this.isSetAutoWidth, 'is auto width')
+    console.log(this.isSetAutoWidth, 'is auto width');
   }
 
   ngAfterViewInit() {
