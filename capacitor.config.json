@@ -1,0 +1,13 @@
+{
+  "appId": "restaurant.nexify.co.za",
+  "appName": "Restautant Mobile",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
