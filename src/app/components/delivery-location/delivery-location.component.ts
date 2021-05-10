@@ -22,6 +22,7 @@ export class DeliveryLocationComponent implements AfterViewInit {
     this.topNotch.nativeElement.ondrag = (e) => { console.log(e, 'dragged'); };
     this.mapEvents.center_changed.subscribe((coords) => {
       this.googleapisService.coordinatesToAddress(coords, (response) => {
+        console.log(response)
         this.selectedAddress.coords = coords;
         this.selectedAddress.address = response.formatted_address.split(',');
       });

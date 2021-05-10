@@ -1,3 +1,4 @@
+import { BrowserPageService } from './../../services/browser-page.service';
 import { ToastService } from './../../services/toast.service';
 import { ModalEventsService } from './../../services/modal-events.service';
 import { GoogleapisService } from './../../services/googleapis.service';
@@ -37,7 +38,8 @@ export class ProductsComponent implements AfterViewInit {
               private googleServices: GoogleapisService,
               private modalEvents: ModalEventsService,
               private toastService: ToastService,
-              private platform: Platform) {
+              private platform: Platform,
+              private browserPage: BrowserPageService) {
                 this._platform = platform.platforms()[0];
               }
   ngAfterViewInit() {
@@ -50,7 +52,8 @@ export class ProductsComponent implements AfterViewInit {
 
     // For creating a custom indicator for the slides
     this.getBannerIndices();
-    
+
+
     this.bannerSlides.ionSlideDidChange
       .subscribe(_=> {
         this.bannerSlides.getActiveIndex()
@@ -63,7 +66,7 @@ export class ProductsComponent implements AfterViewInit {
                 if ((length - 1) === this.currentSlideIndex) {
                   this.isNextDisabled = true
                   this.isPreviousDisabled = false;
-                } else if (this.currentSlideIndex === 0) { 
+                } else if (this.currentSlideIndex === 0) {
                   this.isPreviousDisabled = true;
                   this.isNextDisabled = false;
                 } else {
@@ -124,7 +127,7 @@ export class ProductsComponent implements AfterViewInit {
         // Place the products in the order of popularity in a descending manner
         const orderedProducts = this.products.sort(this.comparePopularityRate).reverse();
         this.products = orderedProducts;
-        
+
         // Also refresh the banners
         this._products.getBanners()
           .then((banners: Banner[]) => {

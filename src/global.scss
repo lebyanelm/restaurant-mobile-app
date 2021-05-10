@@ -55,21 +55,21 @@ html {
         -webkit-appearance: none !important;
         appearance: none !important;
     }
-    
+
     /* Track */
     &::-webkit-scrollbar-track {
         background: #EEE;
         -webkit-appearance: none !important;
         appearance: none !important;
     }
-    
+
     /* Handle */
     &::-webkit-scrollbar-thumb {
         background: transparentize($theme-color, 0.5);
         -webkit-appearance: none !important;
         appearance: none !important;
     }
-    
+
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
         background: $theme-color;
@@ -112,6 +112,113 @@ p {
             width: 100%;
         }
     }
+}
+
+.status {
+  height: 100vh;
+  width: 100vw;
+  background: #EEE;
+  text-align: center;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader {
+  display: block;
+  height: 70px;
+  width: 70px;
+  position: relative;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  z-index: 10px;
+}
+
+.loader img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-47%, -47%);
+  height: 40px;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.loader::before {
+  border: 6px solid #DDD;
+  top: -4px;
+  left: -4px;
+  z-index: -1;
+}
+
+.loader::after {
+  animation: loader 300ms linear infinite;
+  border: 4px solid transparent;
+  border-bottom-color: #000;
+  left: 50%;
+  top: -3px;
+  transform: translateX(-50%);
+}
+
+.loader,
+.loader::before,
+.loader::after,
+.loader img {
+  border-radius: 50px;
+}
+
+.brand-name {
+  display: block;
+  font-weight: bold;
+  font-size: large;
+  margin-top: 10px;
+}
+
+.action-status {
+  font-size: small;
+  opacity: 0.7;
+}
+
+.footer {
+  font-size: small;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.footer .credits {
+  opacity: 0.8;
+}
+
+.footer .logo-brand {
+  display: flex;
+  align-items: center;
+}
+
+.footer .logo-brand img {
+  height: 40px;
+}
+
+@keyframes loader {
+  from {
+      transform: translateX(-50%) rotate(0deg);
+  }
+
+  to {
+      transform: translateX(-50%) rotate(360deg);
+  }
 }
 
 // Helpers
@@ -262,7 +369,7 @@ input {
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    
+
     .app-id,
     .developer {
         font-size: 10px;
@@ -428,7 +535,7 @@ header {
                 transform: rotate(180deg);
             }
         }
-        
+
         .current-category {
             display: flex;
             align-items: center;
@@ -498,12 +605,12 @@ app-product {
 
         .bottom {
             opacity: 0.5;
-            
+
             .category,
             .dietary {
                 display: inline-block;
             }
-            
+
             .category { margin-right: 5px; }
             .dietary { padding: 2px 5px; border-radius: 5px; }
         }
@@ -516,7 +623,7 @@ ion-footer {
     background: $background-color;
     // padding: 20px;
     // border-top: $border;
-    
+
     &,
     .footer-content {
         display: flex;
@@ -525,7 +632,7 @@ ion-footer {
     &.has-footer {
         padding: 10px 20px;
     }
-    
+
     .footer-header {
         padding: 20px 0 20px 0;
         text-align: center;
@@ -533,7 +640,7 @@ ion-footer {
         font-size: 13px;
         border-bottom: $border;
     }
-    
+
     &::before {
         content: "";
         display: block;
@@ -565,7 +672,7 @@ ion-footer {
             animation: LinearLoader 300ms ease-in-out infinite;
         }
     }
-    
+
     button {
         width: 100%;
     }
@@ -594,7 +701,7 @@ button {
         border-color: $background-color;
         border-bottom-color: $theme-color;
     }
-        
+
     &.border {
         background: transparent;
         color: $theme-color;

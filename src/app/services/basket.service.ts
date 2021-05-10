@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-for-of */
 import { ModalController } from '@ionic/angular';
 import { Destination } from './../interfaces/Destination';
 import { BasketProduct } from './../interfaces/BasketProduct';
@@ -16,6 +17,7 @@ export class BasketService {
   destination: Destination;
   paymentMethodId;
   specialInstructions = '';
+  orderingMode = 'delivery';
   deliveryNote = '';
   count = 0;
   changes: Subject<number> = new Subject<number>();
@@ -49,7 +51,6 @@ export class BasketService {
   }
 
   addQuantity(productId: string) {
-    // tslint:disable-next-line: prefer-for-of
     for (let index = 0; index < this.products.length; index++) {
       if (this.products[index].id === productId) {
         this.products[index].quantity++;
@@ -61,7 +62,6 @@ export class BasketService {
   }
 
   minusQuantity(productId: string) {
-    // tslint:disable-next-line: prefer-for-of
     for (let index = 0; index < this.products.length; index++) {
       if (this.products[index].id === productId) {
         this.products[index].quantity--;
@@ -83,7 +83,6 @@ export class BasketService {
 
   getTotal() {
     let total = 0;
-    // tslint:disable: prefer-for-of
     for (let index = 0; index < this.products.length; index++) {
       total += (((this.products[index].price + this.products[index].extrasAmount) * this.products[index].quantity));
     }

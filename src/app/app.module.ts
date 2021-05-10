@@ -14,6 +14,7 @@ import { SocketIoModule } from 'ngx-socket-io';
 import { EventsService } from './services/events';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { HomePage } from './pages/home/home.page';
+import { SafePipe } from './pipes/safe.pipe';
 
 @NgModule({
   declarations: [AppComponent],

@@ -45,13 +45,28 @@
           </div>
         </div>
 
+        <div class="delivery-collection leave-a-note-button ion-activatable" (click)="openAddNoteModal(false)">
+          <b>Delivery / Collection</b>
+          <br>
+          <div class="flex">
+            <div
+              class="delivery"
+              [attr.selected]="this.basket.orderingMode === 'delivery'"
+              (click)="this.basket.orderingMode = 'delivery'">Delivery</div>
+            <div
+              class="delivery"
+              [attr.selected]="this.basket.orderingMode === 'collection'"
+              (click)="this.basket.orderingMode = 'collection'">Collection</div>
+          </div>
+        </div>
+
         <div class="leave-a-note-button ion-activatable" (click)="openAddNoteModal(false)">
           <b>Restaurant Instructions</b>
           <br>
           <span>{{basket.specialInstructions.length ? basket.specialInstructions : 'Leave a note (eg. Extra sauce, extra napkins)'}}</span>
           <ion-ripple-effect></ion-ripple-effect>
         </div>
-        
+
         <div class="order-summary">
           <!-- <h5 class="ion-text-center">Order Summary</h5> -->
           <span class="summary promocode flex" (click)="openPromocodeModal()">
@@ -60,19 +75,19 @@
             <span class="link" *ngIf="!basket.basketSummary.promocode.code">ENTER</span>
             <b class="border" *ngIf="basket.basketSummary.promocode.code" (click)="openPromocodeModal(basket.basketSummary.promocode.code)">{{basket.basketSummary.promocode.code}} (-{{basket.basketSummary.promocode.discount}}%)</b>
           </span>
-  
+
           <span class="summary flex">
             <span>Subtotal</span>
             <div class="space"></div>
-            <span>R {{basket.basketSummary.orderPrice.toFixed(2)}}</span> 
+            <span>R {{basket.basketSummary.orderPrice.toFixed(2)}}</span>
           </span>
-  
+
           <span class="summary flex discount" [attr.isDiscountApplied]="basket.basketSummary.promocode && basket.basketSummary.promocode.code ? true : false">
             <span>Discount</span>
             <div class="space"></div>
             <span>-R {{basket.basketSummary.discount.toFixed(2)}}</span>
           </span>
-          
+
           <span class="summary flex">
             <span>Delivery Fee</span>
             <div class="space"></div>
@@ -84,7 +99,7 @@
             <div class="space"></div>
             <span>R {{basket.basketSummary.tax.toFixed(2)}}</span>
           </span>
-  
+
           <span class="summary flex total">
             <span><b>Total</b></span>
             <div class="space"></div>

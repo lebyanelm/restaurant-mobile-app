@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-browser-page',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./browser-page.component.scss'],
 })
 export class BrowserPageComponent implements OnInit {
+  @Input() url: string;
 
   constructor() { }
 

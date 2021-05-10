@@ -17,8 +17,8 @@ export interface Order  {
     status?: number;
     totalPrice?: number;
     paymentMethod?: string;
-    VAT?: number,
-    discount?: number,
+    orderingMode?: string;
+    discount?: number;
     deliveryFee?: number;
     customer?: string;
     uid?: string;

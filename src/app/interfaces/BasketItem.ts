@@ -1,5 +1,5 @@
 export interface BasketItem {
-    name: string;    
+    name: string;
     id: string;
     extras: string[];
     quantity: number;

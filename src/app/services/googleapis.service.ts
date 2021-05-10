@@ -15,6 +15,7 @@ export class GoogleapisService {
     supeagent
       .get(this.urls[0] + [coords.lat, coords.lng].join())
       .end((error, response: any) => {
+        console.log('google', response)
         cb(response.body.results[0]);
       });
   }

@@ -1,3 +1,5 @@
+import { SafePipe } from './../../pipes/safe.pipe';
+import { BrowserPageComponent } from './../browser-page/browser-page.component';
 import { SlideButtonComponent } from './../slide-button/slide-button.component';
 import { ChatMessageComponent } from './../chat-message/chat-message.component';
 import { AlertComponent } from './../../alert/alert.component';
@@ -32,7 +34,8 @@ import { AddNoteComponent } from '../add-note/add-note.component';
     AddPaymentOptionPage,
     AlertComponent,
     ChatComponent,
-    AddNoteComponent
+    AddNoteComponent,
+    BrowserPageComponent
   ],
   declarations: [
     ProductShimmerComponent,
@@ -53,7 +56,9 @@ import { AddNoteComponent } from '../add-note/add-note.component';
     ChatMessageComponent,
     ChatComponent,
     AddNoteComponent,
-    SlideButtonComponent
+    SlideButtonComponent,
+    BrowserPageComponent,
+    SafePipe
   ],
   imports: [
     CommonModule,
@@ -84,7 +89,8 @@ import { AddNoteComponent } from '../add-note/add-note.component';
     ChatMessageComponent,
     ChatComponent,
     AddNoteComponent,
-    SlideButtonComponent
+    SlideButtonComponent,
+    BrowserPageComponent
   ]
 })
 export class ComponentsModule { }
