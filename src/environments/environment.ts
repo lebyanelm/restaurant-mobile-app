@@ -6,7 +6,7 @@ const environment = {
   production: false,
   PARTNER_ID: '1591750141414',
   AppId: 'App-Id',
-  GoogleApiKey: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
+  GOOGLE_KEY: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
   IO: 'http://localhost:5000',
   ORDER: 'Current-Order-Id',
   BACKEND: 'http://localhost:5000/',

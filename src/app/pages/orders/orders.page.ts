@@ -1,15 +1,19 @@
+import { User } from 'src/app/interfaces/User';
+import { StorageService } from 'src/app/services/storage.service';
+import { Plugins } from '@capacitor/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { environment } from './../../../environments/environment';
 import { ModalEventsService } from './../../services/modal-events.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Promocode } from './../../interfaces/Promocode';
-import { ProductsService } from './../../services/products.service';
 import { BasketService } from './../../services/basket.service';
-import { Component, AfterViewInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit, Input, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { Order } from 'src/app/interfaces/Order';
 import { ModalController, Platform } from '@ionic/angular';
 import { PromocodePage } from '../promocode/promocode.page';
 import { AddNoteComponent } from 'src/app/components/add-note/add-note.component';
+import * as superagent from 'superagent';
+import { Branch } from 'src/app/interfaces/Branch';
 
 @Component({
   selector: 'app-orders',
@@ -17,17 +21,24 @@ import { AddNoteComponent } from 'src/app/components/add-note/add-note.component
   styleUrls: ['./orders.page.scss'],
 })
 export class OrdersPage implements AfterViewInit {
+  @ViewChild('PlaceOrderButton') placeOrderButton: ElementRef<HTMLButtonElement>;
   @Input() return: string;
 
+  // Page States
   isBasketHaveItems = false;
-  order: Order = { products: [] };
   isPriorityDelivery = false;
   isPromoCodeApplied = false;
+  isPaymentOptionsOpen = false;
+
+  // Page Data
   returnPage;
+  order: Order = { products: [] };
+  data: User;
+  branch: Branch;
 
   constructor(
     public basket: BasketService,
-    private productService: ProductsService,
+    private storage: StorageService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private modalCtrl: ModalController,
@@ -45,7 +56,8 @@ export class OrdersPage implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
+    this.data = await this.storage.getItem(environment.customerDataName);
   }
 
   openProduct(id: string): void {
@@ -55,9 +67,51 @@ export class OrdersPage implements AfterViewInit {
       });
   }
 
-  async checkout(r) {
+  findNearestBranch() {
+    // Find the location of the customer
+    return new Promise<Branch | string>((resolve, reject) => {
+      Plugins.Geolocation.getCurrentPosition({ enableHighAccuracy: true })
+        .then((position) => {
+          // Send a request to the backend to find the nearest branch to the customer
+          superagent
+            .get([environment.BACKEND, 'branch?coordinates=',
+              [position.coords.latitude, position.coords.longitude].join(), '&partnerId=', environment.PARTNER_ID].join(''))
+            .end((_, response) => {
+              if (response) {
+                if (response.ok) {
+                  resolve(response.body.branch);
+                } else {
+                  reject(response.body.reason || 'Something went wrong.');
+                }
+              } else {
+                reject('No connection. Please check your internet connection.');
+              }
+            });
+        }).catch((error) => {
+          reject('Could not find your location');
+        });
+    });
+  }
+
+  // When payment has been selected, place an order to the nearest restaurant
+  placeOrder() {
+    this.findNearestBranch()
+      .then((branch: Branch) => {
+        this.branch = branch;
+        // Check whether to accept payment first before sending the order or not
+        if (this.basket.paymentMethod === 'online') {
+          this.onlinePaymentCheckout();
+        } else {
+          this.sendOrderCheckout(null);
+        }
+      }).catch((error) => {
+        Plugins.Toast.show({ text: error });
+      });
+  }
+
+  async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://0c2017deb4b1.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://cda0f68a34cb.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {
@@ -67,6 +121,9 @@ export class OrdersPage implements AfterViewInit {
       amount: this.basket.basketSummary.totalPayment.toFixed(2).toString(),
       transactionReference: environment.PARTNER_ID,
       bankReference: environment.PARTNER_ID,
+      registerTokenProfile: true,
+      tokenNotificationUrl: [environment.BACKEND, 'token-registration'].join(''),
+      tokenDeletedNotificationUrl: [environment.BACKEND, 'token-delete'].join(''),
       cancelUrl: [
         environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=cancel'].join(''),
       errorUrl: [
@@ -78,21 +135,24 @@ export class OrdersPage implements AfterViewInit {
       isTest: !environment.production
     };
 
-    let hashCheckBefore = [
+    // Make a lowercase string of all the data items to send them to Ozow
+    const hashCheckBefore = [
       OZOW_API_DATA.siteCode,
       OZOW_API_DATA.countryCode,
       OZOW_API_DATA.currencyCode,
       OZOW_API_DATA.amount,
       OZOW_API_DATA.transactionReference,
       OZOW_API_DATA.bankReference,
+      // OZOW_API_DATA.registerTokenProfile,
+      // OZOW_API_DATA.tokenNotificationUrl,
+      // OZOW_API_DATA.tokenDeletedNotificationUrl,
       OZOW_API_DATA.cancelUrl,
       OZOW_API_DATA.errorUrl,
       OZOW_API_DATA.successUrl,
       OZOW_API_DATA.notifyUrl,
-      OZOW_API_DATA.isTest
+      OZOW_API_DATA.isTest,
+      '215114531AFF7134A94C88CEEA48E',
     ].join('').toLowerCase();
-
-    hashCheckBefore += '215114531AFF7134A94C88CEEA48E'.toLowerCase();
 
     const hashRequest = await fetch(
       [
@@ -101,7 +161,6 @@ export class OrdersPage implements AfterViewInit {
       ].join(''));
 
     const hashCheck = await hashRequest.json();
-    console.log('HashCheck', hashCheck)
 
     const pageHTML = `
       <html>
@@ -155,6 +214,38 @@ export class OrdersPage implements AfterViewInit {
     }
   }
 
+  sendOrderCheckout(paymentData) {
+    superagent
+      .post([environment.BACKEND, 'order'].join(''))
+      .set('Authorization', this.data.token)
+      .send({
+        products: this.basket.products,
+        paymentMethod: this.basket.paymentMethod,
+        restaurantInstructions: this.basket.specialInstructions,
+        deliveryInstructions: this.basket.deliveryNote,
+        orderingMode: this.basket.orderingMode,
+        destination: this.basket.destination,
+
+        customer: this.data.names,
+        uid: this.data.id,
+        branch: this.branch,
+
+        transactionId: paymentData ? paymentData.transactionId : null,
+        transactionReference: paymentData ? paymentData.transactionReference : null,
+        transactionStatus: paymentData ? paymentData.status : null,
+
+        orderPrice: this.basket.basketSummary.orderPrice,
+        promocodeUsed: this.basket.basketSummary.promocode,
+        discount: this.basket.basketSummary.discount,
+        deliveryFee: this.basket.basketSummary.deliveryPayment,
+        tax: this.basket.basketSummary.tax,
+        totalPayment: this.basket.basketSummary.totalPayment,
+      })
+      .end((_, response) => {
+        console.log(response);
+      });
+  }
+
   async openPromocodeModal(r = location.href) {
     this.modalCtrl.dismiss();
     const modal = await this.modalCtrl.create({
@@ -203,7 +294,7 @@ export class OrdersPage implements AfterViewInit {
             this.basket.specialInstructions = data.data;
           }
         }
-      })
+      });
     addNoteModal.present();
   }
 }

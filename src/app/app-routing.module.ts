@@ -74,22 +74,6 @@ const routes: Routes = [
   {
     path: 'phonenumber-verification',
     loadChildren: () => import('./pages/phonenumber-verification/phonenumber-verification.module').then( m => m.PhonenumberVerificationPageModule)
-  },
-  {
-    path: 'payment-completed',
-    loadChildren: () => import('./pages/payment-completed/payment-completed.module').then( m => m.PaymentCompletedPageModule)
-  },
-  {
-    path: 'payment-error',
-    loadChildren: () => import('./pages/payment-error/payment-error.module').then( m => m.PaymentErrorPageModule)
-  },
-  {
-    path: 'payment-cancelled',
-    loadChildren: () => import('./pages/payment-cancelled/payment-cancelled.module').then( m => m.PaymentCancelledPageModule)
-  },
-  {
-    path: 'payment-notification',
-    loadChildren: () => import('./pages/payment-notification/payment-notification.module').then( m => m.PaymentNotificationPageModule)
   }
 ];
 

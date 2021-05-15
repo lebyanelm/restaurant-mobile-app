@@ -31,7 +31,7 @@
           <div class="separator-name flex">Add Sides <div class="space"></div> <span *ngIf="product.noRequiredSides">{{product.noRequiredSides}} Required</span></div>
           <div class="separator-description">Add more to your order</div>
         </div>
-        
+
         <div class="product-sides">
           <div class="side flex" *ngFor="let side of sides" (click)="selectSide(side)" [attr.isSelected]="basket.products[product.id] ? basket.products[product.id].sides.indexOf(side.id) !== -1 : false" [attr.isLastChild]="sides.indexOf(side) === sides.length-1">
             <div class="details flex">
@@ -48,7 +48,7 @@
           <div class="separator-name">Add Extras</div>
           <div class="separator-description">Customize your order</div>
         </div>
-        
+
         <div class="product-sides">
           <div class="side flex" *ngFor="let extra of extras" (click)="selectExtra(extra)" [attr.isSelected]="basket.products[product.id] ? basket.products[product.id].extras.indexOf(extra.id) !== -1 : false" [attr.isLastChild]="extras.indexOf(extra) === extras.length-1">
             <div class="details flex">
@@ -68,7 +68,7 @@
           <div class="separator">
             <div class="separator-name flex">{{section.name}}<div class="space"></div> <span *ngIf="section.isRequired">Required</span></div>
           </div>
-          
+
           <div class="product-sides">
             <div class="side flex" *ngFor="let option of section.options" (click)="selectSectionOption(section, option)">
               <div class="details flex">

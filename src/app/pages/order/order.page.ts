@@ -77,13 +77,13 @@ export class OrderPage implements OnInit {
       }
     }
   }
-  
+
   repeatOrder() {
     // Populate the basket with the older replicatable order information
     this.basketService.deliveryNote = this.order.deliveryInstructions;
     this.basketService.specialInstructions = this.order.restaurantInstructions;
     this.basketService.destination = this.order.destination;
-    this.basketService.paymentMethodId = this.order.paymentMethod;
+    this.basketService.paymentMethod = this.order.paymentMethod;
     this.basketService.products = this.order.products;
     this.basketService.basketSummary.promocode = this.order.promocodeUsed;
 
@@ -97,11 +97,10 @@ export class OrderPage implements OnInit {
           });
       })
     });
-    
+
     this.basketService.update();
 
     // Open the basket overview to show items that were added to the basket
-    console.log('Return PAGE:', ['/order', this.order.id].join('/'))
     this.basketOverview.open(['order', this.order.id].join('/'));
   }
 
@@ -154,7 +153,7 @@ export class OrderPage implements OnInit {
     for (let key of keys) {
       array.push({ name: key.replace(/_/g, ' '), option: object[key] })
     }
-    
+
     return array;
   }
 

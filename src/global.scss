@@ -759,6 +759,23 @@ ion-checkbox {
     // --border-color-checked: $theme-color;
 }
 
+.checkbox {
+  height: 20px;
+  width: 20px;
+  border: 1px solid #DDD;
+  margin-right: 15px;
+  background: transparent;
+  transition: background 300ms ease-out;
+
+  &.side-checkbox {
+      border-radius: 50px;
+  }
+
+  &[checked=true] {
+      background: $theme-color;
+      border: none !important;
+  }
+}
 
 // Delivery location selector
 .delivery-location-selector,

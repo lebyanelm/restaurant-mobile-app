@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   PARTNER_ID: '1591750141414',
   AppId: 'App-Id',
-  GoogleApiKey: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
+  GOOGLE_KEY: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
   IO: 'https://apis.nextify.co.za',
   ORDER: 'Current-Order-Id',
   BACKEND: 'https://apis.nextify.co.za/partners/',

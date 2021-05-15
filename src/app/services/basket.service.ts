@@ -1,13 +1,9 @@
 /* eslint-disable @typescript-eslint/prefer-for-of */
-import { ModalController } from '@ionic/angular';
 import { Destination } from './../interfaces/Destination';
-import { BasketProduct } from './../interfaces/BasketProduct';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Promocode } from '../interfaces/Promocode';
 import { BasketSummary } from '../interfaces/BasketSummary';
-import { ProductsService } from './products.service';
-import { OrdersPage } from '../pages/orders/orders.page';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +11,7 @@ import { OrdersPage } from '../pages/orders/orders.page';
 export class BasketService {
   products = [];
   destination: Destination;
-  paymentMethodId;
+  paymentMethod = 'online';
   specialInstructions = '';
   orderingMode = 'delivery';
   deliveryNote = '';
@@ -31,10 +27,7 @@ export class BasketService {
     tax: 0,
     totalPayment: 0 };
   isDestinationAutoDetect = false;
-  constructor(
-    private productsService: ProductsService,
-    private modalCtrl: ModalController
-  ) {
+  constructor() {
     this.promocode.subscribe((promocode) => {
       this.basketSummary.promocode = promocode;
       this.update();
@@ -94,7 +87,8 @@ export class BasketService {
 
     this.basketSummary.orderPrice = total;
     this.basketSummary.totalPayment = this.basketSummary.orderPrice - this.basketSummary.discount + this.basketSummary.deliveryPayment;
+
+    // TODO: If Ozow requires collection of Tax, add this to the order object and calculation
     this.basketSummary.tax = this.basketSummary.totalPayment * 0.15;
-    this.basketSummary.totalPayment += this.basketSummary.tax;
   }
 }

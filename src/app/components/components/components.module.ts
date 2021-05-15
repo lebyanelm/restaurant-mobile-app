@@ -1,4 +1,3 @@
-import { SafePipe } from './../../pipes/safe.pipe';
 import { BrowserPageComponent } from './../browser-page/browser-page.component';
 import { SlideButtonComponent } from './../slide-button/slide-button.component';
 import { ChatMessageComponent } from './../chat-message/chat-message.component';
@@ -57,8 +56,7 @@ import { AddNoteComponent } from '../add-note/add-note.component';
     ChatComponent,
     AddNoteComponent,
     SlideButtonComponent,
-    BrowserPageComponent,
-    SafePipe
+    BrowserPageComponent
   ],
   imports: [
     CommonModule,

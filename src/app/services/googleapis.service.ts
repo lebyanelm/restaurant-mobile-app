@@ -7,9 +7,7 @@ import * as supeagent from 'superagent';
   providedIn: 'root'
 })
 export class GoogleapisService {
-  protected urls: string[] = [
-    `https://maps.googleapis.com/maps/api/geocode/json?key=${environment.GoogleApiKey}&latlng=`,
-  ];
+  protected urls: string[] = [[environment.BACKEND, `geocoding?key=${environment.GOOGLE_KEY}&latlong=`].join('')];
   constructor() {}
   coordinatesToAddress(coords: any, cb) {
     supeagent

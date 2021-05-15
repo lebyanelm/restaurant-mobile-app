@@ -53,14 +53,14 @@ export class PaymentComponent implements OnInit {
                 destination: { address: this.basket.destination.address, coordinates: this.basket.destination.coords || this.basket.destination.coordinates },
                 uid: customerLocalData.id,
                 totalPayment: this.basket.basketSummary.totalPayment,
-                paymentMethodId: this.basket.paymentMethodId,
+                paymentMethodId: this.basket.paymentMethod,
                 promocodeUsed: this.basket.basketSummary.promocode,
                 partnerId: environment.PARTNER_ID,
                 deliveryInstructions: this.basket.deliveryNote,
                 restaurantInstructions: this.basket.specialInstructions,
                 VAT: this.basket.basketSummary.tax,
-                discount: this.basket.basketSummary.discount, 
-                deliveryFee: this.basket.basketSummary.deliveryPayment, 
+                discount: this.basket.basketSummary.discount,
+                deliveryFee: this.basket.basketSummary.deliveryPayment,
                 token: customerLocalData.token})
             .end((error, response) => {
               this.isLoading = false;
