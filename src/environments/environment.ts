@@ -4,7 +4,7 @@
 
 const environment = {
   production: false,
-  PARTNER_ID: '1591750141414',
+  PARTNER_ID: '1621171634018',
   AppId: 'App-Id',
   GOOGLE_KEY: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
   IO: 'http://localhost:5000',

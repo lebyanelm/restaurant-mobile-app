@@ -215,32 +215,42 @@ export class OrdersPage implements AfterViewInit {
   }
 
   sendOrderCheckout(paymentData) {
+    // Prepare the order request data to be sent to the backend
+    const orderData = {
+      // General
+      products: this.basket.products,
+      paymentMethod: this.basket.paymentMethod,
+      restaurantInstructions: this.basket.specialInstructions,
+      deliveryInstructions: this.basket.deliveryNote,
+      orderingMode: this.basket.orderingMode,
+      destination: this.basket.destination,
+
+      // References
+      customer: this.data.names,
+      uid: this.data.id,
+      branch: this.branch,
+
+      // Online transaction references
+      transactionId: paymentData ? paymentData.transactionId : null,
+      transactionReference: paymentData ? paymentData.transactionReference : null,
+      transactionStatus: paymentData ? paymentData.status : null,
+
+      // Prices
+      orderPrice: this.basket.basketSummary.orderPrice,
+      promocodeUsed: this.basket.basketSummary.promocode,
+      discount: this.basket.basketSummary.discount,
+      deliveryFee: this.basket.basketSummary.deliveryPayment,
+      tax: this.basket.basketSummary.tax,
+      totalPayment: this.basket.basketSummary.totalPayment,
+    };
+
+    console.log(orderData);
+
+    // Send the order request data to the backend
     superagent
       .post([environment.BACKEND, 'order'].join(''))
       .set('Authorization', this.data.token)
-      .send({
-        products: this.basket.products,
-        paymentMethod: this.basket.paymentMethod,
-        restaurantInstructions: this.basket.specialInstructions,
-        deliveryInstructions: this.basket.deliveryNote,
-        orderingMode: this.basket.orderingMode,
-        destination: this.basket.destination,
-
-        customer: this.data.names,
-        uid: this.data.id,
-        branch: this.branch,
-
-        transactionId: paymentData ? paymentData.transactionId : null,
-        transactionReference: paymentData ? paymentData.transactionReference : null,
-        transactionStatus: paymentData ? paymentData.status : null,
-
-        orderPrice: this.basket.basketSummary.orderPrice,
-        promocodeUsed: this.basket.basketSummary.promocode,
-        discount: this.basket.basketSummary.discount,
-        deliveryFee: this.basket.basketSummary.deliveryPayment,
-        tax: this.basket.basketSummary.tax,
-        totalPayment: this.basket.basketSummary.totalPayment,
-      })
+      .send(orderData)
       .end((_, response) => {
         console.log(response);
       });
