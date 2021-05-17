@@ -18,6 +18,7 @@ import { Platform } from '@ionic/angular';
 export class SocketsService {
   connection;
   onConnect: Subject<any> = new Subject<any>();
+  onPaymentStatus: Subject<any> = new Subject<any>();
   hasDisconnectedBefore = false;
 
   constructor(
@@ -57,50 +58,9 @@ export class SocketsService {
                     console.log('SocketIO: Connected.');
                   });
 
-                  this.connection.on('tds authenticate', (payload) => {
-                    this.toast.show('Redirecting...');
-                    // HTML content to pass to the payment modal as Base64 Text URL
-                    // const tdsPageHtmlLoader = `
-                    // <html>
-                    // <head></head>
-                    //   <body>
-                    //     <form action="${payload.acsUrl}" method="POST" id="tds-form">
-                    //       <input type="hidden" name="PaReq" value="${payload.payload}">
-                    //       <input type="hidden" name="TermUrl" value="https://3dfbcccbefe3.ngrok.io/payment-authorized">
-                    //       <input type="hidden" name="MD" value="${payload.transactionIndex}">
-                    //     </form>
-                    //   </body>
-                    //   <script type="text/javascript">
-                    //     document.getElementById("tds-form").submit();
-                    //     console.log('Being executed.')
-                    //   </script>
-                    // </html>
-                    // `,
-                    // tdsPageContentUrl = 'data:text/html;base64,' + btoa(tdsPageHtmlLoader);
-
-                    // There's going to be a production mode and test mode 3D Auth Modal
-                    if (this.platform.is('desktop')) {
-                      // eslint-disable-next-line max-len
-                      // const refWindow = window.open('', '_blank', 'hidden=no,location=no,clearsessioncache=yes,clearcache=yes,height=650,width=350');
-                      // refWindow.document.body.innerHTML = tdsPageHtmlLoader;
-                      // refWindow.document.getElementsByTagName('form')[0].submit();
-                      // refWindow.document.onloadstart = (event) => {
-                      //   console.log(event);
-                      // }
-
-                    } else {
-                      // eslint-disable-next-line max-len
-                      // const refWindow = InAppBrowser.create(tdsPageContentUrl, '', 'hidden=no,location=yes,clearsessioncache=yes,clearcache=yes,height=400,width=200');
-                      // refWindow.on('loadstart')
-                      //   .subscribe((event) => {
-                      //     if (event.url.match('mobile/close')) {
-                      //       refWindow.close();
-                      //     }
-                      //   });
-                      // refWindow.on('exit')
-                      //   .subscribe((e) => {
-                      //   })
-                    }
+                  this.connection.on('payment-status', (payload) => {
+                    // Forward the payment status to the payment order instance
+                    this.onPaymentStatus.next(payload);
                   });
 
                   this.connection.on('order status change', (order) => {

@@ -1,3 +1,4 @@
+import { SocketsService } from './../../services/sockets.service';
 import { User } from 'src/app/interfaces/User';
 import { StorageService } from 'src/app/services/storage.service';
 import { Plugins } from '@capacitor/core';
@@ -39,6 +40,7 @@ export class OrdersPage implements AfterViewInit {
   constructor(
     public basket: BasketService,
     private storage: StorageService,
+    private sockets: SocketsService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private modalCtrl: ModalController,
@@ -111,7 +113,7 @@ export class OrdersPage implements AfterViewInit {
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://cda0f68a34cb.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://161b166092e1.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {
@@ -132,6 +134,7 @@ export class OrdersPage implements AfterViewInit {
         environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=success'].join(''),
       notifyUrl: [
         environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=notify'].join(''),
+      optional1: this.data.id,
       isTest: !environment.production
     };
 
@@ -143,6 +146,7 @@ export class OrdersPage implements AfterViewInit {
       OZOW_API_DATA.amount,
       OZOW_API_DATA.transactionReference,
       OZOW_API_DATA.bankReference,
+      OZOW_API_DATA.optional1,
       // OZOW_API_DATA.registerTokenProfile,
       // OZOW_API_DATA.tokenNotificationUrl,
       // OZOW_API_DATA.tokenDeletedNotificationUrl,
@@ -172,6 +176,7 @@ export class OrdersPage implements AfterViewInit {
             <input type="text" name="Amount" value="${OZOW_API_DATA.amount}" hidden>
             <input type="text" name="TransactionReference" value="${OZOW_API_DATA.transactionReference}" hidden>
             <input type="text" name="BankReference" value="${OZOW_API_DATA.bankReference}" hidden>
+            <input type="text" name="Optional1" value="${OZOW_API_DATA.optional1}" hidden>
             <input type="text" name="CancelUrl" value="${OZOW_API_DATA.cancelUrl}" hidden>
             <input type="text" name="ErrorUrl" value="${OZOW_API_DATA.errorUrl}" hidden>
             <input type="text" name="SuccessUrl" value="${OZOW_API_DATA.successUrl}" hidden>
@@ -189,35 +194,34 @@ export class OrdersPage implements AfterViewInit {
 
     const htmlDataURL = [ 'data:text/html;base64', btoa(pageHTML) ].join();
 
+    let refWindow;
     if (this.platform.is('desktop')) {
       // eslint-disable-next-line max-len
-      const refWindow = window.open('', '_blank', 'hidden=no,location=no,clearsessioncache=yes,clearcache=yes,height=650,width=350');
+      refWindow = window.open('', '_blank', 'hidden=no,location=no,clearsessioncache=yes,clearcache=yes,height=650,width=350');
       refWindow.document.body.innerHTML = pageHTML;
       refWindow.document.getElementsByTagName('form')[0].submit();
     } else {
       // eslint-disable-next-line max-len
-      const refWindow = InAppBrowser.create(htmlDataURL, '', 'hidden=no,location=yes,clearsessioncache=yes,clearcache=yes,height=400,width=200');
-      refWindow.on('loadstart')
-        .subscribe((event) => {
-          if (event.url.match('mobile/sucess')) {
-            console.log('Sucess');
-            // refWindow.close();
-          } else if (event.url.match('mobile/cancelled')) {
-            console.log('Cancelled');
-          } else {
-            console.log('Cancelled');
-          }
-        });
-      refWindow.on('exit')
-        .subscribe((e) => {
-        });
+      refWindow = InAppBrowser.create(htmlDataURL, '', 'hidden=no,location=yes,clearsessioncache=yes,clearcache=yes,height=400,width=200');
     }
+
+    // Listen for a payment status to close the browser moda window
+    this.sockets.onPaymentStatus.subscribe((payment) => {
+      // Close the modal window
+      refWindow.close()
+
+      if (payment.status === 'Complete' || payment.status === 'Pending' || payment.status === 'PendingInvestigation') {
+        // Send the order to the partner
+        this.sendOrderCheckout(payment);
+      } else {
+        //
+      }
+    });
   }
 
   sendOrderCheckout(paymentData) {
     // Prepare the order request data to be sent to the backend
     const orderData = {
-      // General
       products: this.basket.products,
       paymentMethod: this.basket.paymentMethod,
       restaurantInstructions: this.basket.specialInstructions,
@@ -225,17 +229,14 @@ export class OrdersPage implements AfterViewInit {
       orderingMode: this.basket.orderingMode,
       destination: this.basket.destination,
 
-      // References
       customer: this.data.names,
       uid: this.data.id,
       branch: this.branch,
 
-      // Online transaction references
       transactionId: paymentData ? paymentData.transactionId : null,
       transactionReference: paymentData ? paymentData.transactionReference : null,
       transactionStatus: paymentData ? paymentData.status : null,
 
-      // Prices
       orderPrice: this.basket.basketSummary.orderPrice,
       promocodeUsed: this.basket.basketSummary.promocode,
       discount: this.basket.basketSummary.discount,
@@ -243,8 +244,6 @@ export class OrdersPage implements AfterViewInit {
       tax: this.basket.basketSummary.tax,
       totalPayment: this.basket.basketSummary.totalPayment,
     };
-
-    console.log(orderData);
 
     // Send the order request data to the backend
     superagent
