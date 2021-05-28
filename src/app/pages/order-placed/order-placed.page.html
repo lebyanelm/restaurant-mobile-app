@@ -1,48 +1,30 @@
 <ion-content>
-  <div class="order-placed-checkmark">
-    <img src="/assets/images/tenor.gif" alt="Checkmark">
-    <span class="status" *ngIf="order">Order {{order.id}}</span>
-  </div>
+  <div class="order-placed-container">
+    <div class="order-placed-checkmark">
+      <!-- When the order has been succesfully placed -->
+      <ion-icon class="placed" name=checkmark-sharp *ngIf="this.isOrderPlaced"></ion-icon>
 
-  <ion-slides pager=true #StatusSlides>
-    <ion-slide>
-      <div class="stages" *ngIf="order" [attr.data-status]="order.status">
-        <div class="line"></div>
-        <div class="stage flex _0">
-          <div class="checkmark"><ion-icon class="center" name="checkmark"></ion-icon></div>
-          <div class="name">Recieving your order</div>
-        </div>
-        <div class="stage flex _1">
-          <div class="checkmark"><ion-icon class="center" name="checkmark"></ion-icon></div>
-          <div class="name">Preparing your order</div>
-        </div>
-        <div class="stage flex _2">
-          <div class="checkmark"><ion-icon class="center" name="checkmark"></ion-icon></div>
-          <div class="name">Your order is on the way</div>
-        </div>
-        <div class="stage flex _3">
-          <div class="checkmark"><ion-icon class="center" name="checkmark"></ion-icon></div>
-          <div class="name">Order delivered!</div>
-        </div>
-      </div>
-    </ion-slide>
-    <ion-slide>
-      <app-map></app-map>
-    </ion-slide>
-  </ion-slides>
-  
-  <div class="bottom-buttons">
-    <button class="map-button" (click)="order.status === 4 ? orderDelivered() : changeSlide()" #StatusSlidesButton *ngIf="order"><span>{{order.status === 4 ? 'ORDER DELIVERED!' : 'TRACK YOUR ORDER'}}</span></button>
+      <!-- When an error has occured while placing the order -->
+      <ion-icon class="error" name=close-outline *ngIf="!this.isOrderPlaced"></ion-icon>
+    </div>
+
+    <div class="order-id" *ngIf="this.isOrderPlaced">#280621—43</div>
+    <div class="order-id" *ngIf="!this.isOrderPlaced">ERROR</div>
+
+    <!-- If the payment has been done onlne -->
+    <div class="online-payment-messages" *ngIf="this.isOrderOnlinePayment">
+      <!-- If payment was successful -->
+      <div class="paid" *ngIf="this.isOrderPlaced">Your payment is complete. You can check your order status at <a href="">Order Tracking</a> page.</div>
+      <!-- When online payment failed for a number of reasons -->
+      <div class="failed" *ngIf="!this.isOrderPlaced">Your payment failed. Please make sure you have enough funds to place the order, and try again. <a href="">Let us know</a> if error persists.</div>
+    </div>
+
+    <!-- If the payment has been done through a cash payment -->
+    <div class="cash-payment-message" *ngIf="!this.isOrderOnlinePayment">
+      <div class="placed">Your order has been placed. You can check your order status at <a href="">Order Tracking</a> page.</div>
+    </div>
+
+    <button class="continue-shopping-button" *ngIf="this.isOrderPlaced">Continue your Shopping</button>
+    <button class="continue-shopping-button" *ngIf="!this.isOrderPlaced">Retry your Order</button>
   </div>
 </ion-content>
-
-<footer>
-  <div class="eta">
-    <div class="time">04:48 <div class="pmam">AM</div></div>
-    <div class="name">Expected Delivery Time</div>
-  </div>
-  <div class="bottom flex">
-    <div class="progress"></div>
-    <button disabled>CONTACT SUPPORT</button>
-  </div>
-</footer>

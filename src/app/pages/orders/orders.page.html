@@ -1,138 +1,82 @@
 <ion-content>
-  <!-- For selecting payment option, either online or cash -->
-  <div class="payment-option-selection-backlight" [attr.isOpen]="isPaymentOptionsOpen"></div>
+  <!-- Orders page header container -->
+  <div class="basket-header-container">
+    <!-- Close button that closes the orders page -->
+    <div class="close-button" (click)="this.closeOrdersModal()"><ion-icon name=close></ion-icon></div>
+    <!-- The name of the page -->
+    <div class="page-name flex-space">Your Basket</div>
+    <!-- Removes all items from the basket -->
+    <div class="clearall-button" (click)="this.basket.clear()">Clear</div>
+  </div>
 
-
-  <!-- Page header -->
-  <div class="page-header">
-    <div class="top-header">
-      <!-- <div class="back-button clickable" [routerLink]="returnPage ? returnPage : '/home'" routerDirection="back"><ion-icon class="center" name="close"></ion-icon></div> -->
-      <div class="space"></div>
-      <div class="buttons">
-       <div class="button clickable" (click)="basket.clear()">Clear basket</div>
+  <!-- List of products the customer has added -->
+  <div class="basket-items" *ngFor="let basketItem of this.basket.products">
+    <div class="basket-item">
+      <div class="basket-item-placeholder-container">
+        <div
+          class="basket-item-placeholder avatar"
+          [style.background-image]="'url(' + basketItem.placeholder + ')'"></div>
       </div>
-    </div>
-    <div class="header-details">
-      <!-- Delivery address -->
-      <div class="destination-map-snapshot">
-        <div class="details">
-          <div class="address" *ngIf="basket.destination">
-            <span *ngFor="let addressLine of basket.destination.address">{{addressLine}}<br></span>
+      <div class="basket-item-details">
+        <div class="basket-item-name">{{ basketItem.name }}</div>
+        <div class="basket-item-description">{{ basketItem.description }}</div>
+        <div class="basket-item-bottom">
+          <div class="basket-item-quantity-controller">
+            <div
+              class="quantity-controller remove"
+              (click)="this.basket.minusQuantity(basketItem.id)"><ion-icon name=remove-sharp></ion-icon></div>
+            <div class="quantity-controller-value">{{ basketItem.quantity }}</div>
+            <div
+              class="quantity-controller add"
+              (click)="this.basket.addQuantity(basketItem.id)"><ion-icon name=add-sharp></ion-icon></div>
           </div>
-          <div class="address" *ngIf="!basket.destination">Unable to load location</div>
-          <div class="description" (click)="openAddNoteModal(true)">
-            <b>Delivery Instructions</b>
-            <br>
-            <span>{{basket.deliveryNote ? basket.deliveryNote : 'Add delivery a note'}}</span>
-          </div>
+          <div class="space"></div>
+          <div class="basket-item-total-price">R {{ basketItem.price }}</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- <ion-content> -->
-      <div class="page-content">
-
-
-        <!-- Time estimation of the delivery (Currently Off) -->
-        <p class="ion-text-center delivery-time-estimation" *ngIf="basket.basketSummary.eta.lower && basket.basketSummary.eta.upper">DELIVERING TO YOUR DOOR &mdash; {{basket.basketSummary.eta.lower < 60 ? basket.basketSummary.eta.lower : (basket.basketSummary.eta.lower / 60).toFixed(0)}} {{basket.basketSummary.eta.lower < 60 ? 'MIN' : 'HRS'}} - {{basket.basketSummary.eta.upper < 60 ? basket.basketSummary.eta.upper : (basket.basketSummary.eta.upper / 60).toFixed(0)}} {{basket.basketSummary.eta.upper < 60 ? 'MIN' : 'HRS'}}</p>
-        <p class="ion-text-center" style="color: grey;" *ngIf="!basket.count">No items in your orders.</p>
-
-        <!-- Product items -->
-        <div class="order-items" *ngIf="basket.products.length > 0">
-          <div class="order-items-title">Your basket items</div>
-          <div class="order-item flex" *ngFor="let product of basket.products">
-            <div class="order-index">{{product.quantity}}</div>
-            <span class="multiplier">x</span>
-            <div class="left-side" (click)="openProduct(product.id)">
-              <div class="order-name">{{product.name}}</div>
-              <div class="order-price flex">ZAR {{product.price + product.extrasAmount}}</div>
-            </div>
-            <div class="space" (click)="openProduct(product.id)"></div>
-            <div class="right-side" (click)="basket.minusQuantity(product.id)">
-              <div class="minus-button" ><ion-icon class=center name=remove></ion-icon></div>
-            </div>
-          </div>
-        </div>
-
-        <div [class]="'payment-option-selection-modal ' + (isPaymentOptionsOpen ? 'open' : 'closed')">
-          <div class="payment-modal-title">Payment method</div>
-          <div class="payment-modal-options">
-            <div class="payment-modal-option" (click)="this.basket.paymentMethod = 'online'">
-              <div class="checkbox side-checkbox" [attr.checked]="this.basket.paymentMethod === 'online'"></div>
-              <div class="name">Online Payment</div>
-            </div>
-            <div class="payment-modal-option" (click)="this.basket.paymentMethod = 'cash'">
-              <div class="checkbox side-checkbox" [attr.checked]="this.basket.paymentMethod === 'cash'"></div>
-              <div class="name">Cash Payment</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="delivery-collection leave-a-note-button ion-activatable">
-          <div class="delivery-collection-title">Delivery / Collection</div>
-          <div class="flex">
-            <div
-              class="delivery"
-              [attr.selected]="this.basket.orderingMode === 'delivery'"
-              (click)="this.basket.orderingMode = 'delivery'">Delivery</div>
-            <div
-              class="delivery"
-              [attr.selected]="this.basket.orderingMode === 'collection'"
-              (click)="this.basket.orderingMode = 'collection'">Collection</div>
-          </div>
-        </div>
-
-        <div class="leave-a-note-button ion-activatable" (click)="openAddNoteModal(false)">
-          <ion-ripple-effect></ion-ripple-effect>
-          <b>Restaurant Instructions</b>
-          <br>
-          <span>{{basket.specialInstructions.length ? basket.specialInstructions : 'Leave a note (eg. Extra sauce, extra napkins)'}}</span>
-        </div>
-
-        <div class="order-summary">
-          <!-- <h5 class="ion-text-center">Order Summary</h5> -->
-          <span class="summary promocode flex" (click)="openPromocodeModal()">
-            <b>Promocode</b>
-            <div class="space"></div>
-            <span class="link" *ngIf="!basket.basketSummary.promocode.code">ENTER</span>
-            <b class="border" *ngIf="basket.basketSummary.promocode.code" (click)="openPromocodeModal(basket.basketSummary.promocode.code)">{{basket.basketSummary.promocode.code}} (-{{basket.basketSummary.promocode.discount}}%)</b>
-          </span>
-
-          <span class="summary flex">
-            <b>Subtotal</b>
-            <div class="space"></div>
-            <span>R {{basket.basketSummary.orderPrice.toFixed(2)}}</span>
-          </span>
-
-          <span class="summary flex discount" [attr.isDiscountApplied]="basket.basketSummary.promocode && basket.basketSummary.promocode.code ? true : false">
-            <span>Discount</span>
-            <div class="space"></div>
-            <span>-R {{basket.basketSummary.discount.toFixed(2)}}</span>
-          </span>
-
-          <span class="summary flex">
-            <b>Delivery Fee</b>
-            <div class="space"></div>
-            <span>+R {{basket.basketSummary.deliveryPayment.toFixed(2)}}</span>
-          </span>
-
-          <!-- <span class="summary flex">
-            <span>Tax (15%)</span>
-            <div class="space"></div>
-            <span>R {{basket.basketSummary.tax.toFixed(2)}}</span>
-          </span> -->
-
-          <span class="summary flex total">
-            <b>Order Total</b>
-            <div class="space"></div>
-            <span><b>R {{basket.basketSummary.totalPayment.toFixed(2)}}</b></span>
-          </span>
-        </div>
-      </div>
-  <!-- </ion-content> -->
+  <!-- Basket ordering instructions / Restaurant notes -->
+  <div class="basket-ordering-instructions" (click)="openAddNoteModal(false)">
+    <div class="basket-notes-title">Add Restaurant Notes</div>
+    <input
+      type="text"
+      class="basket-notes-input"
+      placeholder="Any allergies we need to know about?"
+      [value]="this.basket.specialInstructions"
+      disabled>
+  </div>
 </ion-content>
 
-<ion-footer class="buttons">
-  <button (click)="placeOrder()" [disabled]="basket.count === 0" #PlaceOrderButton>Confirm & Checkout</button>
+<!-- Footer section to contain basket payment total prices and with checkout button -->
+<ion-footer>
+  <!-- Basket total price section -->
+  <div class="price-items">
+    <!-- Subtotal of the price calculation -->
+    <div class="price-item">
+      <div class="text name">Subtotal</div>
+      <div class="space"></div>
+      <div class="text value">R {{ this.basket.basketSummary.orderPrice }}</div>
+    </div>
+
+    <!-- Delivery fee price -->
+    <div class="price-item">
+      <div class="text name">Delivery Fee</div>
+      <div class="space"></div>
+      <div class="text value">R {{ this.basket.basketSummary.deliveryPayment.toFixed(2) }}</div>
+    </div>
+
+    <!-- Total amount to be paid -->
+    <div class="price-item">
+      <div class="text name">Total</div>
+      <div class="space"></div>
+      <div class="text value">R {{ this.basket.basketSummary.totalPayment.toFixed(2) }}</div>
+    </div>
+  </div>
+
+  <!-- Checkout button -->
+  <div class="buttons">
+    <button>Checkout</button>
+  </div>
 </ion-footer>

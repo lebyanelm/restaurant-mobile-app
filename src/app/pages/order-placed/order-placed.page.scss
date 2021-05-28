@@ -1,217 +1,53 @@
-@import "../../../variables.scss";
+@import '../../../variables.scss';
 
-.order-placed-checkmark {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 60px 0 10px 0;
-
-    img {
-        height: 50px;
-    }
-
-    .status {
-        margin-top: 10px;
-        font-weight: bold;
-    }
+ion-content {
+  --background: #000;
 }
 
-ion-slides {
-    height: 50%;
-    
-    &,
-    ion-slide {
-        width: 100%;
-    }
-
-    ion-slide {
-        height: 100%;
-        position: relative;
-        align-items: center;
-        
-        app-map {
-            width: 90%;
-            height: 100%;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-
-            .map-container { border-radius: 5px !important; }
-        }
-    }
+// ORDER PLACED CONTAINER
+.order-placed-container {
+  display: flex;
+  width: 90%;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.stages {
-    position: absolute;
-    margin: 0 0 20px 0;
-
-    &[data-status='1'] {
-        ._0 {
-            font-weight: 200;
-            .checkmark {
-                background: $success;
-                &::after {
-                    background: $success;
-                }
-            }
-            .name { opacity: 1; font-weight: 200; }
-        }
-    }
-
-    &[data-status='2'] {
-        ._0,
-        ._1 {
-            font-weight: 200;
-            .checkmark {
-                background: $success;
-                &::after {
-                    background: $success;
-                }
-            }
-            .name { opacity: 1; font-weight: 200; }
-        }
-    }
-
-    &[data-status='3'] {
-        ._0,
-        ._1,
-        ._2 {
-            .checkmark {
-                background: $success;
-                &::after {
-                    background: $success;
-                }
-            }
-            .name { opacity: 1; font-weight: 200; }
-        }
-    }
-
-    &[data-status='4'] {
-        ._0,
-        ._1,
-        ._2,
-        ._3 {
-            font-weight: 200;
-            .checkmark {
-                background: $success;
-                &::after {
-                    background: $success;
-                }
-            }
-            .name { opacity: 1; font-weight: 200; }
-        }
-    }
-
-    .line {
-        width: 2px;
-        height: 100%;
-        margin-left: 12.5px;
-        transform: translateX(-50%);
-        background: #DDD;
-        position: absolute; }
-
-    .stage {
-        margin-bottom: 30px;
-
-        .checkmark {
-            height: 25px;
-            width: 25px;
-            background: #DDD;
-            border-radius: 50px;
-            position: relative;
-            color: #FFF;
-
-            &::after {
-                content: "";
-                display: block;
-                height: 26.7px;
-                width: 3px;
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%) translateY(100%);
-            }
-
-        }
-
-        &:last-child {
-            margin-bottom: 0;
-            &::after { display: none; }
-        }
-
-        .checkmark,
-        .name {
-            display: inline-block;
-        }
-
-        .name {
-            padding-left: 10px;
-            transform: translateY(2px);
-            opacity: 0.4;
-        }
-    }
+.order-placed-container * {
+  color: $text-color-on-dark;
 }
 
-.bottom-buttons {
-    display: flex;
-    padding: 0 25%;
-    align-items: center;
-    width: 100%;
-    position: absolute;
-    bottom: 20px;
-    
-    button {
-        border: 1.5px solid $theme-color;
-        color: $theme-color;
-        background: transparent;
-        padding: 15px;
-        border-radius: 3px;
-
-        span {
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        &:active {
-            background: $theme-color;
-            color: #FFF;
-        }
-    }
+.order-placed-container .order-placed-checkmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  background: $background-color;
+  border-radius: 100px;
+  margin-bottom: 10px;
 }
 
-footer { padding: 0 !important; background: $theme-color; }
-.eta {
-    padding: 30px 0 10px 0;
-    text-align: center;
-    color: #FFF;
-    .time {
-        font-size: 30px !important;
-        font-weight: 200;
-        .pmam {
-            display: inline;
-            font-size: 22px;
-        }
-    }
-    .name { opacity: 0.8; font-weight: 200; font-size: 11px; }
+.order-placed-container .order-placed-checkmark ion-icon {
+  font-size: 60px;
+  color: $text-color-on-light;
 }
-.bottom {
-    padding: 20px;
-    flex-direction: column;
-    
-    .progress {
-        height: 5px;
-        width: 20%;
-        background: #FFF;
-        align-self: flex-start;
-    }
-    button {
-        width: 100%;
-        background: $theme-color;
-        color: #FFF;
-        border: 1px solid #FFF;
 
-        &:active {
-            background: #FFF;
-            color: $theme-color;
-        }
-    }
+// ORDER ID OF THEN ORDER WHEN IT WAS PLACED
+.order-id {
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 30px;
+}
+
+// CONTINUE SHOPPING BUTTON
+.continue-shopping-button {
+  margin-top: 40px;
+  border: 2px solid #FFF;
+  border-radius: 5px;
+  width: 100%;
 }

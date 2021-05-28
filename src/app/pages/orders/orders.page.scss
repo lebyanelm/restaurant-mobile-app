@@ -1,231 +1,156 @@
-@import "../../../variables.scss";
+@import '../../../variables.scss';
 
-// Payment options selection
-.payment-option-selection-backlight {
-  display: block;
-  height: 100vh;
-  width: 100vw;
-  background: $theme-color;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 999;
-  position: absolute;
-  top: 0;
-  left: 0;
+// -------- PAGE HEADER CONTAINER --------
+.basket-header-container {
+  display: flex;
+  align-items: center;
+  padding: $padding;
 }
 
-.payment-option-selection-backlight[isOpen=true] {
-  pointer-events: all;
-  opacity: 1;
+// CLOSE BUTTON
+.basket-header-container .close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --size: 50px;
+  height: var(--size);
+  width: var(--size);
+  border: 2px solid #DDD;
+  border-radius: var(--size);
 }
 
-.payment-option-selection-modal {
-  width: 100vw;
-  height: auto;
-  padding: 20px;
-  margin-top: 20px;
-  z-index: 1000;
-  background-color: $background-color;
-  transition: transform 300ms ease;
+.basket-header-container .close-button ion-icon {
+  font-size: large;
 }
 
-.payment-option-selection-modal .payment-modal-title,
-.delivery-collection .delivery-collection-title,
-.order-items .order-items-title {
-  font-size: x-large;
+// PAGE NAME
+.basket-header-container .page-name {
+  text-align: center;
+  flex: 1;
   font-weight: bolder;
 }
 
-.payment-option-selection-modal .payment-modal-title {
-  margin-bottom: 10px;
+// CLEAR ALL ORDERS BUTTON
+.basket-header-container .clearall-button {
+  font-weight: bolder;
+  color: $secondary-color;
 }
 
-.payment-option-selection-modal .payment-modal-options > * {
+.basket-header-container .page-name,
+.basket-header-container .clearall-button {
+  font-size: large;
+}
+
+
+// ---------- BASKET ITEMS -----------
+.basket-items .basket-item {
   display: flex;
-  padding: 10px;
-  border-bottom: 1px solid #EEE;
+  align-items: center;
+  padding: $padding;
+  border-bottom: 2px solid #DDD;
 }
 
-.payment-option-selection-modal .payment-modal-options > * ion-checkbox {
+.basket-items .basket-item .basket-item-placeholder {
+  height: 100px;
+  width: 100px;
+  border: 2px solid #DDD;
+  background: #EEE;
+  border-radius: $radius;
   margin-right: 20px;
 }
 
-.payment-option-selection-modal.open {
-  transform: translateY(0);
+.basket-items .basket-item .basket-item-name {
+  font-size: large;
+  font-weight: 900;
 }
 
-// Order Items
-.order-items {
-    padding: 0 20px;
-    .order-item {
-        padding: 5px 0;
-        border-bottom: $border;
-
-        .multiplier {
-          display: inline-block;
-          margin-right: 8px;
-          margin-left: 10px;
-          transform: translateY(-3px);
-          font-weight: bolder;
-        }
-
-        .order-index {
-            width: fit-content;
-            padding: 0px 5px;
-            font-weight: bold;
-            color: $theme-color;
-            border: $border;
-            float: left;
-        }
-
-        .left-side {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            .order-price span { opacity: 0.5; }
-            .order-name { transform: translateY(4px); font-weight: bolder; }
-            .order-price { transform: translateY(4px); font-size: 13px !important; }
-            .tag { display: inline-block; padding: 2px 8px; font-size: smaller; font-weight: bold; }
-        }
-
-        .right-side {
-            .minus-button {
-                height: 20px;
-                width: 20px;
-                border-radius: 50px;
-                background: $danger;
-                position: relative;
-
-                ion-icon {
-                    color: $text-color-on-dark;
-                }
-            }
-        }
-    }
+.basket-items .basket-item .basket-item-description {
+  font-size: small;
+  opacity: .6;
 }
 
-.order-items .order-items-title {
-  padding-left: 0;
-  margin-bottom: 10px;
-}
-
-// Selection whether using will be collecting order or delivering
-.delivery-collection {
-  padding-bottom: 0 !important;
-  margin-bottom: 20px;
-}
-
-.delivery-collection .delivery-collection-title {
-  margin-bottom: 10px;
-}
-
-.delivery-collection .delivery {
-  flex: 1;
-  text-align: center;
+// BOTTOM SECITON OF BASKET ITEM
+.basket-items .basket-item .basket-item-bottom {
   margin-top: 10px;
-  padding: 10px;
+}
+
+.basket-items .basket-item .basket-item-bottom,
+.basket-items .basket-item .basket-item-bottom .basket-item-quantity-controller {
+  display: flex;
+  align-items: center;
+}
+
+// QUANTITY CONTROLLER FOR BASKET ITEM
+.basket-items .basket-item .basket-item-bottom .basket-item-quantity-controller {
+  border: 2px solid #DDD;
+  border-radius: $radius;
+}
+
+// BUTTONS OF QUANTITY CONTROLLER
+.basket-items .basket-item .basket-item-quantity-controller .quantity-controller {
+  font-size: 18px;
+  padding: 5px 10px;
+  transform: translateY(2.5px);
+}
+
+// VALUE OF THE QUANTITY CONTROLLER
+.basket-items .basket-item .basket-item-quantity-controller .quantity-controller-value {
   font-weight: bolder;
 }
 
-.delivery-collection .delivery[selected=true] {
-  background: $theme-color;
-  color: $text-color-on-dark;
-}
-
-// Leaving a note
-.leave-a-note-button {
-    padding: 20px;
-    border: $border;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    position: relative;
-    overflow: hidden;
-    background: transparentize(#EEE, 0.8);
-
-    span { opacity: 0.5; }
-}
-
-.top-header {
-    background: $background-color;
-}
-
-.order-summary {
-    padding: 10px 0;
-    margin-bottom: 0 !important;
-
-    .summary {
-        padding: 2.5px 20px;
-
-        &.total {
-            padding: 8px 20px 0 20px;
-            margin-top: 8px;
-            position: relative;
-
-            &:before {
-                content: "";
-                display: block;
-                width: 89vw;
-                height: 1px;
-                background: transparentize($text-color-on-light, 0.5);
-                position: absolute;
-                top: 0;
-            }
-        }
-    }
-
-    .promocode {
-        margin-bottom: 8px;
-    }
-
-    .discount[isDiscountApplied=true] {
-        color: $danger !important;
-    }
-}
-
-.page-content {
-    padding: 0 0 !important;
-    pointer-events: all;
-
-    &[isMapLoading=true] {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    .delivery-time-estimation {
-        font-size: smaller !important;
-    }
+// PRICE OF THE BASKET ITEM
+.basket-items .basket-item .basket-item-bottom .basket-item-total-price {
+  font-size: large;
+  font-weight: 600;
 }
 
 
-.destination-map-snapshot {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-
-    .mapbox-improve-map {
-        display: none;
-    }
-
-    .details {
-        .address { font-weight: bold; }
-        .description { font-size: small !important; margin-top: 5px;
-            span {
-                opacity: 0.5;
-            }
-        }
-    }
+// -------- BASKET ITEMS NOTES ---------
+.basket-ordering-instructions {
+  padding: $padding;
 }
 
-.page-name {
-    margin-top: 50px;
+.basket-ordering-instructions .basket-notes-title {
+  font-size: large;
+  font-weight: bolder;
+  margin-bottom: 5px;
+  margin-top: 20px;
 }
 
-.mapbox-logo{ display: none; }
-.mapboxgl-ctrl-logo { display: none !important; }
-.mapbox-improve-map { display: none; }
-.mapboxgl-ctrl-compass { display: none; }
+// Restaurant instructions input section
+.basket-ordering-instructions input {
+  // height: 300px;
+  width: 100%;
+  border: none;
+  text-indent: 0;
+  font-size: 16px !important;
+  padding: 0;
+  margin: 0;
+  transform: translateY(-5px);
+}
 
-.buttons {
-    background: $background-color;
+
+// ------- FOOTER SECTION ----------
+ion-footer .price-items {
+  padding: 20px 0;
+}
+
+ion-footer .price-items .price-item {
+  display: flex;
+  align-items: center;
+  padding: 5px $padding;
+}
+
+ion-footer .price-items .price-item .text {
+  font-size: large;
+}
+
+ion-footer .price-items .price-item:last-child {
+  border-top: 2px solid #DDD;
+  padding-top: 5px;
+  margin-top: 5px;
+}
+
+ion-footer .price-items .price-item:last-child .text {
+  font-weight: bolder;
 }

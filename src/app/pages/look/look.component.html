@@ -15,12 +15,10 @@
         <div class="name flex">{{product.name}}</div>
         <div class="tags flex">
           <div class="tag price">R{{product.price}}</div>
-          <div class="tag expected-time">{{product.expectedPrepareTime.lower}}&mdash;{{product.expectedPrepareTime.upper}} min</div>
+          <div class="tag">{{ product.category }}</div>
         </div>
         <div class="bottom flex">
-          <div class="category">{{product.category}}</div>
-          <div>●</div>
-          <div class="dietary" *ngIf="product.dietary">{{product.dietary}}</div>
+          <div class="category">{{product.description}}</div>
         </div>
       </div>
     </div>

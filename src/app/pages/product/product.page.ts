@@ -36,6 +36,8 @@ export class ProductPage implements AfterViewInit {
     extras: [],
     selectedOptions: {},
     extrasAmount: 0,
+    description: '',
+    placeholder: '',
     name: '',
     price: 0,
     originalPrice: 0 };
@@ -62,7 +64,7 @@ export class ProductPage implements AfterViewInit {
       .then((data: User) => {
         this.data = data;
       });
-    
+
     const checker = setInterval(() => {
       if (this.product) {
         // STATS: Let the server know the product has been viewed
@@ -71,6 +73,8 @@ export class ProductPage implements AfterViewInit {
           .end();
 
         this.bData.name = this.product.name;
+        this.bData.description = this.product.description;
+        this.bData.placeholder = this.product.images[0];
         this.bData.price = parseFloat(this.product.price);
         this.product.sides.forEach((side: any) => {
           side = this.productService.getProduct(side);
@@ -150,7 +154,7 @@ export class ProductPage implements AfterViewInit {
           // Remove spaces from the name of the section for use in the basket
           name = section.name.replace(/\s/g, '_');
 
-    // Find a proper way to append the selected option      
+    // Find a proper way to append the selected option
     if (!syncObject.selectedOptions[name]) {
       syncObject.selectedOptions[name] = [option.name];
     } else {
@@ -181,7 +185,7 @@ export class ProductPage implements AfterViewInit {
       syncObject.price = syncObject.originalPrice;
       this.product.price = syncObject.price;
     }
-    
+
     this.basket.update();
   }
 
@@ -203,7 +207,7 @@ export class ProductPage implements AfterViewInit {
         this.basket.products[index].mainProduct = this.product.id;
       }
     });
-    
+
     this.basket.update();
     this.cdr.detectChanges();
   }
@@ -257,10 +261,12 @@ export class ProductPage implements AfterViewInit {
         extrasAmount: 0,
         price: side.price,
         originalPrice: side.price,
+        description: side.description,
+        placeholder: side.images[0],
         isSide: true,
         mainProduct: this.product.id,
         quantity: 1 };
-      
+
       syncObject.sides.push(side.id);
       this.basketSides.push(sideObject);
       this.bData.extrasAmount += parseFloat(side.price);

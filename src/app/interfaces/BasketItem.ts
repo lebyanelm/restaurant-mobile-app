@@ -1,6 +1,8 @@
 export interface BasketItem {
-    name: string;
     id: string;
+    name: string;
+    description: string;
+    placeholder: string;
     extras: string[];
     quantity: number;
     sides: string[];

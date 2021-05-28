@@ -41,6 +41,7 @@ html {
     font-size: 16px;
     outline: none !important;
     font-weight: normal;
+    user-select: none !important;
 
     &[data-error=true] {
         color: $danger;
@@ -78,6 +79,12 @@ html {
     // Mapbox changes
     .mapboxgl-ctrl .mapboxgl-ctrl-attrib .mapboxgl-compact {
         display: none !important;
+    }
+
+    &.avatar {
+      background-position: center !important;
+      background-size: cover !important;
+      background-repeat: no-repeat !important;
     }
 }
 

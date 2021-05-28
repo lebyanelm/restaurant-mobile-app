@@ -113,7 +113,7 @@ export class OrdersPage implements AfterViewInit {
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://161b166092e1.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://bdbcc2deab10.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {
@@ -135,7 +135,7 @@ export class OrdersPage implements AfterViewInit {
       notifyUrl: [
         environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=notify'].join(''),
       optional1: this.data.id,
-      isTest: !environment.production
+      isTest: false
     };
 
     // Make a lowercase string of all the data items to send them to Ozow
@@ -208,13 +208,13 @@ export class OrdersPage implements AfterViewInit {
     // Listen for a payment status to close the browser moda window
     this.sockets.onPaymentStatus.subscribe((payment) => {
       // Close the modal window
-      refWindow.close()
+      refWindow.close();
 
       if (payment.status === 'Complete' || payment.status === 'Pending' || payment.status === 'PendingInvestigation') {
         // Send the order to the partner
         this.sendOrderCheckout(payment);
       } else {
-        //
+        Plugins.Toast.show({ text: 'Error, Payment not successful.' });
       }
     });
   }
@@ -251,7 +251,20 @@ export class OrdersPage implements AfterViewInit {
       .set('Authorization', this.data.token)
       .send(orderData)
       .end((_, response) => {
-        console.log(response);
+        if(response) {
+          if (response.ok) {
+            Plugins.Toast.show({ text: 'Order placed!' });
+            this.data.orders.push(response.body.order);
+            this.storage.setItem(environment.customerDataName, this.data);
+            this.storage.setItem(environment.ORDER, response.body.order.id);
+            this.router.navigate(['order-placed'], { queryParams: { id: response.body.order.id } });
+          } else {
+            Plugins.Toast.show({
+              text: response.body.reason || 'Error, Something went wrong. Please contact the restaurant for assistance.' });
+          }
+        } else {
+          Plugins.Toast.show({ text: 'Error, No internet connection.' });
+        }
       });
   }
 
@@ -305,5 +318,9 @@ export class OrdersPage implements AfterViewInit {
         }
       });
     addNoteModal.present();
+  }
+
+  closeOrdersModal() {
+    this.modalCtrl.dismiss();
   }
 }
