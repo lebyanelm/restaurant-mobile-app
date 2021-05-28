@@ -74,6 +74,10 @@ const routes: Routes = [
   {
     path: 'phonenumber-verification',
     loadChildren: () => import('./pages/phonenumber-verification/phonenumber-verification.module').then( m => m.PhonenumberVerificationPageModule)
+  },
+  {
+    path: 'checkout',
+    loadChildren: () => import('./pages/checkout/checkout.module').then( m => m.CheckoutPageModule)
   }
 ];
 

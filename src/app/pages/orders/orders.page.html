@@ -53,25 +53,11 @@
 <ion-footer>
   <!-- Basket total price section -->
   <div class="price-items">
-    <!-- Subtotal of the price calculation -->
-    <div class="price-item">
-      <div class="text name">Subtotal</div>
-      <div class="space"></div>
-      <div class="text value">R {{ this.basket.basketSummary.orderPrice }}</div>
-    </div>
-
-    <!-- Delivery fee price -->
-    <div class="price-item">
-      <div class="text name">Delivery Fee</div>
-      <div class="space"></div>
-      <div class="text value">R {{ this.basket.basketSummary.deliveryPayment.toFixed(2) }}</div>
-    </div>
-
     <!-- Total amount to be paid -->
     <div class="price-item">
       <div class="text name">Total</div>
       <div class="space"></div>
-      <div class="text value">R {{ this.basket.basketSummary.totalPayment.toFixed(2) }}</div>
+      <div class="text value">R {{ this.basket.basketSummary.orderPrice }}</div>
     </div>
   </div>
 
