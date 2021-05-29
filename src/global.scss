@@ -680,8 +680,13 @@ ion-footer {
         }
     }
 
-    button {
-        width: 100%;
+    .buttons {
+      width: 100% !important;
+      padding: 0 $padding $padding $padding;
+    }
+
+    .buttons button {
+      width: 100% !important;
     }
 }
 
@@ -696,12 +701,13 @@ button {
     font-size: 13px;
     font-weight: bolder !important;
     margin: 0;
+    border-radius: $radius;
     transition: background $transition,
         color $transition;
 
     &[disabled] {
         position: relative;
-        background: lighten($theme-color, 10%)
+        background: lighten($theme-color, 35%)
     }
 
     &:active {

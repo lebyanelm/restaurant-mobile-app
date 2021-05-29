@@ -1,9 +1,104 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>checkout</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <!-- Orders page header container -->
+  <div class="checkout-header-container">
+    <!-- Close button that closes the orders page -->
+    <div class="close-button" (click)="this.goBack()"><ion-icon name=arrow-back></ion-icon></div>
+    <!-- The name of the page -->
+    <div class="page-name flex-space">Checkout</div>
+  </div>
 
+  <!-- The delivery address of the order -->
+  <div class="section-title">
+    <div class="name">Delivery Address</div>
+    <div class="space"></div>
+    <div class="button" (click)="changeDeliveryAddress()">Change</div>
+  </div>
+
+  <div class="delivery-address">
+    <div class="customer-name">{{ this.data?.names }}</div>
+    <div class="address">{{ this.basket.destination.address }}</div>
+  </div>
+
+  <br>
+  <div class="section-line"></div>
+
+  <div class="section-title">
+    <div class="name">Payment Method</div>
+  </div>
+  <div class="multi-checkbox-items">
+    <!-- Online payment item -->
+    <div class="checkbox-item" [attr.isChecked]="this.basket.paymentMethod === 'online-payment'" (click)="this.basket.paymentMethod = 'online-payment'">
+      <div class="checkbox-container">
+        <ion-icon class=off name=browsers-outline></ion-icon>
+        <ion-icon class=on name=browsers></ion-icon>
+      </div>
+      <div class="checkbox-item-details">
+        <div class="checkbox-item-name">Online Payment</div>
+        <div class="checkbox-item-description">Pay now with an online transaction via your respective bank.</div>
+      </div>
+    </div>
+
+    <!-- Card on delivery payment option -->
+    <div class="checkbox-item" [attr.isChecked]="this.basket.paymentMethod === 'card-on-delivery'" (click)="this.basket.paymentMethod = 'card-on-delivery'">
+      <div class="checkbox-container">
+        <ion-icon class=off name=card-outline></ion-icon>
+        <ion-icon class=on name=card></ion-icon>
+      </div>
+      <div class="checkbox-item-details">
+        <div class="checkbox-item-name">Card&mdash;On&mdash;{{ this.basket.orderingMode === 'delivery' ? 'Delivery' : 'Collection' }}</div>
+        <div class="checkbox-item-description">Pay with a card machine when you {{ this.basket.orderingMode === 'delivery' ? 'recieve your delivery' : 'collect your order'}}.</div>
+      </div>
+    </div>
+
+    <!-- Raw cash payment option -->
+    <div class="checkbox-item" [attr.isChecked]="this.basket.paymentMethod === 'cash-on-delivery'" (click)="this.basket.paymentMethod = 'cash-on-delivery'">
+      <div class="checkbox-container">
+        <ion-icon class=off name=cash-outline></ion-icon>
+        <ion-icon class=on name=cash></ion-icon>
+      </div>
+      <div class="checkbox-item-details">
+        <div class="checkbox-item-name">Cash&mdash;On&mdash;{{ this.basket.orderingMode === 'delivery' ? 'Delivery' : 'Collection' }}</div>
+        <div class="checkbox-item-description">Pay with raw cash when you {{ this.basket.orderingMode === 'delivery' ? 'recieve your delivery' : 'collect your order'}}.</div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="section-line"></div>
+
+  <div class="section-title">
+    <div class="name">Ordering Mode</div>
+  </div>
+
+  <div class="multi-checkbox-items">
+    <!-- Online payment item -->
+    <div class="checkbox-item" [attr.isChecked]="this.basket.orderingMode === 'delivery'" (click)="this.basket.orderingMode = 'delivery'">
+      <div class="checkbox-container">
+        <ion-icon class=off name=bicycle-outline></ion-icon>
+        <ion-icon class=on name=bicycle></ion-icon>
+      </div>
+      <div class="checkbox-item-details move-right">
+        <div class="checkbox-item-name">Delivery</div>
+        <div class="checkbox-item-description">When your order is ready, it'll be delivered right to your delivery address.</div>
+      </div>
+    </div>
+
+    <div class="checkbox-item" [attr.isChecked]="this.basket.orderingMode === 'collection'" (click)="this.basket.orderingMode = 'collection'">
+      <div class="checkbox-container">
+        <ion-icon class=off name=man-outline></ion-icon>
+        <ion-icon class=on name=man></ion-icon>
+      </div>
+      <div class="checkbox-item-details">
+        <div class="checkbox-item-name">Collection</div>
+        <div class="checkbox-item-description">When your order is ready, you'll be notified to collect it.</div>
+      </div>
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <div class="buttons">
+    <button *ngIf="this.basket.paymentMethod === 'online-payment'" (click)="placeOrder()">Make Payment</button>
+    <button *ngIf="this.basket.paymentMethod !== 'online-payment'" (click)="placeOrder()">Place your Order</button>
+  </div>
+</ion-footer>

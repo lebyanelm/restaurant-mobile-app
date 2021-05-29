@@ -1,11 +1,10 @@
 <div class="menu-item" [attr.isHaveTag]="dietary.length > 0">
     <div class="dietary-tag" *ngIf="dietary.length">{{dietary}}</div>
-    
+
     <!-- Top of the product item -->
     <div class="menu-item-header" *ngIf="data">
         <!-- To be able to add a product to the favorites list -->
         <button class="like-button" [attr.isProductHaveImage]="images.length > 0" *ngIf="data" [attr.isLiked]="data.favorites.indexOf(id) !== -1" (click)="likeProduct(id)">
-            <ion-icon class="center" name="heart-outline"></ion-icon>
             <ion-icon class="center" name="heart"></ion-icon>
         </button>
 

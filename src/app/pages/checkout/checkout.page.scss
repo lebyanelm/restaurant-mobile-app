@@ -1,0 +1,155 @@
+@import '../../../variables.scss';
+
+// -------- PAGE HEADER CONTAINER --------
+.checkout-header-container {
+  display: flex;
+  align-items: center;
+  padding: $padding;
+}
+
+// CLOSE BUTTON
+.checkout-header-container .close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --size: 50px;
+  height: var(--size);
+  width: var(--size);
+  border: 2px solid #DDD;
+  border-radius: var(--size);
+}
+
+.checkout-header-container .close-button ion-icon {
+  font-size: large;
+}
+
+// PAGE NAME
+.checkout-header-container .page-name {
+  text-align: center;
+  flex: 1;
+  font-weight: bolder;
+}
+
+// CLEAR ALL ORDERS BUTTON
+.checkout-header-container .clearall-button {
+  font-weight: bolder;
+  color: $secondary-color;
+}
+
+.checkout-header-container .page-name,
+.checkout-header-container .clearall-button {
+  font-size: large;
+}
+
+
+// ---------- SECTION TITLE ------------
+.section-title {
+  display: flex;
+  align-items: center;
+  padding: $padding $padding 0 $padding;
+}
+
+.section-title .name {
+  font-size: x-large;
+}
+
+.section-title .name,
+.section-title .button {
+  font-weight: bolder;
+}
+
+.section-title .button {
+  font-size: large;
+  color: $secondary-color;
+}
+
+.section-line {
+  height: 2px;
+  width: 100%;
+  background: #EEE;
+}
+
+// -------- DELIVERY ADDRESS SECTION ---------
+.delivery-address {
+  padding: $padding $padding 0 $padding;
+}
+
+.delivery-address .customer-name {
+  font-size: large;
+  font-weight: bolder;
+}
+
+.delivery-address .address {
+  font-size: small;
+  font-weight: bolder;
+  opacity: .7;
+}
+
+// -------- CHECKBOX ITEMS -----------
+.multi-checkbox-items {
+  margin-top: 10px;
+  padding: $padding;
+}
+
+.multi-checkbox-items .checkbox-item {
+  display: flex;
+  margin-bottom: 10px;
+  opacity: .6;
+}
+
+// WHEN CHECKBOX IS SELECTED
+.multi-checkbox-items .checkbox-item[isChecked="true"] {
+  opacity: 1;
+}
+
+.multi-checkbox-items .checkbox-item[isChecked="true"],
+.multi-checkbox-items .checkbox-item[isChecked="true"] ion-icon {
+  color: $theme-color !important;
+}
+
+.multi-checkbox-items .checkbox-item[isChecked="true"] .checkbox-container ion-icon.on {
+  opacity: 1;
+}
+
+.multi-checkbox-items .checkbox-item[isChecked="false"] .checkbox-container ion-icon.on {
+  opacity: 0;
+}
+
+.multi-checkbox-items .checkbox-item[isChecked="true"] .checkbox-container ion-icon.off {
+  opacity: 0;
+}
+
+.multi-checkbox-items .checkbox-item[isChecked="false"] .checkbox-container ion-icon.off {
+  opacity: 1;
+}
+
+
+.multi-checkbox-items .checkbox-item .checkbox-container {
+  height: 40px;
+  width: 40px;
+  position: relative;
+}
+
+.multi-checkbox-items .checkbox-item .checkbox-container ion-icon {
+  font-size: 25px;
+  color: $text-color-on-light;
+  position: absolute;
+  top: 0;
+  opacity: 1;
+  transition: opacity 300ms ease;
+}
+
+.multi-checkbox-items .checkbox-item .checkbox-item-details.move-right {
+  transform: translateX(7px);
+}
+
+.multi-checkbox-items .checkbox-item .checkbox-item-details .checkbox-item-name {
+  font-size: large;
+  font-weight: bolder;
+}
+
+.multi-checkbox-items .checkbox-item .checkbox-item-details .checkbox-item-description {
+  font-size: small;
+  font-weight: bold;
+  opacity: .7;
+}

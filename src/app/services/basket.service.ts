@@ -11,7 +11,7 @@ import { BasketSummary } from '../interfaces/BasketSummary';
 export class BasketService {
   products = [];
   destination: Destination;
-  paymentMethod = 'online';
+  paymentMethod = 'online-payment';
   specialInstructions = '';
   orderingMode = 'delivery';
   deliveryNote = '';

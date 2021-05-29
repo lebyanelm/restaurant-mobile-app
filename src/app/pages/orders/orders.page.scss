@@ -50,6 +50,26 @@
   border-bottom: 2px solid #DDD;
 }
 
+// WHEN THERE ARE NO ITEMS IN THE BASKET
+.basket-items.no-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 2px solid #DDD;
+}
+
+.basket-items.no-items ion-icon {
+  font-size: 40px;
+}
+
+.basket-items.no-items span.message {
+  font-size: large;
+  font-weight: bolder;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+// PRODUCT IMAGE OF THE BASKET ITEM
 .basket-items .basket-item .basket-item-placeholder {
   height: 100px;
   width: 100px;
@@ -131,6 +151,25 @@
 
 
 // ------- FOOTER SECTION ----------
+ion-footer .promocode-field {
+  display: flex;
+  align-items: center;
+  padding: 0 $padding;
+}
+
+ion-footer .promocode-field input {
+  border: 3px solid #DDD;
+  margin-right: $padding;
+  border-radius: $radius;
+  transition: border-color 300ms ease;
+  font-weight: 900 !important;
+  text-transform: uppercase;
+}
+
+ion-footer .promocode-field input:focus {
+  border-color: $theme-color;
+}
+
 ion-footer .price-items {
   padding: 20px 0;
 }
@@ -142,7 +181,7 @@ ion-footer .price-items .price-item {
 }
 
 ion-footer .price-items .price-item .text {
-  font-size: large;
+  // font-size: large;
 }
 
 ion-footer .price-items .price-item:last-child {

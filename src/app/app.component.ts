@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.modalEvents.statusChange.subscribe((s) => {
-      this.isModalOpen = s;
+      // this.isModalOpen = s;
 
       if (s) {
         // this.statusBar.styleLightContent();

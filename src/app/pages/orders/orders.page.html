@@ -37,6 +37,11 @@
     </div>
   </div>
 
+  <div class="basket-items no-items" *ngIf="this.basket.products.length == 0">
+    <ion-icon name="close-circle-outline"></ion-icon>
+    <span class="message">No items in your basket</span>
+  </div>
+
   <!-- Basket ordering instructions / Restaurant notes -->
   <div class="basket-ordering-instructions" (click)="openAddNoteModal(false)">
     <div class="basket-notes-title">Add Restaurant Notes</div>
@@ -51,18 +56,50 @@
 
 <!-- Footer section to contain basket payment total prices and with checkout button -->
 <ion-footer>
+  <!-- Section to apply a promocode -->
+  <div class="promocode-field">
+    <input
+      type="text"
+      placeholder="Apply a promocode for discount"
+      [disabled]="this.basket.basketSummary.promocode.discount" #PromocodeInput>
+    <button
+      [disabled]="!PromocodeInput.value.length && this.basket.basketSummary.discount"
+      (click)="this.applyPromocode(PromocodeInput.value)">Apply</button>
+  </div>
+
   <!-- Basket total price section -->
   <div class="price-items">
+    <!-- Subtotal -->
+    <div class="price-item">
+      <div class="text name"><b>Subtotal</b></div>
+      <div class="space"></div>
+      <div class="text value">R {{ this.basket.basketSummary.orderPrice.toFixed(2) }}</div>
+    </div>
+
+    <!-- Promocode discount -->
+    <div class="price-item">
+      <div class="text name"><b>Discount</b></div>
+      <div class="space"></div>
+      <div class="text value">-R {{ this.basket.basketSummary.discount.toFixed(2) }} <b *ngIf="this.basket.basketSummary.discount">({{ this.basket.basketSummary.promocode.discount }}%)</b></div>
+    </div>
+
+    <!-- Delivery Fee -->
+    <div class="price-item">
+      <div class="text name"><b>Delivery Fee</b></div>
+      <div class="space"></div>
+      <div class="text value">R {{ this.basket.basketSummary.deliveryPayment.toFixed(2) }}</div>
+    </div>
+
     <!-- Total amount to be paid -->
     <div class="price-item">
       <div class="text name">Total</div>
       <div class="space"></div>
-      <div class="text value">R {{ this.basket.basketSummary.orderPrice }}</div>
+      <div class="text value">R {{ this.basket.basketSummary.totalPayment.toFixed(2) }}</div>
     </div>
   </div>
 
   <!-- Checkout button -->
   <div class="buttons">
-    <button>Checkout</button>
+    <button (click)="this.toCheckout()">Checkout</button>
   </div>
 </ion-footer>

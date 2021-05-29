@@ -63,7 +63,7 @@ ion-header {
         background-position: center center;
 
         ion-slides {
-            border-radius: 8px;
+            border-radius: $radius;
         }
 
         ion-slides,

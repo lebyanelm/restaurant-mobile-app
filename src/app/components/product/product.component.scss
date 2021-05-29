@@ -14,9 +14,11 @@
         font-weight: bold;
         position: absolute;
         transform: translateY(-50%);
+        border-radius: $radius;
+        border-bottom-left-radius: 0;
         z-index: 100;
     }
-    
+
     // Button customers can use to favorite items they love
     .like-button {
         position: absolute;
@@ -45,15 +47,11 @@
             width: 50px;
             border-radius: 50px;
         }
-        
+
         ion-icon {
             position: absolute;
             color: $text-color-on-dark;
-            font-size: 25px;         
-
-            &[name=heart] {
-                opacity: 0;
-            }
+            font-size: 25px;
         }
 
         &[isLiked=true] {
@@ -62,16 +60,12 @@
                 color: $danger;
             }
 
-            ion-icon[name=heart-outline] {
-                opacity: 0;
-            }
-            
             ion-icon {
                 animation: ScaleUpCenter 300ms ease-in-out;
             }
-        } 
+        }
     }
-    
+
     .menu-item-header {
         position: relative;
         border-top: 1px solid #EEE;
@@ -79,7 +73,7 @@
             width: 100%;
             height: 150px;
             background-size: cover;
-            border-radius: 0;
+            border-radius: $radius;
             background-position: center center;
         }
     }
@@ -89,7 +83,7 @@
         width: 100%;
         margin: 0 auto;
         // border-bottom: $border;
-        
+
         .menu-item-name {
             display: flex;
             align-items: center;
@@ -131,7 +125,7 @@
                 display: flex;
                 align-items: center !important;
             }
-            
+
             .price {
                 margin-right: 10px;
                 opacity: 1 !important;
@@ -141,7 +135,7 @@
                     font-weight: bolder;
                 }
             }
-            
+
             &,
             .tag {
                 display: flex;
