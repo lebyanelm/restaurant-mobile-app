@@ -78,6 +78,10 @@ const routes: Routes = [
   {
     path: 'checkout',
     loadChildren: () => import('./pages/checkout/checkout.module').then( m => m.CheckoutPageModule)
+  },
+  {
+    path: 'order-tracking',
+    loadChildren: () => import('./pages/order-tracking/order-tracking.module').then( m => m.OrderTrackingPageModule)
   }
 ];
 

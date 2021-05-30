@@ -203,6 +203,7 @@ export class CheckoutPage implements OnInit {
         // Send the order to the partner
         this.sendOrderCheckout(payment);
       } else {
+        this.router.navigate(['order-placed'], { queryParams: { isOrderPlaced: false, isPaymentOnline: true } })
         Plugins.Toast.show({ text: 'Error, Payment not successful.' });
       }
     });
@@ -246,10 +247,17 @@ export class CheckoutPage implements OnInit {
             this.data.orders.push(response.body.order);
             this.storage.setItem(environment.customerDataName, this.data);
             this.storage.setItem(environment.ORDER, response.body.order.id);
-            this.router.navigate(['order-placed'], { queryParams: { id: response.body.order.id } });
+            this.router.navigate(['order-placed'], { queryParams: {
+              id: response.body.order.id,
+              isOrderPlaced: true,
+              isPaymentOnline: paymentData ? true : false } });
           } else {
             Plugins.Toast.show({
               text: response.body.reason || 'Error, Something went wrong. Please contact the restaurant for assistance.' });
+            this.router.navigate(['order-placed'], { queryParams: {
+              id: response.body.order.id,
+              isOrderPlaced: false,
+              isPaymentOnline: paymentData ? true : false } });
           }
         } else {
           Plugins.Toast.show({ text: 'Error, No internet connection.' });

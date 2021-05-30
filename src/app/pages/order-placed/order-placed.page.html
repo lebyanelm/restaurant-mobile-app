@@ -8,13 +8,13 @@
       <ion-icon class="error" name=close-outline *ngIf="!this.isOrderPlaced"></ion-icon>
     </div>
 
-    <div class="order-id" *ngIf="this.isOrderPlaced">#280621—43</div>
+    <div class="order-id" *ngIf="this.isOrderPlaced">#{{ this.id }}</div>
     <div class="order-id" *ngIf="!this.isOrderPlaced">ERROR</div>
 
     <!-- If the payment has been done onlne -->
     <div class="online-payment-messages" *ngIf="this.isOrderOnlinePayment">
       <!-- If payment was successful -->
-      <div class="paid" *ngIf="this.isOrderPlaced">Your payment is complete. You can check your order status at <a href="">Order Tracking</a> page.</div>
+      <div class="paid" *ngIf="this.isOrderPlaced">Your payment is complete. You can check your order status at <a (click)="openOrderTrackingPage(this.id)">Order Tracking</a> page.</div>
       <!-- When online payment failed for a number of reasons -->
       <div class="failed" *ngIf="!this.isOrderPlaced">Your payment failed. Please make sure you have enough funds to place the order, and try again. <a href="">Let us know</a> if error persists.</div>
     </div>
