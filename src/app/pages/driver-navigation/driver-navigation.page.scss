@@ -5,7 +5,7 @@
     width: 100%;
     position: relative;
     color: $text-color-on-dark;
-    
+
     &[isDeliveryEnabled=true] {
         height: 62px !important;
     }
@@ -49,19 +49,19 @@
             top: 20px;
         }
     }
-    
+
     .signout-button {
         left: 0;
     }
-    
+
     .toggle-offline-button {
         right: 0 !important;
     }
-    
+
     .name {
         padding: 15px 20px;
         text-align: center;
-        background: #000000;
+        background: $theme-color;
         width: 100%;
     }
 
@@ -92,6 +92,8 @@
 
             .number-icon {
                 margin-right: 10px;
+                transform: translateY(10px);
+
                 .container {
                     height: 40px;
                     width: 40px;

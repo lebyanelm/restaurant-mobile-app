@@ -15,24 +15,38 @@
           <ion-ripple-effect></ion-ripple-effect>
         </div>
       </div>
+
+      <!-- THE DELIVERY ITEMS -->
       <div class="delivery-items-list" [attr.hasDeliveryStarted]="isDeliveryStarted">
-        <div class="delivery-item ion-activatable" *ngFor="let deliveryItem of deliveries" (click)="viewDeliveryInstruction({ id: deliveryItem.id, note: deliveryItem.deliveryInstructions });" [attr.isActiveDelivery]="deliveries.indexOf(deliveryItem) === currentDeliveryIndex">
-          <div class="number-icon"><div class="container">
-            <span class="center">{{deliveryItem.index}}</span>
-          </div></div>
+
+        <!-- SINGULAR DELIVERY ITEM -->
+        <div class="delivery-item ion-activatable flex" *ngFor="let deliveryItem of deliveries" (click)="viewDeliveryInstruction({ id: deliveryItem.id, note: deliveryItem.deliveryInstructions });" [attr.isActiveDelivery]="deliveries.indexOf(deliveryItem) === currentDeliveryIndex">
+          <!-- COUNT OF THE POSITION OF THE DELIVERY ITEM -->
+          <div class="number-icon">
+            <div class="container">
+              <span class="center">{{deliveryItem.index}}</span>
+            </div>
+          </div>
+
+          <!-- THE DETAILS OF THE DELIVERY ITEM -->
           <div class="delivery-item-details">
             <div class="delivery-recipient-name">{{deliveryItem.customer}}</div>
             <div class="delivery-order-number">{{deliveryItem.id}}</div>
           </div>
+
+          <!-- FLEX SPACE AREA -->
           <div class="space"></div>
+
+          <!-- ARROW IF THE DELIVERY ITEM HAS DELIVERY NOTES -->
           <ion-icon name="arrow-forward" *ngIf="deliveryItem.deliveryInstructions?.length"></ion-icon>
-          <ion-ripple-effect></ion-ripple-effect>
         </div>
       </div>
     </div>
+
+    <!-- THE MAP TO SHOW THE LOCATION AND VISUAL REPRESENTATION OF THE DELIVERIES -->
     <app-map [isStatic]=false #Map></app-map>
   </div>
-  
+
 
   <!-- To change to next delivery and start delivery session -->
   <app-slide-button
@@ -48,5 +62,5 @@
 </ion-content>
 
 <ion-footer>
-  
+
 </ion-footer>

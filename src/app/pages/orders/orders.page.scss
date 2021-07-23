@@ -151,13 +151,13 @@
 
 
 // ------- FOOTER SECTION ----------
-ion-footer .promocode-field {
+ion-content .promocode-field {
   display: flex;
   align-items: center;
   padding: 0 $padding;
 }
 
-ion-footer .promocode-field input {
+ion-content .promocode-field input {
   border: 3px solid #DDD;
   margin-right: $padding;
   border-radius: $radius;
@@ -166,30 +166,30 @@ ion-footer .promocode-field input {
   text-transform: uppercase;
 }
 
-ion-footer .promocode-field input:focus {
+ion-content .promocode-field input:focus {
   border-color: $theme-color;
 }
 
-ion-footer .price-items {
+ion-content .price-items {
   padding: 20px 0;
 }
 
-ion-footer .price-items .price-item {
+ion-content .price-items .price-item {
   display: flex;
   align-items: center;
   padding: 5px $padding;
 }
 
-ion-footer .price-items .price-item .text {
+ion-content .price-items .price-item .text {
   // font-size: large;
 }
 
-ion-footer .price-items .price-item:last-child {
+ion-content .price-items .price-item:last-child {
   border-top: 2px solid #DDD;
   padding-top: 5px;
   margin-top: 5px;
 }
 
-ion-footer .price-items .price-item:last-child .text {
+ion-content .price-items .price-item:last-child .text {
   font-weight: bolder;
 }

@@ -1,3 +1,4 @@
+import { ChatComponent } from 'src/app/components/chat/chat.component';
 import { StorageService } from 'src/app/services/storage.service';
 import { Branch } from './../interfaces/Branch';
 import { SocketsService } from './sockets.service';
@@ -46,6 +47,27 @@ export class ChatService {
           });
         });
       });
+  }
+
+  openModal() {
+    this.storage
+      .getItem(environment.customerDataName)
+      .then(async (data) => {
+        const chatModal = await this.modalCtrl.create({
+          component: ChatComponent,
+          cssClass: ['modal', 'chat-modal'],
+          componentProps: { data: data }
+        });
+
+        chatModal.present()
+          .then(() => {
+            if (this.connectedBranch) this.setMessageAsRead(); });
+        this.modalEvents.statusChange.next(true);
+        chatModal.onDidDismiss()
+          .then(() => {
+            this.modalEvents.statusChange.next(false);
+          });
+      })
   }
 
   closeChatModal() {

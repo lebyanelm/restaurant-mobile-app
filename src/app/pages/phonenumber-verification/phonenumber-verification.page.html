@@ -28,7 +28,7 @@
       <div class="space"></div>
       <button class="icon-only circular flex" [disabled]="!(data['1'] && data['2'] && data['3'] && data['4']) || isLoading" #LoginButton (click)="verifyPhoneNumber()">
         <div class="text flex" *ngIf="!isLoading"><ion-icon name="arrow-forward-sharp"></ion-icon></div>
-        <div class="loader" *ngIf="isLoading"></div>
+        <ion-spinner name="crescent" color="black" *ngIf="isLoading"></ion-spinner>
       </button>
     </div>
   </div>

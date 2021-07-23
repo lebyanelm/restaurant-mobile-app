@@ -1,0 +1,124 @@
+@import '../../../variables.scss';
+
+// --------- DELIVERY TIME ESTIMATION
+.estimation-time-container {
+  width: 100%;
+  text-align: center;
+  padding: 0 0 20px 0;
+  border-bottom: 2px solid #DDD;
+}
+
+.estimation-time-container .title {
+  font-weight: bolder;
+}
+
+.estimation-time-container .time {
+  font-size: 30px;
+  font-weight: 900;
+  font-family: 'Roboto', sans-serif;
+  color: $secondary-color;
+
+  &[isProcessed=true] {
+    text-decoration: line-through;
+  }
+}
+
+// --------- BRANCH DETAILS
+.order-branch-details {
+  padding: 10px 0;
+}
+
+.order-branch-details .restaurant-name {
+  font-size: large;
+  font-weight: bolder;
+}
+
+.order-branch-details .branch-name {
+  opacity: .7;
+}
+
+.order-branch-details .rating-details ion-icon {
+  margin-right: 2px;
+  transform: translateY(-2px);
+}
+
+.order-branch-details .rating-details .rating span {
+  font-weight: bolder;
+}
+
+// ------- ORDER STATUS PROGRESS STEPS
+.status-steps {
+  padding: 20px;
+  margin-top: 10px;
+  background: #EEE;
+  border-radius: 20px;
+}
+
+.status-steps .step {
+  display: flex;
+  position: relative;
+  margin-bottom: 10px;
+  z-index: 10;
+  opacity: .5;
+}
+
+.status-steps .step[isReached=true] {
+  opacity: 1;
+}
+
+.status-steps .step::before {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 2.5px;
+  background: $theme-color;
+  position: absolute;
+  top: 10px;
+  left: 9.5px;
+  z-index: 0;
+}
+
+.status-steps .step .status-icon {
+  display: none;
+  position: relative;
+}
+
+.status-steps .step .status-icon ion-icon {
+  position: absolute;
+  z-index: 1000;
+  font-size: 22px;
+  background: #EEE;
+  border-radius: 50px;
+  color: $theme-color;
+}
+
+.status-steps .step .status-circle {
+  --size: 16px;
+  opacity: 0;
+  height: var(--size);
+  width: var(--size);
+  border-radius: var(--size);
+  background: $theme-color;
+  transform: translateX(3px);
+}
+
+.status-steps .step[isReached=true] .status-icon {
+  display: block;
+}
+
+.status-steps .step[isReached=false] .status-circle {
+  opacity: 1;
+}
+
+.status-steps .step .status-details {
+  margin-left: 20px;
+}
+
+.status-steps .step .status-details .name {
+  font-size: large;
+  font-weight: bolder;
+}
+
+.status-steps .step .status-details .description {
+  opacity: .7;
+}

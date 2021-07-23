@@ -34,6 +34,13 @@ export class AccountComponent implements OnInit {
     this.storage.getItem(environment.customerDataName)
       .then((data) => {
         this.data = data;
+
+        // Listen for changes on the data to update it on the page
+        this.storage.change.subscribe((data) => {
+          if (data.name === environment.customerDataName) {
+            this.data = data.data;
+          }
+        });
       });
   }
 

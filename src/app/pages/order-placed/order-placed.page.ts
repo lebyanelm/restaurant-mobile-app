@@ -21,7 +21,8 @@ export class OrderPlacedPage implements OnInit {
   isOrderOnlinePayment: boolean = true;
 
   constructor(
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -30,5 +31,9 @@ export class OrderPlacedPage implements OnInit {
       this.isOrderPlaced = params.isOrderPlaced;
       this.isOrderOnlinePayment = params.isPaymentOnline;
     })
+  }
+
+  openOrderTrackingPage(id: string): void {
+    this.router.navigate(['order-tracking'], { queryParams: { id } });
   }
 }

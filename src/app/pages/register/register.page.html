@@ -31,7 +31,7 @@
       <div class="space"></div>
       <button class="icon-only circular flex" [disabled]="!(data.names && data.phoneNumber && data.password.length > 7) || isLoading" #LoginButton (click)="register()">
         <div class="text flex" *ngIf="!isLoading">Register</div>
-        <div class="loader" *ngIf="isLoading"></div>
+        <ion-spinner name="crescent" color="black" *ngIf="isLoading"></ion-spinner>
       </button>
     </div>
   </div>

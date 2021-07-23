@@ -2,7 +2,7 @@
   <div class="header-top flex ion-text-center" [attr.deviceType]="_platform">
     <div class="action flex"><ion-icon name="location-sharp"></ion-icon></div>
     <div class="space delivery-address clickable" (click)="changeDeliveryAddress()">
-      <div class="name" *ngIf="basket.destination && basket.destination.address.length > 1">{{basket.destination.address[0]}}, {{basket.destination.address[1]}} <b>{{basket.isDestinationAutoDetect ? ' (Auto-detected)' : ''}}</b></div>
+      <div class="name" *ngIf="basket.destination && basket.destination.address.length > 1">{{basket.destination.address[0]}}, {{basket.destination.address[1]}} <b>{{basket.isDestinationAutoDetect ? ' (Auto-detected)' : '(You pinned it)'}}</b></div>
       <div class="name" *ngIf="basket.destination && basket.destination.address.length == 1">{{basket.destination.address[0]}}</div>
       <div class="name" *ngIf="!basket.destination">Select your destination</div>
     </div>

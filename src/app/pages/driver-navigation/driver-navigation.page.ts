@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { StatusService } from 'src/app/services/status.service';
 import { SlideButtonComponent } from 'src/app/components/slide-button/slide-button.component';
 import { Router } from '@angular/router';
+import * as superagent from 'superagent';
 
 @Component({
   selector: 'app-driver-navigation',
@@ -28,10 +29,11 @@ export class DriverNavigationPage implements AfterViewInit {
 
   deliveries: Order[] = [];
   data;
-  driverData: { name: string; username: string };
+  driverData: { name: string; username: string, deliveries: string[], noDeliveries: number };
   isDeliveryStarted = false;
   isDeliveryAllowed = false;
   isLocationDispatchSet = false;
+  isFirstConnection = true;
   locationDispatchCustomers = [];
   isCompletedDelivery = false;
   isReachedMax = false;
@@ -69,10 +71,12 @@ export class DriverNavigationPage implements AfterViewInit {
 
         // Find the current connected driver
         this.storage.getItem(environment.driverDataName)
-          .then((driverData) => this.driverData = driverData);
-        
-        Plugins.Toast.show(this.sockets.connection ? this.sockets.connection.connected : false);
-        this.selectBranch();
+          .then((driverData) => {
+            this.driverData = driverData;
+          });
+
+        Plugins.Toast.show({ text: this.sockets.connection ? 'Connected' : 'Not connected' });
+        this.selectBranch()
       });
 
     this.platform.ready()
@@ -84,6 +88,39 @@ export class DriverNavigationPage implements AfterViewInit {
         if (option.detail) {
           this.activeBranch = option.detail.value;
           this.statusService.setBranch(this.activeBranch);
+          if (this.isFirstConnection) {
+            // Load the data that has been synced with the database
+            const driver = this.data.drivers.find((sDriver) => sDriver.username === this.driverData.username)
+            this.driverData = driver;
+            // Check if the driver has any pending deliveries to make
+            if (this.driverData && this.driverData.deliveries.length) {
+              // Request the order information from the back-end of each order
+              this.driverData.deliveries.forEach((delivery) => {
+                superagent
+                  .get([environment.BACKEND, 'order'].join(''))
+                  .query({ partnerId: environment.PARTNER_ID, branchId: this.activeBranch.id, orderId: delivery })
+                  .end((_, response) => {
+                    if (response) {
+                      if (response.ok) {
+                        const index = this.deliveries.push(response.body.order);
+                        this.deliveries[index - 1].index = index;
+                        console.log(this.deliveries[index - 1].destination.coords)
+                        this.mapEvents.dropoff.next(this.deliveries[index - 1].destination.coords);
+
+                        // Append the customer into the location dispatch listings
+                        this.locationDispatchCustomers.push(this.deliveries[index - 1].uid);
+
+                        this.isDeliveryAllowed = true;
+                      } else {
+                        Plugins.Toast.show({ text: response.body.reason || 'Something went wrong.' });
+                      }
+                    } else {
+                      Plugins.Toast.show({ text: 'No internet connection, please check your connection.' });
+                    }
+                  });
+              });
+            }
+          }
         }
       });
 
@@ -98,11 +135,11 @@ export class DriverNavigationPage implements AfterViewInit {
     this.events.dispatched.subscribe(order => {
       const index = this.deliveries.push(order);
       this.deliveries[index - 1].index = index;
-      this.mapEvents.dropoff.next(order.destination.coordinates);
+      this.mapEvents.dropoff.next(order.destination.coords);
 
       // Append the customer into the location dispatch listings
       this.locationDispatchCustomers.push(order.uid);
-      
+
       // When the number of deliveries reach a maximum of 5, disconnect the driver from the driver pool,
       /// and start sending the live location of the driver to the customers
       if (this.deliveries.length === 3) {
@@ -112,7 +149,7 @@ export class DriverNavigationPage implements AfterViewInit {
 
         // Disconnect the driver from the driver pool
         this.setDriverConnectionState(false, () => this.toast.show('Error while trying to go offline, please do this manually to prevent exceeding order deliveries.'));
-        
+
         this.locationDispatchInterval = setInterval(() => {
           Plugins.Geolocation.getCurrentPosition({ enableHighAccuracy: true })
             .then((location) => {
@@ -134,11 +171,11 @@ export class DriverNavigationPage implements AfterViewInit {
     this.isDeliveryStarted = true;
 
     this.toast.show([
-      this.deliveries[0].destination.coordinates.lat,
-      this.deliveries[0].destination.coordinates.lng].toString())
+      this.deliveries[0].destination.coords.lat,
+      this.deliveries[0].destination.coords.lng].toString())
     this.launchNavigator.navigate([
-      this.deliveries[0].destination.coordinates.lat,
-      this.deliveries[0].destination.coordinates.lng]);
+      this.deliveries[0].destination.coords.lat,
+      this.deliveries[0].destination.coords.lng]);
   }
 
   sendOrderStatusUpdate(self: DriverNavigationPage, orderIndex: number): void {

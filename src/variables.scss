@@ -1,6 +1,6 @@
 // Colors
-$theme-color: limegreen; //3F220E, 355C7D, F8B195, rgb(70, 85, 56), rgb(19, 91, 47)
-$secondary-color: brown;
+$theme-color: orangered; //3F220E, 355C7D, F8B195, rgb(70, 85, 56), rgb(19, 91, 47)
+$secondary-color: $theme-color;
 $tertiary-color: rgb(255, 240, 230);
 $text-color-on-dark: #FFFFFF;
 $text-color-on-light: #000000;
@@ -10,11 +10,11 @@ $success: rgb(33, 202, 149);
 $side-menu-color: $text-color-on-dark;
 
 // Typography
-$font-family: 'Roboto', sans-serif;
+$font-family: 'Sailec', sans-serif;
 
 // Shapes
 $padding: 20px;
 $border: 1px solid transparentize(#000000, 0.9);
 $shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
-$radius: 4px;
+$radius: 0px;
 $transition: 300ms ease-in-out;

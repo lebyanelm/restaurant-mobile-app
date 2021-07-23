@@ -1,9 +1,115 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>order-tracking</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <div class="page-header">
+    <div class="top-header">
+      <div class="back-button clickable" routerLink="/home" routerDirection="back"><ion-icon class="center" name="arrow-back"></ion-icon></div>
+      <div class="space"></div>
+      <div class="buttons">
+       <div class="button clickable" (click)="clearFavorites()">
+         <ion-icon name=chat-bubble></ion-icon>
+         Questions? Contact us
+       </div>
+      </div>
+    </div>
+    <div class="header-details">
+      <div class="page-name">Order Tracking</div>
+    </div>
+  </div>
+
+  <!-- PAGE CONTENT -->
+  <div class="page-content">
+    <div class="estimation-time-container">
+      <div class="title">ORDER ID</div>
+      <div class="time" [attr.isProcessed]="this.order?.status === 5">#{{ this.id }}</div>
+      <div class="count"><span *ngFor="let item of this.order?.products">{{ this.order?.products.indexOf(item) !== 0 ? ', ' : '' }} {{ item.name }}</span> &mdash; R{{ this.order?.totalPrice }} {{ this.order?.paymentMethod.includes('cash') && this.order?.status !== 5 ? 'Due' : 'Paid' }}</div>
+    </div>
+
+    <!-- STATUS STEPS -->
+    <div class="status-steps">
+      <div class="step" [attr.isReached]="true" *ngIf="this.order?.paymentMethod === 'online-payment'">
+        <div class="status-icon-container">
+          <div class="status-icon"><ion-icon name=arrow-forward-circle-sharp></ion-icon></div>
+          <div class="status-circle"></div>
+        </div>
+        <div class="status-details">
+          <div class="name">Payment Confirmed</div>
+          <div class="description">Your payment has been confirmed and recieved.</div>
+        </div>
+      </div>
+
+      <div class="step" [attr.isReached]="this.order?.status === 1">
+        <div class="status-icon-container">
+          <div class="status-icon"><ion-icon name=arrow-forward-circle-sharp></ion-icon></div>
+          <div class="status-circle"></div>
+        </div>
+        <div class="status-details">
+          <div class="name">Order Placed</div>
+          <div class="description">We have received your order.</div>
+        </div>
+      </div>
+
+      <div class="step" [attr.isReached]="this.order?.status === 2">
+        <div class="status-icon-container">
+          <div class="status-icon"><ion-icon name=arrow-forward-circle-sharp></ion-icon></div>
+          <div class="status-circle"></div>
+        </div>
+        <div class="status-details">
+          <div class="name">Processing order</div>
+          <div class="description">We are cheffing your order.</div>
+        </div>
+      </div>
+
+      <div class="step" *ngIf="true" [attr.isReached]="this.order?.status === 3">
+        <div class="status-icon-container">
+          <div class="status-icon"><ion-icon name=arrow-forward-circle-sharp></ion-icon></div>
+          <div class="status-circle"></div>
+        </div>
+        <div class="status-details">
+          <div class="name">Ready for delivery</div>
+          <div class="description">Order is ready for delivery, driver will collect it for you.</div>
+        </div>
+      </div>
+
+      <div class="step" *ngIf="this.order?.orderingMode === 'delivery'" [attr.isReached]="this.order?.status === 4">
+        <div class="status-icon-container">
+          <div class="status-icon"><ion-icon name=arrow-forward-circle-sharp></ion-icon></div>
+          <div class="status-circle"></div>
+        </div>
+        <div class="status-details">
+          <div class="name">Delivering order</div>
+          <div class="description">Driver is coming to your delivery address.</div>
+        </div>
+      </div>
+
+      <div class="step" *ngIf="this.order?.orderingMode === 'collection'" [attr.isReached]="this.order?.status === 4">
+        <div class="status-icon-container">
+          <div class="status-icon"><ion-icon name=arrow-forward-circle-sharp></ion-icon></div>
+          <div class="status-circle"></div>
+        </div>
+        <div class="status-details">
+          <div class="name">Ready for collection</div>
+          <div class="description">Order is ready for your collection, show the restaurant this page.</div>
+        </div>
+      </div>
+
+      <div class="step" [attr.isReached]="this.order?.status === 5">
+        <div class="status-icon-container">
+          <div class="status-icon"><ion-icon name=arrow-forward-circle-sharp></ion-icon></div>
+          <div class="status-circle"></div>
+        </div>
+        <div class="status-details">
+          <div class="name">Complete!</div>
+          <div class="description">Order has been successfully received, please don't forget to rate us.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </ion-content>
+
+<ion-footer>
+  <div class="buttons">
+    <button *ngIf="this.order?.status < 4" (click)="cancelOrder()">Cancel Order</button>
+    <button *ngIf="this.order?.status === 5" [routerLink]="'/home'">Continue Shopping</button>
+  </div>
+</ion-footer>

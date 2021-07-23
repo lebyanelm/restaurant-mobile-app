@@ -6,6 +6,8 @@
     width: 100vw;
     background: #EEE;
     position: relative;
+    background-size: cover;
+    background-position: center center;
 }
 
 // BACK BUTTON
@@ -18,6 +20,7 @@
     position: absolute;
     top: 40px;
     left: 20px;
+    z-index: 10000;
 }
 
 .back-button ion-icon {
@@ -26,12 +29,9 @@
 }
 
 // NAME OF THE USER
-.profile-avatar-container .profile-name {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    color: $text-color-on-dark;
-    text-shadow: $shadow;
+.profile-name {
+    margin: 20px;
+    color: $text-color-on-light;
     font-size: 25px;
     font-weight: bolder;
 }

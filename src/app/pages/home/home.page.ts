@@ -177,7 +177,7 @@ export class HomePage implements AfterViewInit {
       this.storage.getItem(environment.ORDER, false)
         .then((orderId) => {
           if (orderId) {
-            this.router.navigate(['order-placed'], {replaceUrl: true});
+            this.router.navigate(['order-tracking'], {replaceUrl: true, queryParams: { id: orderId }});
           } else {
             // Load the products from the partners server
           this.productsService.getProducts()

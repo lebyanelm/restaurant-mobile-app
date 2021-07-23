@@ -102,7 +102,7 @@ export class CheckoutPage implements OnInit {
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://bdbcc2deab10.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://04d6e619b157.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {
@@ -124,7 +124,7 @@ export class CheckoutPage implements OnInit {
       notifyUrl: [
         environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=notify'].join(''),
       optional1: this.data.id,
-      isTest: false
+      isTest: true
     };
 
     // Make a lowercase string of all the data items to send them to Ozow

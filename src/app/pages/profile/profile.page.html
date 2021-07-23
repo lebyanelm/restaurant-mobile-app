@@ -1,9 +1,10 @@
 <ion-content *ngIf="data">
-  <div class="back-button"><ion-icon class="center" name=arrow-back-sharp></ion-icon></div>
+  <div class="back-button" (click)="this.navCtrl.back()"><ion-icon class="center" name=arrow-back-sharp></ion-icon></div>
 
-  <div class="profile-avatar-container" (click)="getProfilePhoto()">
-    <div class="profile-name">{{ data.names }}</div>
+  <div class="profile-avatar-container" (click)="getProfilePhoto()" [style.background-image]="'url(' + this.avatar + ')'">
   </div>
+
+  <div class="profile-name">{{ data.names }}</div>
 
   <!-- Profile details about the user -->
   <div class="profile-details">
@@ -37,10 +38,12 @@
     </div>
 
     <!-- Password reset link -->
-    <div class="password-reset">To set a new password, visit this link to request a reset code.</div>
+    <div class="password-reset" (click)="showDeleteApprovalModal()">Permenatly delete my account.</div>
   </div>
 </ion-content>
 
 <ion-footer>
-  <button (click)="updateProfile()" #UpdateButton>Save Changes</button>
+  <div class="buttons">
+    <button (click)="updateProfile()" #UpdateButton>Save Changes</button>
+  </div>
 </ion-footer>

@@ -43,8 +43,7 @@ export class FavoritesPage implements OnInit {
 
   clearFavorites(): void {
     superagent
-      .post(environment.BACKEND + 'accounts/favorite')
-      .send({productIds: this.data.favorites})
+      .delete(environment.BACKEND + 'accounts/favorites')
       .set('Authorization', this.data.token)
       .end((error, response) => {
         if (response) {

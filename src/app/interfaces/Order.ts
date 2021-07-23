@@ -1,18 +1,14 @@
 import { TimeCreated } from './TimeCreated';
 import { Coordinates } from './Coordinates';
 import { Promocode } from './Promocode';
+import { Branch } from './Branch';
+import { Destination } from './Destination';
 
 export interface Order  {
     id?: string;
     timeCreated?: TimeCreated;
-    destination?: {
-        address: string;
-        coordinates: Coordinates
-    };
-    branch?: {
-        name: string;
-        coordinates: Coordinates;
-    };
+    destination?: Destination;
+    branch?: Branch;
     extras?: string[];
     status?: number;
     totalPrice?: number;

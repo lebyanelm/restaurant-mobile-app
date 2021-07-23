@@ -41,7 +41,7 @@ export class BasketsComponent implements AfterViewInit {
   }
 
   routeTo(id: string) {
-    this.router.navigate(['order'], {queryParams: {id}});
+    this.router.navigate(['order-tracking'], {queryParams: {id}});
   }
 
   removeOrders() {

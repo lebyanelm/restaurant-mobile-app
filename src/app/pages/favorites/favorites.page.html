@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="header-details">
-      <div class="page-name">Your favorite items</div>
+      <div class="page-name">Your pinned food items</div>
     </div>
   </div>
 
@@ -18,12 +18,13 @@
       <div class="minified-product" *ngFor="let product of favorites" (click)="openProduct(product.id)">
         <div class="image-container"><div class="image" [style.background-image]="'url('+ product.images[0] +')'"></div></div>
         <div class="details">
-          <div class="name flex">{{product.name}}</div>
+          <div class="name flex">{{ product.name }}</div>
           <div class="tags flex">
-            <div class="tag price">R{{product.price}}</div>
+            <div class="tag price">R{{ product.price }}</div>
+            <div class="tag category">{{ product.category }}</div>
           </div>
           <div class="bottom flex">
-            <div class="category">{{product.description}}</div>
+            <div class="category">{{ product.description }}</div>
           </div>
         </div>
       </div>

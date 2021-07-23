@@ -14,47 +14,47 @@
       <div class="menu-item">
         <div class="icon">
           <div class="outline"><ion-icon name="heart-outline"></ion-icon></div>
-          <!-- <div class="filled"><ion-icon name="heart"></ion-icon></div> -->
+          <div class="filled"><ion-icon name="heart"></ion-icon></div>
         </div>
         <div class="details" (click)="routeTo('/favorites')">
-          <div class="name">Your favorites</div>
+          <div class="name">Your pinned food items</div>
           <div class="description">Your saved favorite items.</div>
         </div>
       </div>
-      <div class="menu-item" (click)="routeTo('/payment-methods', {isCheckout: false})">
+      <div class="menu-item" (click)="routeTo('/profile')">
         <div class="icon">
-          <div class="outline"><ion-icon name="card-outline"></ion-icon></div>
-          <!-- <div class="filled"><ion-icon name="card"></ion-icon></div> -->
+          <div class="outline"><ion-icon name="person-outline"></ion-icon></div>
+          <div class="filled"><ion-icon name="person"></ion-icon></div>
         </div>
         <div class="details">
-          <div class="name">Payment</div>
-          <div class="description">Methods of payment for checking out</div>
+          <div class="name">Edit profile</div>
+          <div class="description">Make changes to your profile.</div>
         </div>
       </div>
       <div class="menu-item" (click)="openChatModal()">
         <div class="icon">
           <div class="outline"><ion-icon name="chatbubbles-outline"></ion-icon></div>
-          <!-- <div class="filled"><ion-icon name="chatbubbles"></ion-icon></div> -->
+          <div class="filled"><ion-icon name="chatbubbles"></ion-icon></div>
         </div>
         <div class="details">
           <div class="name">Chat with us</div>
           <div class="description">Ask us what ever you need</div>
         </div>
       </div>
-      <div class="menu-item" (click)="routeTo('/store-locator')">
+      <!-- <div class="menu-item" (click)="routeTo('/store-locator')">
         <div class="icon">
           <div class="outline"><ion-icon name="business-outline"></ion-icon></div>
-          <!-- <div class="filled"><ion-icon name="business"></ion-icon></div> -->
+          <div class="filled"><ion-icon name="business"></ion-icon></div>
         </div>
         <div class="details">
           <div class="name">Stores Locator</div>
           <div class="description">Know where we are located to give us a visit.</div>
         </div>
-      </div>
+      </div> -->
       <div class="menu-item" (click)="routeTo('/about')">
         <div class="icon">
           <div class="outline"><ion-icon name="help-circle-outline"></ion-icon></div>
-          <!-- <div class="filled"><ion-icon name="business"></ion-icon></div> -->
+          <div class="filled"><ion-icon name="business"></ion-icon></div>
         </div>
         <div class="details">
           <div class="name">About us</div>
@@ -64,7 +64,7 @@
       <div class="menu-item" (click)="copyAppShareUrl()">
         <div class="icon">
           <div class="outline"><ion-icon name="megaphone-outline"></ion-icon></div>
-          <!-- <div class="filled"><ion-icon name="megaphone"></ion-icon></div> -->
+          <div class="filled"><ion-icon name="megaphone"></ion-icon></div>
         </div>
         <div class="details">
           <div class="name">Tell a friend</div>
@@ -74,7 +74,7 @@
       <div class="menu-item log-out" (click)="signout()">
         <div class="icon">
           <div class="outline"><ion-icon name="log-out-outline"></ion-icon></div>
-          <!-- <div class="filled"><ion-icon name="log-out"></ion-icon></div> -->
+          <div class="filled"><ion-icon name="log-out"></ion-icon></div>
         </div>
         <div class="details">
           <div class="name">Sign out</div>

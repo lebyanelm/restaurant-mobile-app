@@ -25,7 +25,7 @@
         <div class="price">R{{order.totalPrice}}</div>
       </div>
       <div class="bottom">
-        <div class="destination">{{order.destination?.address}}</div>
+        <div class="destination">{{ order.orderingMode === 'collection' ? ['Collection from', order.branch.name].join(' ') : ['Delivery to', order.destination].join(' ') }}</div>
         <div class="space"></div>
         <div class="discounted" *ngIf="order.promocodeUsed.discount !== undefined">Discounted</div>
       </div>
