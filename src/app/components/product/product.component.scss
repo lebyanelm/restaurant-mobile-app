@@ -1,151 +1,147 @@
-@import '../../../variables.scss';
+@import "../../../variables.scss";
 
 .menu-item {
-    width: 100%;
-    margin-bottom: 40px;
-    padding: 0 20px;
-    position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  position: relative;
+  border-bottom: 2px solid #ddd;
 
-    .dietary-tag {
-        padding: 6px 10px;
-        background: transparentize($theme-color, 0);
+  .dietary-tag {
+    padding: 6px 10px;
+    background: transparentize($theme-color, 0);
+    color: $text-color-on-dark;
+    font-size: small;
+    font-weight: bold;
+    position: absolute;
+    transform: translateY(-50%);
+    border-radius: $radius;
+    border-bottom-left-radius: 0;
+    z-index: 100;
+  }
+
+  // Button customers can use to favorite items they love
+
+  .menu-item-header {
+    position: relative;
+    .menu-item-placeholder {
+      width: 100%;
+      height: 150px;
+      background-size: cover;
+      border-radius: $radius;
+      background-position: center center;
+      background: #eee;
+    }
+  }
+
+  .menu-item-footer {
+    padding: 20px 0 10px 0;
+    width: 100%;
+    margin: 0 auto;
+    // border-bottom: $border;
+
+    .menu-item-name {
+      display: flex;
+      align-items: center;
+      font-size: larger !important;
+      font-weight: bold;
+
+      .basket-item-indicator {
+        height: 10px;
+        width: 10px;
+        background: $theme-color;
+        border-radius: 50px;
+        // transform: translateY(-25%);
+        margin-right: 5px;
+      }
+
+      .new-stamp {
         color: $text-color-on-dark;
-        font-size: small;
-        font-weight: bold;
-        position: absolute;
-        transform: translateY(-50%);
-        border-radius: $radius;
-        border-bottom-left-radius: 0;
-        z-index: 100;
+        background: $theme-color;
+        padding: 0 5px 2px 5px;
+        border-radius: 50px;
+        margin-left: 8px;
+
+        span {
+          font-size: 10px !important;
+          font-weight: bold;
+        }
+      }
     }
 
-    // Button customers can use to favorite items they love
-    .like-button {
-        padding: 10px 0;
-        background: transparent;
-        border: none;
+    .menu-item-description {
+      opacity: 0.5;
+      margin-bottom: 10px;
+      font-size: small;
+    }
+
+    .menu-item-tags {
+      &,
+      .tag {
+        display: flex;
+        align-items: center !important;
+      }
+
+      .price {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        opacity: 1 !important;
+
+        .like {
+          background: transparent;
+          padding: 0;
+          margin-right: 10px;
+
+          ion-icon {
+            color: #000 !important;
+          }
+
+          &[isLiked="true"] {
+            ion-icon {
+              color: $danger !important;
+            }
+          }
+        }
+
+        span {
+          color: $theme-color;
+          font-weight: bolder;
+        }
+      }
+
+      &,
+      .tag {
+        display: flex;
+        align-items: center;
+      }
+
+      .tag {
+        border-radius: 50px;
+        margin-right: 10px;
+        opacity: 0.7;
+
+        &[isFlashing="true"] span,
+        &[isFlashing="true"] ion-icon {
+          color: $theme-color;
+        }
+
+        section {
+          margin-left: 3px;
+          margin-right: 5px;
+        }
 
         ion-icon {
-            position: absolute;
-            color: $text-color-on-light;
-            font-size: 25px;
+          font-size: smaller;
         }
 
-        &[isLiked=true] {
-            ion-icon[name=heart] {
-                opacity: 1;
-                color: $danger;
-            }
-
-            ion-icon {
-                animation: ScaleUpCenter 300ms ease-in-out;
-            }
+        &.category {
+          padding: 1px 5px;
+          border-radius: 50px;
+          background: transparentize($secondary-color, 0.8);
+          font-size: small;
         }
+      }
     }
-
-    .menu-item-header {
-        position: relative;
-        border-top: 1px solid #EEE;
-        .menu-item-placeholder {
-            width: 100%;
-            height: 150px;
-            background-size: cover;
-            border-radius: $radius;
-            background-position: center center;
-            background: #EEE;
-        }
-    }
-
-    .menu-item-footer {
-        padding: 20px 0 10px 0;
-        width: 100%;
-        margin: 0 auto;
-        // border-bottom: $border;
-
-        .menu-item-name {
-            display: flex;
-            align-items: center;
-            font-size: larger !important;
-            font-weight: bold;
-
-            .basket-item-indicator {
-                height: 10px;
-                width: 10px;
-                background: $theme-color;
-                border-radius: 50px;
-                // transform: translateY(-25%);
-                margin-right: 5px;
-            }
-
-            .new-stamp {
-                color: $text-color-on-dark;
-                background: $theme-color;
-                padding: 0 5px 2px 5px;
-                border-radius: 50px;
-                margin-left: 8px;
-
-                span {
-                    font-size: 10px !important;
-                    font-weight: bold;
-                }
-            }
-        }
-
-        .menu-item-description {
-            opacity: 0.5;
-            margin-bottom: 10px;
-            font-size: small;
-        }
-
-        .menu-item-tags {
-            &,
-            .tag {
-                display: flex;
-                align-items: center !important;
-            }
-
-            .price {
-                margin-right: 10px;
-                opacity: 1 !important;
-
-                span {
-                    color: $theme-color;
-                    font-weight: bolder;
-                }
-            }
-
-            &,
-            .tag {
-                display: flex;
-                align-items: center;
-            }
-
-            .tag {
-                border-radius: 50px;
-                margin-right: 10px;
-                opacity: 0.7;
-
-                &[isFlashing=true] span,
-                &[isFlashing=true] ion-icon {
-                    color: $theme-color;
-                }
-
-                section {
-                    margin-left: 3px;
-                    margin-right: 5px;
-                }
-
-                ion-icon {
-                    font-size: smaller;
-                }
-
-                &.category {
-                    padding: 1px 5px;
-                    border-radius: 50px;
-                    background: transparentize($secondary-color, 0.8);
-                    font-size: small;
-                }
-            }
-        }
-    }
+  }
 }

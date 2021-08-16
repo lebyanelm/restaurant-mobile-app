@@ -24,7 +24,13 @@
           </div>
 
           <div class="menu-item-tags">
-              <div class="price"><span>R{{price}}</span></div>
+              <div class="price">
+                <!-- To be able to add a product to the favorites list -->
+                <button class="like" *ngIf="data" [attr.isLiked]="data.favorites.indexOf(id) !== -1" (click)="likeProduct(id)">
+                  <ion-icon name="heart"></ion-icon>
+                </button>
+                <span>R{{price}}</span>
+              </div>
               <!-- Number of views for a product will always be greater or equal to number of buys but not less. -->
               <div class="tag" [attr.isFlashing]="(views !== 0 ? ((buys / views) * 5).toFixed(1) : 0) > 2.5"><ion-icon name="flash"></ion-icon> {{views !== 0 ? ((buys / views) * 5).toFixed(1) : 0}} </div>
               <!-- <div class="tag" style.color="green" *ngIf="expectedPrepareTime.upper !== 0"><span>{{expectedPrepareTime.lower}}&mdash;{{expectedPrepareTime.upper}} min</span></div> -->
@@ -32,10 +38,7 @@
           </div>
         </div>
         <div class="right">
-          <!-- To be able to add a product to the favorites list -->
-          <button class="like-button" *ngIf="data" [attr.isLiked]="data.favorites.indexOf(id) !== -1" (click)="likeProduct(id)">
-              <ion-icon class="center" name="heart"></ion-icon>
-          </button>
+
         </div>
     </div>
 </div>
