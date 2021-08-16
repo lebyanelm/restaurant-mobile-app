@@ -21,36 +21,13 @@
 
     // Button customers can use to favorite items they love
     .like-button {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        z-index: 200000;
-        padding: 0;
+        padding: 10px 0;
         background: transparent;
         border: none;
 
-        &[isProductHaveImage=false] {
-            bottom: -70px;
-
-            &:before {
-                filter: blur(20px);
-            }
-        }
-
-        &::before {
-            content: '';
-            display: block;
-            background: #000;
-            opacity: 0.7;
-            filter: blur(10px);
-            height: 50px;
-            width: 50px;
-            border-radius: 50px;
-        }
-
         ion-icon {
             position: absolute;
-            color: $text-color-on-dark;
+            color: $text-color-on-light;
             font-size: 25px;
         }
 
@@ -75,6 +52,7 @@
             background-size: cover;
             border-radius: $radius;
             background-position: center center;
+            background: #EEE;
         }
     }
 

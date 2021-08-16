@@ -5,7 +5,12 @@ import { GoogleapisService } from './../../services/googleapis.service';
 import { OrdersPage } from './../orders/orders.page';
 import { BasketService } from 'src/app/services/basket.service';
 import { Destination } from './../../interfaces/Destination';
-import { IonRefresher, IonSlides, ModalController, Platform } from '@ionic/angular';
+import {
+  IonRefresher,
+  IonSlides,
+  ModalController,
+  Platform,
+} from '@ionic/angular';
 import { Product } from './../../interfaces/Product';
 import { ProductsService } from './../../services/products.service';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
@@ -18,8 +23,8 @@ import { DeliveryLocationComponent } from 'src/app/components/delivery-location/
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements AfterViewInit {
-  @ViewChild('BannerSlides', {static: false}) bannerSlides: IonSlides;
-  @ViewChild('Refresher', {static: false}) refresher: IonRefresher;
+  @ViewChild('BannerSlides', { static: false }) bannerSlides: IonSlides;
+  @ViewChild('Refresher', { static: false }) refresher: IonRefresher;
 
   public products: Product[] = [];
   public banners: Banner[] = [];
@@ -32,19 +37,23 @@ export class ProductsComponent implements AfterViewInit {
   _platform: string;
 
   // tslint:disable-next-line: variable-name
-  constructor(private _products: ProductsService,
-              private modalCtrl: ModalController,
-              public basket: BasketService,
-              private googleServices: GoogleapisService,
-              private modalEvents: ModalEventsService,
-              private toastService: ToastService,
-              private platform: Platform,
-              private browserPage: BrowserPageService) {
-                this._platform = platform.platforms()[0];
-              }
+  constructor(
+    private _products: ProductsService,
+    private modalCtrl: ModalController,
+    public basket: BasketService,
+    private googleServices: GoogleapisService,
+    private modalEvents: ModalEventsService,
+    private toastService: ToastService,
+    private platform: Platform,
+    private browserPage: BrowserPageService
+  ) {
+    this._platform = platform.platforms()[0];
+  }
   ngAfterViewInit() {
     // Detect current customer's location
-    this.getUserLocation();
+    this.googleServices
+      .getUserLocation()
+      .then((location: Destination) => (this.selectedAddress = location));
   }
 
   startBannerSlideAnimation() {
@@ -53,28 +62,25 @@ export class ProductsComponent implements AfterViewInit {
     // For creating a custom indicator for the slides
     this.getBannerIndices();
 
+    this.bannerSlides.ionSlideDidChange.subscribe((_) => {
+      this.bannerSlides.getActiveIndex().then((index) => {
+        this.currentSlideIndex = index;
 
-    this.bannerSlides.ionSlideDidChange
-      .subscribe(_=> {
-        this.bannerSlides.getActiveIndex()
-          .then((index) => {
-            this.currentSlideIndex = index;
-
-            // Get the length to determine which button to disable
-            this.bannerSlides.length()
-              .then((length) => {
-                if ((length - 1) === this.currentSlideIndex) {
-                  this.isNextDisabled = true
-                  this.isPreviousDisabled = false;
-                } else if (this.currentSlideIndex === 0) {
-                  this.isPreviousDisabled = true;
-                  this.isNextDisabled = false;
-                } else {
-                  this.isNextDisabled = false;
-                  this.isPreviousDisabled = false; }
-              });
-          });
+        // Get the length to determine which button to disable
+        this.bannerSlides.length().then((length) => {
+          if (length - 1 === this.currentSlideIndex) {
+            this.isNextDisabled = true;
+            this.isPreviousDisabled = false;
+          } else if (this.currentSlideIndex === 0) {
+            this.isPreviousDisabled = true;
+            this.isNextDisabled = false;
+          } else {
+            this.isNextDisabled = false;
+            this.isPreviousDisabled = false;
+          }
+        });
       });
+    });
   }
 
   getBannerIndices() {
@@ -87,59 +93,51 @@ export class ProductsComponent implements AfterViewInit {
   async changeDeliveryAddress() {
     const deliveryLocationSelector = await this.modalCtrl.create({
       component: DeliveryLocationComponent,
-      cssClass: ['delivery-location-selector']
+      cssClass: ['delivery-location-selector'],
     });
 
     this.modalEvents.statusChange.next(true);
-    deliveryLocationSelector.onDidDismiss()
-      .then((data) => {
-        this.modalEvents.statusChange.next(false);
-        if (data.data) {
-          this.basket.destination = data.data;
-          this.basket.isDestinationAutoDetect = false;
-        }
-      });
-    deliveryLocationSelector.present();
-  }
-
-  getUserLocation() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const coords = {lat: position.coords.latitude, lng: position.coords.longitude};
-      this.googleServices.coordinatesToAddress(coords, (response: google.maps.GeocoderResult) => {
-        if (response) {
-          this.selectedAddress = { coords, address: response.formatted_address.split(',') };
-          this.basket.destination = this.selectedAddress;
-          this.basket.isDestinationAutoDetect = true;
-        }
-      });
-    }, (error) => {
-      this.toastService.show('Unable to detect your location.');
+    deliveryLocationSelector.onDidDismiss().then((data) => {
+      this.modalEvents.statusChange.next(false);
+      if (data.data) {
+        this.basket.destination = data.data;
+        this.basket.isDestinationAutoDetect = false;
+      }
     });
+    deliveryLocationSelector.present();
   }
 
   // Reload any data that can be updated by the partner, Banners, Products and all
   doReload() {
-    this._products.getProducts()
+    this._products
+      .getProducts()
       .then((products) => {
         // Replace the older products with the newly reloaded products
         this.products = products;
 
         // Place the products in the order of popularity in a descending manner
-        const orderedProducts = this.products.sort(this.comparePopularityRate).reverse();
+        const orderedProducts = this.products
+          .sort(this.comparePopularityRate)
+          .reverse();
         this.products = orderedProducts;
 
         // Also refresh the banners
-        this._products.getBanners()
+        this._products
+          .getBanners()
           .then((banners: Banner[]) => {
             this.banners = banners;
             this.getBannerIndices();
             this.refresher.complete();
-          }).catch((error) => {
-            this.toastService.show('Failed to refresh the banners. Please try again.');
+          })
+          .catch((error) => {
+            this.toastService.show(
+              'Failed to refresh the banners. Please try again.'
+            );
             // Hide the refresh loader
             this.refresher.complete();
-          })
-      }).catch((error) => {
+          });
+      })
+      .catch((error) => {
         this.toastService.show('Failed to refresh the page. Please try again.');
         this.refresher.complete();
       });
@@ -147,8 +145,12 @@ export class ProductsComponent implements AfterViewInit {
 
   comparePopularityRate(product1: Product, product2: Product): number {
     // Calculate the popularity rate of both the compared products
-    const product1PopularityRate = product1.buys ? (product1.buys / product2.views) * 5 : 0,
-          product2PopularityRate = product2.buys ? (product2.buys / product2.views) * 5 : 0;
+    const product1PopularityRate = product1.buys
+        ? (product1.buys / product2.views) * 5
+        : 0,
+      product2PopularityRate = product2.buys
+        ? (product2.buys / product2.views) * 5
+        : 0;
 
     if (product1PopularityRate < product2PopularityRate) {
       return -1;

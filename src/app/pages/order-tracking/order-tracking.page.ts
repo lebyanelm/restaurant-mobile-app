@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { Order } from 'src/app/interfaces/Order';
 import { Plugins } from '@capacitor/core';
 import * as superagent from 'superagent';
+import { BasketService } from 'src/app/services/basket.service';
 
 @Component({
   selector: 'app-order-tracking',
@@ -23,23 +24,23 @@ export class OrderTrackingPage implements OnInit {
     private router: Router,
     private storage: StorageService,
     private activatedRoute: ActivatedRoute,
-    private chat: ChatService
-  ) { }
+    private chat: ChatService,
+    private basket: BasketService
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.id = params.id;
-      this.storage.getItem(environment.customerDataName)
-        .then((data) => {
-          this.data = data;
-          for (let order of this.data.orders) {
-            if (order.id === this.id) {
-              this.order = order;
-              console.log(this.order);
-              break;
-            }
+      this.storage.getItem(environment.customerDataName).then((data) => {
+        this.data = data;
+        for (let order of this.data.orders) {
+          if (order.id === this.id) {
+            this.order = order;
+            this.basket.destination = this.order.destination;
+            break;
           }
-        });
+        }
+      });
     });
   }
 
@@ -52,13 +53,16 @@ export class OrderTrackingPage implements OnInit {
           orderIds: [this.order.id],
           branchId: this.order.branch.id,
           status: 6,
-          partnerId: this.data.partnerId })
+          partnerId: this.data.partnerId,
+        })
         .end((_, response) => {
           console.log(response);
-        })
+        });
     } else {
-      Plugins.Toast.show({ text: 'Error: Order can not be cancelled. Contact us instead.' });
-      console.log('Error: Order can not be cancelled. Contact us instead.')
+      Plugins.Toast.show({
+        text: 'Error: Order can not be cancelled. Contact us instead.',
+      });
+      console.log('Error: Order can not be cancelled. Contact us instead.');
     }
   }
 

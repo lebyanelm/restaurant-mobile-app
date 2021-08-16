@@ -94,35 +94,22 @@
 .multi-checkbox-items .checkbox-item {
   display: flex;
   margin-bottom: 10px;
+  padding: 20px !important;
+  border: 2px solid #DDD;
+  border-radius: $radius;
   opacity: .6;
 }
 
 // WHEN CHECKBOX IS SELECTED
 .multi-checkbox-items .checkbox-item[isChecked="true"] {
   opacity: 1;
+  border-color: $theme-color;
 }
 
 .multi-checkbox-items .checkbox-item[isChecked="true"],
 .multi-checkbox-items .checkbox-item[isChecked="true"] ion-icon {
   color: $theme-color !important;
 }
-
-.multi-checkbox-items .checkbox-item[isChecked="true"] .checkbox-container ion-icon.on {
-  opacity: 1;
-}
-
-.multi-checkbox-items .checkbox-item[isChecked="false"] .checkbox-container ion-icon.on {
-  opacity: 0;
-}
-
-.multi-checkbox-items .checkbox-item[isChecked="true"] .checkbox-container ion-icon.off {
-  opacity: 0;
-}
-
-.multi-checkbox-items .checkbox-item[isChecked="false"] .checkbox-container ion-icon.off {
-  opacity: 1;
-}
-
 
 .multi-checkbox-items .checkbox-item .checkbox-container {
   height: 40px;

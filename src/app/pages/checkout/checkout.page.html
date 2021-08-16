@@ -29,8 +29,7 @@
     <!-- Online payment item -->
     <div class="checkbox-item" [attr.isChecked]="this.basket.paymentMethod === 'online-payment'" (click)="this.basket.paymentMethod = 'online-payment'">
       <div class="checkbox-container">
-        <ion-icon class=off name=browsers-outline></ion-icon>
-        <ion-icon class=on name=browsers></ion-icon>
+        <ion-icon class="on off" name=browsers></ion-icon>
       </div>
       <div class="checkbox-item-details">
         <div class="checkbox-item-name">Online Payment</div>
@@ -41,11 +40,10 @@
     <!-- Card on delivery payment option -->
     <div class="checkbox-item" [attr.isChecked]="this.basket.paymentMethod === 'card-on-delivery'" (click)="this.basket.paymentMethod = 'card-on-delivery'">
       <div class="checkbox-container">
-        <ion-icon class=off name=card-outline></ion-icon>
-        <ion-icon class=on name=card></ion-icon>
+        <ion-icon class="on off" name=card></ion-icon>
       </div>
       <div class="checkbox-item-details">
-        <div class="checkbox-item-name">Card&mdash;On&mdash;{{ this.basket.orderingMode === 'delivery' ? 'Delivery' : 'Collection' }}</div>
+        <div class="checkbox-item-name">Card Payment</div>
         <div class="checkbox-item-description">Pay with a card machine when you {{ this.basket.orderingMode === 'delivery' ? 'recieve your delivery' : 'collect your order'}}.</div>
       </div>
     </div>
@@ -53,11 +51,10 @@
     <!-- Raw cash payment option -->
     <div class="checkbox-item" [attr.isChecked]="this.basket.paymentMethod === 'cash-on-delivery'" (click)="this.basket.paymentMethod = 'cash-on-delivery'">
       <div class="checkbox-container">
-        <ion-icon class=off name=cash-outline></ion-icon>
-        <ion-icon class=on name=cash></ion-icon>
+        <ion-icon class="on off" name=cash></ion-icon>
       </div>
       <div class="checkbox-item-details">
-        <div class="checkbox-item-name">Cash&mdash;On&mdash;{{ this.basket.orderingMode === 'delivery' ? 'Delivery' : 'Collection' }}</div>
+        <div class="checkbox-item-name">Cash Payment</div>
         <div class="checkbox-item-description">Pay with raw cash when you {{ this.basket.orderingMode === 'delivery' ? 'recieve your delivery' : 'collect your order'}}.</div>
       </div>
     </div>
@@ -73,8 +70,7 @@
     <!-- Online payment item -->
     <div class="checkbox-item" [attr.isChecked]="this.basket.orderingMode === 'delivery'" (click)="this.basket.orderingMode = 'delivery'">
       <div class="checkbox-container">
-        <ion-icon class=off name=bicycle-outline></ion-icon>
-        <ion-icon class=on name=bicycle></ion-icon>
+        <ion-icon class="on off" name=bicycle></ion-icon>
       </div>
       <div class="checkbox-item-details move-right">
         <div class="checkbox-item-name">Delivery</div>
@@ -84,8 +80,7 @@
 
     <div class="checkbox-item" [attr.isChecked]="this.basket.orderingMode === 'collection'" (click)="this.basket.orderingMode = 'collection'">
       <div class="checkbox-container">
-        <ion-icon class=off name=man-outline></ion-icon>
-        <ion-icon class=on name=man></ion-icon>
+        <ion-icon class="on off" name=man></ion-icon>
       </div>
       <div class="checkbox-item-details">
         <div class="checkbox-item-name">Collection</div>

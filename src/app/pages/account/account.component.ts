@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { ModalController, Platform } from '@ionic/angular';
 import { ChatComponent } from 'src/app/components/chat/chat.component';
-import { ClipboardPluginWeb } from '@capacitor/core';
+import { ClipboardPluginWeb, Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-account',
@@ -65,14 +65,8 @@ export class AccountComponent implements OnInit {
       });
   }
 
-  copyAppShareUrl() {
-    this.clipboard.write({
-      url: this.platform.is('ios') ? 'https://melbourne.nextify.co.za/ios' : 'https://melbourne.nextify.co.za/android' })
-      .then(() => {
-        this.toast.show(this.platform.is('ios') ? 'AppStore link has been copied.' : 'Google Play Store link ready to share.');
-      }).catch((e) => {
-        this.toast.show(JSON.stringify(e));
-      });
+  referApp() {
+    Plugins.Share.share({ text: 'I refer you this app to place orders and get delicious food https://play.google.com/store/details?id=com.marios.pizza.grill, place an order from one our branches :)' })
   }
 
   signout() {

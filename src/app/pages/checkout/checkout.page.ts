@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { Branch } from 'src/app/interfaces/Branch';
 import * as superagent from 'superagent';
 import { DeliveryLocationComponent } from 'src/app/components/delivery-location/delivery-location.component';
+import { GoogleapisService } from 'src/app/services/googleapis.service';
 
 @Component({
   selector: 'app-checkout',
@@ -19,7 +20,6 @@ import { DeliveryLocationComponent } from 'src/app/components/delivery-location/
   styleUrls: ['./checkout.page.scss'],
 })
 export class CheckoutPage implements OnInit {
-
   data: User;
   branch: Branch;
 
@@ -31,30 +31,30 @@ export class CheckoutPage implements OnInit {
     private sockets: SocketsService,
     private router: Router,
     private modalCtrl: ModalController,
-    private modalEvents: ModalEventsService
-    ) { }
+    private modalEvents: ModalEventsService,
+    private googleServices: GoogleapisService
+  ) {}
 
   ngOnInit() {
     this.storage
       .getItem(environment.customerDataName)
-      .then((data) => this.data = data);
+      .then((data) => (this.data = data));
   }
 
   async changeDeliveryAddress() {
     const deliveryLocationSelector = await this.modalCtrl.create({
       component: DeliveryLocationComponent,
-      cssClass: ['delivery-location-selector']
+      cssClass: ['delivery-location-selector'],
     });
 
     this.modalEvents.statusChange.next(true);
-    deliveryLocationSelector.onDidDismiss()
-      .then((data) => {
-        this.modalEvents.statusChange.next(false);
-        if (data.data) {
-          this.basket.destination = data.data;
-          this.basket.isDestinationAutoDetect = false;
-        }
-      });
+    deliveryLocationSelector.onDidDismiss().then((data) => {
+      this.modalEvents.statusChange.next(false);
+      if (data.data) {
+        this.basket.destination = data.data;
+        this.basket.isDestinationAutoDetect = false;
+      }
+    });
     deliveryLocationSelector.present();
   }
 
@@ -65,8 +65,15 @@ export class CheckoutPage implements OnInit {
         .then((position) => {
           // Send a request to the backend to find the nearest branch to the customer
           superagent
-            .get([environment.BACKEND, 'branch?coordinates=',
-              [position.coords.latitude, position.coords.longitude].join(), '&partnerId=', environment.PARTNER_ID].join(''))
+            .get(
+              [
+                environment.BACKEND,
+                'branch?coordinates=',
+                [position.coords.latitude, position.coords.longitude].join(),
+                '&partnerId=',
+                environment.PARTNER_ID,
+              ].join('')
+            )
             .end((_, response) => {
               if (response) {
                 if (response.ok) {
@@ -78,7 +85,8 @@ export class CheckoutPage implements OnInit {
                 reject('No connection. Please check your internet connection.');
               }
             });
-        }).catch((error) => {
+        })
+        .catch((error) => {
           reject('Could not find your location');
         });
     });
@@ -95,14 +103,15 @@ export class CheckoutPage implements OnInit {
         } else {
           this.sendOrderCheckout(null);
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         Plugins.Toast.show({ text: error });
       });
   }
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://04d6e619b157.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://c8c73e91c4ac.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {
@@ -113,18 +122,30 @@ export class CheckoutPage implements OnInit {
       transactionReference: environment.PARTNER_ID,
       bankReference: environment.PARTNER_ID,
       registerTokenProfile: true,
-      tokenNotificationUrl: [environment.BACKEND, 'token-registration'].join(''),
-      tokenDeletedNotificationUrl: [environment.BACKEND, 'token-delete'].join(''),
+      tokenNotificationUrl: [environment.BACKEND, 'token-registration'].join(
+        ''
+      ),
+      tokenDeletedNotificationUrl: [environment.BACKEND, 'token-delete'].join(
+        ''
+      ),
       cancelUrl: [
-        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=cancel'].join(''),
+        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND,
+        'payment-status?status=cancel',
+      ].join(''),
       errorUrl: [
-        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=error'].join(''),
+        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND,
+        'payment-status?status=error',
+      ].join(''),
       successUrl: [
-        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=success'].join(''),
+        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND,
+        'payment-status?status=success',
+      ].join(''),
       notifyUrl: [
-        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND, 'payment-status?status=notify'].join(''),
+        environment.production ? environment.BACKEND : NGROK_TEST_BACKEND,
+        'payment-status?status=notify',
+      ].join(''),
       optional1: this.data.id,
-      isTest: true
+      isTest: true,
     };
 
     // Make a lowercase string of all the data items to send them to Ozow
@@ -145,13 +166,15 @@ export class CheckoutPage implements OnInit {
       OZOW_API_DATA.notifyUrl,
       OZOW_API_DATA.isTest,
       '215114531AFF7134A94C88CEEA48E',
-    ].join('').toLowerCase();
+    ]
+      .join('')
+      .toLowerCase();
 
     const hashRequest = await fetch(
-      [
-        'https://api.hashify.net/hash/sha512/hex?value=',
-        hashCheckBefore
-      ].join(''));
+      ['https://api.hashify.net/hash/sha512/hex?value=', hashCheckBefore].join(
+        ''
+      )
+    );
 
     const HASH_CHECK = await hashRequest.json();
 
@@ -181,17 +204,25 @@ export class CheckoutPage implements OnInit {
       </html>
     `;
 
-    const htmlDataURL = [ 'data:text/html;base64', btoa(pageHTML) ].join();
+    const htmlDataURL = ['data:text/html;base64', btoa(pageHTML)].join();
 
     let refWindow;
     if (this.platform.is('desktop')) {
       // eslint-disable-next-line max-len
-      refWindow = window.open('', '_blank', 'hidden=no,location=no,clearsessioncache=yes,clearcache=yes,height=650,width=350');
+      refWindow = window.open(
+        '',
+        '_blank',
+        'hidden=no,location=no,clearsessioncache=yes,clearcache=yes,height=650,width=350'
+      );
       refWindow.document.body.innerHTML = pageHTML;
       refWindow.document.getElementsByTagName('form')[0].submit();
     } else {
       // eslint-disable-next-line max-len
-      refWindow = InAppBrowser.create(htmlDataURL, '', 'hidden=no,location=yes,clearsessioncache=yes,clearcache=yes,height=400,width=200');
+      refWindow = InAppBrowser.create(
+        htmlDataURL,
+        '',
+        'hidden=no,location=yes,clearsessioncache=yes,clearcache=yes,height=400,width=200'
+      );
     }
 
     // Listen for a payment status to close the browser moda window
@@ -199,11 +230,17 @@ export class CheckoutPage implements OnInit {
       // Close the modal window
       refWindow.close();
 
-      if (payment.status === 'Complete' || payment.status === 'Pending' || payment.status === 'PendingInvestigation') {
+      if (
+        payment.status === 'Complete' ||
+        payment.status === 'Pending' ||
+        payment.status === 'PendingInvestigation'
+      ) {
         // Send the order to the partner
         this.sendOrderCheckout(payment);
       } else {
-        this.router.navigate(['order-placed'], { queryParams: { isOrderPlaced: false, isPaymentOnline: true } })
+        this.router.navigate(['order-placed'], {
+          queryParams: { isOrderPlaced: false, isPaymentOnline: true },
+        });
         Plugins.Toast.show({ text: 'Error, Payment not successful.' });
       }
     });
@@ -224,7 +261,9 @@ export class CheckoutPage implements OnInit {
       branch: this.branch,
 
       transactionId: paymentData ? paymentData.transactionId : null,
-      transactionReference: paymentData ? paymentData.transactionReference : null,
+      transactionReference: paymentData
+        ? paymentData.transactionReference
+        : null,
       transactionStatus: paymentData ? paymentData.status : null,
 
       orderPrice: this.basket.basketSummary.orderPrice,
@@ -241,23 +280,32 @@ export class CheckoutPage implements OnInit {
       .set('Authorization', this.data.token)
       .send(orderData)
       .end((_, response) => {
-        if(response) {
+        if (response) {
           if (response.ok) {
             Plugins.Toast.show({ text: 'Order placed!' });
             this.data.orders.push(response.body.order);
             this.storage.setItem(environment.customerDataName, this.data);
             this.storage.setItem(environment.ORDER, response.body.order.id);
-            this.router.navigate(['order-placed'], { queryParams: {
-              id: response.body.order.id,
-              isOrderPlaced: true,
-              isPaymentOnline: paymentData ? true : false } });
+            this.router.navigate(['order-placed'], {
+              queryParams: {
+                id: response.body.order.id,
+                isOrderPlaced: true,
+                isPaymentOnline: paymentData ? true : false,
+              },
+            });
           } else {
             Plugins.Toast.show({
-              text: response.body.reason || 'Error, Something went wrong. Please contact the restaurant for assistance.' });
-            this.router.navigate(['order-placed'], { queryParams: {
-              id: response.body.order.id,
-              isOrderPlaced: false,
-              isPaymentOnline: paymentData ? true : false } });
+              text:
+                response.body.reason ||
+                'Error, Something went wrong. Please contact the restaurant for assistance.',
+            });
+            this.router.navigate(['order-placed'], {
+              queryParams: {
+                id: response.body.order.id,
+                isOrderPlaced: false,
+                isPaymentOnline: paymentData ? true : false,
+              },
+            });
           }
         } else {
           Plugins.Toast.show({ text: 'Error, No internet connection.' });
