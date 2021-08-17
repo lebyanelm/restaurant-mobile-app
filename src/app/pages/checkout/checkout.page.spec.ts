@@ -7,16 +7,18 @@ describe('CheckoutPage', () => {
   let component: CheckoutPage;
   let fixture: ComponentFixture<CheckoutPage>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CheckoutPage ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckoutPage],
+        imports: [IonicModule.forRoot()],
+      }).compileComponents();
 
-    fixture = TestBed.createComponent(CheckoutPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+      fixture = TestBed.createComponent(CheckoutPage);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
