@@ -14,5 +14,5 @@
   <button [disabled]="isLoading" *ngIf="statusCode === 200" (click)="routeTo('/order-placed')">Track my order</button>
   <button *ngIf="statusCode === 501" (click)="voteForArea()">Vote for area</button>
   <button *ngIf="statusCode === 406" (click)="routeTo('/about')">View working hours</button>
-  <button *ngIf="statusCode === -1 && statusCode === 422" (click)="goBack()">Go back</button>
+  <button *ngIf="statusCode === -1 || statusCode === 422" (click)="goBack()">Go back</button>
 </ion-footer>

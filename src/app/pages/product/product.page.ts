@@ -149,7 +149,7 @@ export class ProductPage implements AfterViewInit {
     this.basket.update();
   }
 
-  selectSectionOption(section: Section, option: SectionOption): void {
+  selectSectionOption(section: any, option: SectionOption): void {
     const syncObject: BasketItem = this.inBasket() !== -1 ? this.basket.products[this.inBasket()] : this.bData,
           // Remove spaces from the name of the section for use in the basket
           name = section.name.replace(/\s/g, '_');

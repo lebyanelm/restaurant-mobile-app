@@ -27,7 +27,7 @@
       <b class="item">{{ order.timeCreated.time }}</b><br>
       <div class="item">{{ order.promocodeUsed.code ? [order.promocodeUsed.code, ['(-', order.discount, ')'].join('')].join(' ') : 'No Discount' }}</div>
       <div class="item">{{ order.paymentMethod === undefined ? 'Cash' : 'Online Payment' }}</div>
-      <div class="item">{{ getOrderStatus() }}</div>
+      <div class="item">{{ getOrderStatus(order.status) }}</div>
     </div>
 
     <div class="order-items">
@@ -52,17 +52,17 @@
         <div class="space"></div>
         <b>R {{ order.deliveryFee.toFixed(2) || 0 }}</b>
       </div>
-      
+
       <div class="flex">
         <b>Sub Total</b>
         <div class="space"></div>
-        <b>R {{ (order.totalPrice - (order.VAT + order.deliveryFee)).toFixed(2) }}</b>
+        <b>R {{ (order.totalPrice - (order.deliveryFee)).toFixed(2) }}</b>
       </div>
-      
+
       <div class="flex">
         <b>VAT</b>
         <div class="space"></div>
-        <b>R {{ order.VAT.toFixed(2) || 0 }}</b>
+        <!-- <b>R {{ order.VAT.toFixed(2) || 0 }}</b> -->
       </div>
     </div>
 
@@ -78,7 +78,7 @@
     <br>
     <div class=repeat-order-button>
       <button (click)="repeatOrder()">Repeat Order</button>
-    </div>    
-    
+    </div>
+
   </div>
 </ion-content>

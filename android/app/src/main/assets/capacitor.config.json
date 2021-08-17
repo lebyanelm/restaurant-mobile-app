@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "ionic-app-base",
+  "appId": "com.marios.pizza.grill",
+  "appName": "Marios Pizza Grill",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
@@ -9,9 +9,5 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {},
-  "server": {
-    "url": "http://192.168.43.29:8102",
-    "originalUrl": "http://192.168.43.29:8100"
-  }
+  "cordova": {}
 }

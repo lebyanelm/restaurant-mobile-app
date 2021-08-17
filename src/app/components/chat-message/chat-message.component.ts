@@ -11,7 +11,7 @@ import { StorageService } from 'src/app/services/storage.service';
 export class ChatMessageComponent implements OnInit {
   @Input() id: string;
   @Input() body: string;
-  @Input() attachments: string;
+  @Input() attachments: string[];
   @Input() from: string;
   @Input() to: string;
   @Input() type: string;
@@ -32,11 +32,9 @@ export class ChatMessageComponent implements OnInit {
     }
 
     // Get the avatar of the customer
-    this.storage.getItem(environment.customerDataName)
-      .then((data) => {
-        if (data)
-          this.avatar = data.media[data.media.length - 1];
-      });
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      if (data) this.avatar = data.media[data.media.length - 1];
+    });
   }
 
   ngOnInit() {}

@@ -3,17 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 const environment = {
-  production: false,
-  PARTNER_ID: '1626095160275',
+  production: true,
+  PARTNER_ID: 'C4dj_7orkkkxz4i8',
   AppId: 'App-Id',
   GOOGLE_KEY: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
-  IO: 'http://192.168.43.29:5000',
+  IO: 'https://apis.nextify.co.za/partners',
   ORDER: 'Current-Order-Id',
-  BACKEND: 'http://192.168.43.29:5000/',
+  BACKEND: 'https://apis.nextify.co.za/partners/',
   customerDataName: 'Customer-Data',
   driverDataName: 'Driver-Data',
   FACEBOOK_LOGIN_APPID: '2770390493238875',
-  FACEBOOK_APP_SECRET: 'a92459f085b5499b5c1d0e41aa3c1051'
+  FACEBOOK_APP_SECRET: 'a92459f085b5499b5c1d0e41aa3c1051',
 };
 
 export { environment };

@@ -1,12 +1,17 @@
 import { TimeCreated } from './TimeCreated';
 export interface Message {
-    id?: string;
-    timeCreated?: TimeCreated;
-    body: string;
-    branchId?: string;
-    attachments?: string[];
+  id?: string;
+  timeCreated?: TimeCreated;
+  body: string;
+  branchId?: string;
+  attachments?: string[];
+  type?: string;
+  state?: number;
+  reply?: {
     type?: string;
-    state?: number;
-    from?: string;
-    to?: string;
+    body?: string;
+    id?: string;
+  };
+  from?: string;
+  to?: string;
 }
