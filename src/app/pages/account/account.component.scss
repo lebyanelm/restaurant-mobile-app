@@ -1,88 +1,95 @@
-@import '../../../variables.scss';
+@import "../../../variables.scss";
 
 ion-content {
-    --background: #EEE;
+  --background: #eee;
 
-    &.menu-items-content {
-        --background: #FFF !important;
-    }
+  &.menu-items-content {
+    --background: #fff !important;
+  }
 }
 
 .account-page-content {
-    padding: 30px 0;
-    background: $background-color;
+  padding: 30px 0;
+  background: $background-color;
 }
 
 .page-profile-header,
 .menu-list-items {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    .description { font-size: small; opacity: 0.5; }
+  .description {
+    font-size: small;
+    opacity: 0.5;
+  }
 }
 
 .page-profile-header {
-    padding: 0 20px 10px 20px;
-    border-bottom: 10px solid #EEE;
-    
-    .profile-avatar {
-        height: 60px;
-        width: 60px;
-        background: #DDD;
-        border-radius: 50px;
-        margin-right: 20px;
-    }
+  padding: 0 20px 10px 20px;
+  border-bottom: 10px solid #eee;
 
-    .name {
-        font-size: large;
-        font-weight: bold;
-    }
+  .profile-avatar {
+    height: 60px;
+    width: 60px;
+    background: #ddd;
+    border-radius: 50px;
+    margin-right: 20px;
+    background-position: center center;
+    background-size: cover;
+  }
 
-    .description {
-        color: $theme-color;
-    }
+  .name {
+    font-size: larger !important;
+    font-weight: bold;
+  }
+
+  .description {
+    color: $theme-color;
+  }
 }
 
 .menu-list-items {
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 0 0;
-    padding: 0 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 0;
+  padding: 0 20px;
 
-    .menu-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        width: 100%;
+  .menu-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
 
-        &.log-out {
-            color: $danger;
-        }
-
-        .details {
-            border-bottom: 1px solid #EEE;
-            width: 100%;
-
-            .name { font-weight: bold; }
-
-            .description {
-                margin-bottom: 10px;
-            }
-        }
+    &.log-out {
+      color: $danger;
     }
 
-    .icon {
-        position: relative;
-        height: 40px;
-        width: 50px;
-        ion-icon {
-            position: absolute;
-            font-size: 25px;
-            color: #333;
-        }
+    .details {
+      border-bottom: 1px solid #eee;
+      width: 100%;
 
-        .filled {
-            opacity: 0.1;
-        }
+      .name {
+        font-weight: bold;
+      }
+
+      .description {
+        margin-bottom: 10px;
+      }
     }
+  }
+
+  .icon {
+    position: relative;
+    height: 40px;
+    width: 50px;
+    ion-icon {
+      position: absolute;
+      font-size: 25px;
+      color: #333;
+    }
+
+    .filled {
+      opacity: 0.1;
+    }
+  }
 }

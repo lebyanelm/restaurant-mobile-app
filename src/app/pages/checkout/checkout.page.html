@@ -11,12 +11,12 @@
   <div class="section-title">
     <div class="name">Delivery Address</div>
     <div class="space"></div>
-    <div class="button" (click)="changeDeliveryAddress()">Change</div>
+    <div class="button" (click)="setDeliveryAddress()">{{this.basket?.destination ? "Change" : "Pin Location"}}</div>
   </div>
 
   <div class="delivery-address">
     <div class="customer-name">{{ this.data?.names }}</div>
-    <div class="address">{{ this.basket.destination.address }}</div>
+    <div class="address">{{ this.basket?.destination?.address || "No destination has been chosen" }}</div>
   </div>
 
   <!-- <div class="section-line"></div> -->

@@ -1,4 +1,5 @@
 import { SocketsService } from 'src/app/services/sockets.service';
+import { BasketService } from 'src/app/services/basket.service';
 import { Coordinates } from './../../interfaces/Coordinates';
 import { StorageService } from './../../services/storage.service';
 import { Component, AfterViewInit, ElementRef, ViewChild, Input } from '@angular/core';
@@ -68,7 +69,8 @@ export class MapComponent implements AfterViewInit {
     private mapEvents: MapEventsService,
     private platform: Platform,
     private storage: StorageService,
-    private sockets: SocketsService
+    private sockets: SocketsService,
+    private basket: BasketService
   ) {
     console.log(this.isSetAutoWidth, 'is auto width');
   }
@@ -83,7 +85,7 @@ export class MapComponent implements AfterViewInit {
       container: this.mapElement.nativeElement,
       style: 'mapbox://styles/lebyanelm/ckafxhtci05gl1ims03863371',
       zoom: this.zoom || 16,
-      center: this.center ? [this.center.lng, this.center.lat] : [0, 0],
+      center: this.basket.destination ? [this.basket.destination.coords.lng, this.basket.destination.coords.lat] : [0, 0],
       attributionControl: false
     });
 
@@ -131,6 +133,9 @@ export class MapComponent implements AfterViewInit {
     this.map.on(this.platform.is('desktop') ? 'mouseup' : 'touchend', () => {
       this.isMapMove = false;
       this.isSetToBounds = false;
+
+      Plugins.Toast.show({text: "Changing address."});
+
       if (this.isEmitCenter) {
         this.emitMapCenter();
       }
@@ -140,23 +145,31 @@ export class MapComponent implements AfterViewInit {
       }
     });
 
-    Plugins.Geolocation.getCurrentPosition({enableHighAccuracy: true})
-      .then(position => {
-        this.currentLocation = [position.coords.longitude, position.coords.latitude];
-        if (!this.isSetToBounds && !this.isStatic && !this.center) {
-          this.map.setCenter(this.currentLocation);
-        }
+    if (!this.basket.destination) {
+      Plugins.Geolocation.getCurrentPosition({enableHighAccuracy: true})
+        .then(position => {
+          this.setupMapCenter(position);
+        });
+    } else {
+      this.setupMapCenter(this.basket.destination);
+    }
+  }
 
-        if (this.isEmitCenter && this.isMapMove) {
-          this.emitMapCenter();
-        }
+  setupMapCenter(position) {
+    this.currentLocation = [position.coords.longitude, position.coords.latitude];
+    if (!this.isSetToBounds && !this.isStatic && !this.center) {
+      this.map.setCenter(this.currentLocation);
+    }
 
-        if (this.isDriver) {
-          if (this.driverMarker) {
-            this.driverMarker.setLngLat(this.currentLocation);
-          }
-        }
-      });
+    if (this.isEmitCenter && this.isMapMove) {
+      this.emitMapCenter();
+    }
+
+    if (this.isDriver) {
+      if (this.driverMarker) {
+        this.driverMarker.setLngLat(this.currentLocation);
+      }
+    }
   }
 
   // When there's a Geolocation Error

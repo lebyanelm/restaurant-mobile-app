@@ -14,10 +14,11 @@ import { ClipboardPluginWeb, Plugins } from '@capacitor/core';
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
-  providers: [ ClipboardPluginWeb, Platform, ToastService ]
+  providers: [ClipboardPluginWeb, Platform, ToastService],
 })
 export class AccountComponent implements OnInit {
   data;
+  avatar: string[] = [];
   constructor(
     private storage: StorageService,
     private router: Router,
@@ -28,54 +29,62 @@ export class AccountComponent implements OnInit {
     private platform: Platform,
     private sockets: SocketsService,
     private chatService: ChatService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.storage.getItem(environment.customerDataName)
-      .then((data) => {
-        this.data = data;
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      this.data = data;
+      this.avatar =
+        this.data?.media.length === 1
+          ? this.data.media[0]
+          : this.data.media[this.data.media.length - 1];
 
-        // Listen for changes on the data to update it on the page
-        this.storage.change.subscribe((data) => {
-          if (data.name === environment.customerDataName) {
-            this.data = data.data;
-          }
-        });
+      // Listen for changes on the data to update it on the page
+      this.storage.change.subscribe((data) => {
+        if (data.name === environment.customerDataName) {
+          this.data = data.data;
+        }
       });
+    });
   }
 
   routeTo(path: string, extras?: any): void {
-    this.router.navigate([path], {queryParams: extras || {}});
+    this.router.navigate([path], { queryParams: extras || {} });
   }
 
   async openChatModal() {
     const chatModal = await this.modalCtrl.create({
       component: ChatComponent,
       cssClass: ['modal', 'chat-modal'],
-      componentProps: { data: this.data }
+      componentProps: { data: this.data },
     });
 
-    chatModal.present()
-      .then(() => {
-        if (this.chatService.connectedBranch) this.chatService.setMessageAsRead(); });
+    chatModal.present().then(() => {
+      if (this.chatService.connectedBranch) this.chatService.setMessageAsRead();
+    });
     this.modalEvents.statusChange.next(true);
-    chatModal.onDidDismiss()
-      .then(() => {
-        this.modalEvents.statusChange.next(false);
-      });
+    chatModal.onDidDismiss().then(() => {
+      this.modalEvents.statusChange.next(false);
+    });
   }
 
   referApp() {
-    Plugins.Share.share({ text: 'I refer you this app to place orders and get delicious food https://play.google.com/store/details?id=com.marios.pizza.grill, place an order from one our branches :)' })
+    Plugins.Share.share({
+      text: 'I refer you this app to place orders and get delicious food https://play.google.com/store/details?id=com.marios.pizza.grill, place an order from one our branches :)',
+    });
   }
 
   signout() {
     this.sockets.disconnect();
-    this.storage.remove(environment.customerDataName)
+    this.storage
+      .remove(environment.customerDataName)
       .then(() => {
         this.router.navigate(['welcome']);
-      }).catch(() => {
-        this.toast.show('There was an error signing you out. Let us know if the problem persists.');
+      })
+      .catch(() => {
+        this.toast.show(
+          'There was an error signing you out. Let us know if the problem persists.'
+        );
       });
   }
 }

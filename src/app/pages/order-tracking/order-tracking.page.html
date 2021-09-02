@@ -109,7 +109,7 @@
 
 <ion-footer>
   <div class="buttons">
-    <button *ngIf="this.order?.status < 4" (click)="cancelOrder()">Cancel Order</button>
-    <button *ngIf="this.order?.status === 5" [routerLink]="'/home'">Continue Shopping</button>
+    <button (click)="this.order?.status === 1 ? cancelOrder() : null" [disabled]="!(this.order?.status === 1 || this.order?.status === 6)">{{this.order?.status === 1 ? "Cancel Order" : "Order Cancelled!"}}</button>
+    <button *ngIf="this.order?.status === 5" [routerLink]="'/home'">Order Complete!</button>
   </div>
 </ion-footer>

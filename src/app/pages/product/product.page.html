@@ -6,7 +6,7 @@
       <div class="space"></div>
       <div class="buttons">
       <!-- Let users share the product with other users they know -->
-      <div class="button clickable flex like-button" *ngIf="data" (click)="likeProduct()"><ion-icon [name]="data?.favorites.includes(product.id) ? 'remove-circle' : 'add-circle-outline'"></ion-icon> {{ this.data?.favorites.includes(this.product.id) ? 'Remove from Pinned' : 'Add to Pinned' }}</div>
+      <div class="button clickable flex like-button" *ngIf="data" (click)="likeProduct()"><ion-icon [name]="data?.favorites?.includes(product.id) ? 'remove-circle' : 'add-circle-outline'"></ion-icon> {{ this.data?.favorites.includes(this.product.id) ? 'Remove from Pinned' : 'Add to Pinned' }}</div>
       </div>
     </div>
   </div>

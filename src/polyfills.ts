@@ -58,10 +58,23 @@ import './zone-flags';
  * Zone JS is required by default for Angular itself.
  */
 
-import 'zone.js/dist/zone';  // Included with Angular CLI.
-
+import 'zone.js/dist/zone'; // Included with Angular CLI.
+import { Plugins } from '@capacitor/core';
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
 (window as any).global = window;
+
+/***********************************************
+ * Toasts plugin show function replace
+ */
+
+const showFn = Plugins.Toast.show;
+Plugins.Toast.show = (args) => {
+  return new Promise((resolve, reject) => {
+    console.log(args, showFn);
+    showFn(args);
+    resolve();
+  });
+};

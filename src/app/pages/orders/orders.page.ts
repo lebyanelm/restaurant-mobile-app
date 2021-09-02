@@ -129,7 +129,7 @@ export class OrdersPage implements AfterViewInit {
           if (response.ok) {
             // Apply the promocode found
             this.basket.applyPromocode(response.body.promocode);
-            Plugins.Toast.show({ text: [response.body.promocode.discount, 'has been applied on your basket.'].join('') });
+            Plugins.Toast.show({ text: [response.body.promocode.discount, '% has been applied on your basket.'].join('') });
           } else {
             Plugins.Toast.show({ text: response.body.reason || 'Something went wrong.' });
           }

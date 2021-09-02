@@ -4,6 +4,7 @@ import { google } from 'google-maps';
 import * as supeagent from 'superagent';
 import { BasketService } from './basket.service';
 import { ToastService } from './toast.service';
+import { Plugins } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root',
@@ -58,32 +59,28 @@ export class GoogleapisService {
 
   getUserLocation() {
     return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
+      Plugins.Geolocation.getCurrentPosition({ enableHighAccuracy: true })
+        .then((position) => {
           const coords = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          this.coordinatesToAddress(
-            coords,
-            (response: google.maps.GeocoderResult) => {
-              if (response) {
-                const selectedAddress = {
-                  coords,
-                  address: response.formatted_address.split(','),
-                };
-                this.basket.destination = selectedAddress;
-                this.basket.isDestinationAutoDetect = true;
-                resolve(selectedAddress);
-              }
-            }
-          );
-        },
-        (error) => {
-          console.log(error);
-          this.toastService.show('Unable to detect your location.');
-        }
-      );
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              this.coordinatesToAddress(
+                coords,
+                (response: google.maps.GeocoderResult) => {
+                  if (response) {
+                    const selectedAddress = {
+                      coords,
+                      address: response.formatted_address.split(','),
+                    };
+                    this.basket.destination = selectedAddress;
+                    this.basket.isDestinationAutoDetect = true;
+                    resolve(selectedAddress);
+                  }
+                }
+              );
+        })
+        .catch((error) => Plugins.Toast.show({text: "Unable to detect your location, please enable your Location services and restart the App."}));
     });
   }
 }

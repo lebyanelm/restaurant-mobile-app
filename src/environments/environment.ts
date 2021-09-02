@@ -2,18 +2,19 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// eslint-disable @typescript-eslint/naming-convention
 const environment = {
-  production: true,
-  PARTNER_ID: 'C4dj_7orkkkxz4i8',
+  production: false,
+  PARTNER_ID: '1626095160275',
   AppId: 'App-Id',
   GOOGLE_KEY: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
-  IO: 'https://apis.nextify.co.za/partners',
+  IO: 'http://192.168.43.29:5000',
   ORDER: 'Current-Order-Id',
-  BACKEND: 'https://apis.nextify.co.za/partners/',
+  BACKEND: 'http://192.168.43.29:5000/',
   customerDataName: 'Customer-Data',
   driverDataName: 'Driver-Data',
   FACEBOOK_LOGIN_APPID: '2770390493238875',
-  FACEBOOK_APP_SECRET: 'a92459f085b5499b5c1d0e41aa3c1051',
+  FACEBOOK_APP_SECRET: '92459f085b5499b5c1d0e41aa3c1051',
 };
 
 export { environment };

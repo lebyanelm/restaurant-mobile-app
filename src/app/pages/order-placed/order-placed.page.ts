@@ -6,6 +6,8 @@ import { StorageService } from './../../services/storage.service';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-order-placed',
@@ -21,6 +23,7 @@ export class OrderPlacedPage implements OnInit {
   isOrderOnlinePayment: boolean = true;
 
   constructor(
+    public navCtrl: NavController,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) { }

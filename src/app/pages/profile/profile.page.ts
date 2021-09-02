@@ -161,7 +161,7 @@ export class ProfilePage implements AfterViewInit {
             this.storage.remove(environment.ORDER);
 
             // Log out the user
-            this.router.navigate(['signin']);
+            this.navCtrl.navigateRoot('/signin');
           } else {
             Plugins.Toast.show({ text: response.body.reason || 'Something went wrong.' });
           }

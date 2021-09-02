@@ -24,7 +24,7 @@
       <div class="placed">Your order has been placed. You can check your order status at <a href="">Order Tracking</a> page.</div>
     </div>
 
-    <button class="continue-shopping-button" *ngIf="this.isOrderPlaced">Continue your Shopping</button>
-    <button class="continue-shopping-button" *ngIf="!this.isOrderPlaced">Retry your Order</button>
+    <button class="continue-shopping-button" (click)="openOrderTrackingPage(this.id)" *ngIf="this.isOrderPlaced">Track Order Status</button>
+    <button class="continue-shopping-button" (click)="this.navCtrl.back()" *ngIf="!this.isOrderPlaced">Retry your Order</button>
   </div>
 </ion-content>

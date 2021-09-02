@@ -1,148 +1,151 @@
-@import '../../../variables.scss';
+@import "../../../variables.scss";
 
 ion-header {
-    box-shadow: none !important;
-    padding-top: 20px;
+  box-shadow: none !important;
+  padding-top: 20px;
 
-    .baskets-header {
-        display: flex;
-        
-        .tab {
-            flex: 1;
-            padding: 20px 20px;
-            text-align: center;
-            opacity: 0.5;
-        }
+  .baskets-header {
+    display: flex;
 
-        .indicator {
-            height: 2px;
-            width: 50%;
-            background: $theme-color;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            transition: left 300ms ease-in-out;
-        }
-
-        &[isDeliveredShown=true] {
-            .indicator {
-                transition: left 300ms ease-in-out;
-                left: 50%;
-            }
-
-            .tab.active {
-                opacity: 1;
-            }
-        }
+    .tab {
+      flex: 1;
+      padding: 20px 20px;
+      text-align: center;
+      opacity: 0.5;
     }
+
+    .indicator {
+      height: 2px;
+      width: 50%;
+      background: $theme-color;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      transition: left 300ms ease-in-out;
+    }
+
+    &[isDeliveredShown="true"] {
+      .indicator {
+        transition: left 300ms ease-in-out;
+        left: 50%;
+      }
+
+      .tab.active {
+        opacity: 1;
+      }
+    }
+  }
 }
 
 ion-content {
-    display: block;
-    text-align: start;
-    position: relative;
-    ion-slides,
-    ion-slide {
-        height: 95%;
+  display: block;
+  text-align: start;
+  position: relative;
+  ion-slides,
+  ion-slide {
+    height: 95%;
+  }
+
+  .title {
+    font-weight: normal;
+    padding: 10px 0;
+    opacity: 0.5;
+  }
+
+  .basket {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 20px;
+    border-bottom: 2px solid #ddd;
+
+    .top,
+    .bottom {
+      display: flex;
+      align-items: center;
     }
 
-    .title {
-        font-weight: normal;
-        padding: 10px 0;
+    .top {
+      .order-number,
+      .price {
+        font-weight: bold;
+      }
+
+      .order-number {
+        font-size: large;
+      }
+    }
+
+    .bottom {
+      gap: 20px;
+      position: relative;
+      .destination {
         opacity: 0.5;
+        font-size: small !important;
+      }
+
+      .discounted {
+        padding: 5px 10px;
+        color: $text-color-on-dark;
+        background: $theme-color;
+        font-size: small;
+        font-weight: bold;
+        position: relative;
+        margin-left: 10px;
+
+        &::before {
+          --size: 12.5px;
+          content: "";
+          display: block;
+          width: 0;
+          height: 0;
+          border-top: var(--size) solid transparent;
+          border-bottom: var(--size) solid transparent;
+          border-right: var(--size) solid $theme-color;
+          position: absolute;
+          left: 0;
+          transform: translateX(-100%);
+          top: 0;
+        }
+
+        &::after {
+          content: "";
+          height: 5px;
+          width: 5px;
+          background: $text-color-on-dark;
+          border-radius: 50px;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+
+  .no-baskets {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    text-align: center;
+
+    .image {
+      width: 70vw;
+      margin: auto;
+
+      svg {
+        width: 100%;
+      }
     }
 
-    .basket {
-        display: flex;
-        flex-direction: column;
-        padding: 10px 20px;
-        border: 1px dashed #EEE;
-        margin-bottom: 10px;
-
-        .top,
-        .bottom {
-            display: flex;
-            align-items: center;
-        }
-
-        .top {
-            // margin-bottom: 5px;
-
-            .order-number {
-                font-weight: bold;
-            }
-        }
-
-        .bottom {
-            position: relative;
-            .destination {
-                opacity: 0.5;
-                font-size: small !important;
-            }
-
-            .discounted {
-                padding: 5px 10px;
-                color: $text-color-on-dark;
-                background: $theme-color;
-                font-size: small;
-                font-weight: bold;
-                position: relative;
-                margin-left: 10px;
-                
-                &::before {
-                    --size: 12.5px;
-                    content: "";
-                    display: block;
-                    width: 0; 
-                    height: 0; 
-                    border-top: var(--size) solid transparent;
-                    border-bottom: var(--size) solid transparent; 
-                    border-right: var(--size) solid $theme-color;
-                    position: absolute;
-                    left: 0;
-                    transform: translateX(-100%);
-                    top: 0;
-                }
-
-                &::after {
-                    content: '';
-                    height: 5px;
-                    width: 5px;
-                    background: $text-color-on-dark;
-                    border-radius: 50px;
-                    position: absolute;
-                    top: 50%;
-                    left: 0;
-                    transform: translateY(-50%);
-                }
-            }
-        }
+    .no-baskets-title {
+      font-size: large;
+      font-weight: bold;
     }
 
-    .no-baskets {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateY(-50%) translateX(-50%);
-        text-align: center;
-        
-        .image {
-            width: 70vw;
-            margin: auto;
-
-            svg {
-                width: 100%;
-            }
-        }
-
-        .no-baskets-title {
-            font-size: large;
-            font-weight: bold;
-        }
-
-        .no-baskets-paragraph {
-            font-size: small;
-            opacity: 0.5;
-        }
+    .no-baskets-paragraph {
+      font-size: small;
+      opacity: 0.5;
     }
+  }
 }

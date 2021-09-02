@@ -10,6 +10,7 @@ import { Plugins } from '@capacitor/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { environment } from 'src/environments/environment';
 import { Branch } from 'src/app/interfaces/Branch';
+import { Destination } from 'src/app/interfaces/Destination';
 import * as superagent from 'superagent';
 import { DeliveryLocationComponent } from 'src/app/components/delivery-location/delivery-location.component';
 import { GoogleapisService } from 'src/app/services/googleapis.service';
@@ -36,60 +37,67 @@ export class CheckoutPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.basket)
     this.storage
       .getItem(environment.customerDataName)
       .then((data) => (this.data = data));
   }
 
-  async changeDeliveryAddress() {
-    const deliveryLocationSelector = await this.modalCtrl.create({
-      component: DeliveryLocationComponent,
-      cssClass: ['delivery-location-selector'],
-    });
+  setDeliveryAddress() {
+    return new Promise(async (resolve, reject) => {
+      const deliveryLocationSelector = await this.modalCtrl.create({
+        component: DeliveryLocationComponent,
+        cssClass: ['delivery-location-selector'],
+      });
 
-    this.modalEvents.statusChange.next(true);
-    deliveryLocationSelector.onDidDismiss().then((data) => {
-      this.modalEvents.statusChange.next(false);
-      if (data.data) {
-        this.basket.destination = data.data;
-        this.basket.isDestinationAutoDetect = false;
-      }
+      this.modalEvents.statusChange.next(true);
+      deliveryLocationSelector.onDidDismiss().then((data) => {
+        this.modalEvents.statusChange.next(false);
+        if (data.data) {
+          this.basket.destination = data.data;
+          this.basket.isDestinationAutoDetect = false;
+          resolve(this.basket.destination);
+        }
+      });
+      deliveryLocationSelector.present();
     });
-    deliveryLocationSelector.present();
   }
 
   findNearestBranch() {
-    // Find the location of the customer
-    return new Promise<Branch | string>((resolve, reject) => {
-      Plugins.Geolocation.getCurrentPosition({ enableHighAccuracy: true })
-        .then((position) => {
-          // Send a request to the backend to find the nearest branch to the customer
-          superagent
-            .get(
-              [
-                environment.BACKEND,
-                'branch?coordinates=',
-                [position.coords.latitude, position.coords.longitude].join(),
-                '&partnerId=',
-                environment.PARTNER_ID,
-              ].join('')
-            )
-            .end((_, response) => {
-              if (response) {
-                if (response.ok) {
-                  resolve(response.body.branch);
-                } else {
-                  reject(response.body.reason || 'Something went wrong.');
-                }
+    return new Promise((resolve, reject) => {
+      const findBranch = (destination) => {
+        superagent
+          .get(
+            [
+              environment.BACKEND,
+              'branch?coordinates=',
+              [destination.lat, destination.lng].join(),
+              '&partnerId=',
+              environment.PARTNER_ID,
+            ].join('')
+          )
+          .end((_, response) => {
+            if (response) {
+              if (response.ok) {
+                resolve(response.body.branch);
               } else {
-                reject('No connection. Please check your internet connection.');
+                reject(response.body.reason || 'Something went wrong.');
               }
-            });
-        })
-        .catch((error) => {
-          reject('Could not find your location');
-        });
-    });
+            } else {
+              reject('No connection. Please check your internet connection.');
+            }
+          });
+      }
+
+      // Find the location of the customer
+      if (this.basket.destination) {
+        // Send a request to the backend to find the nearest branch to the customer
+        findBranch(this.basket.destination.coords);
+      } else {
+        this.setDeliveryAddress()
+          .then((destination: Destination) => findBranch(destination.coords));
+      }
+    })
   }
 
   // When payment has been selected, place an order to the nearest restaurant
@@ -111,7 +119,7 @@ export class CheckoutPage implements OnInit {
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://251bd155df31.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://a204-105-4-0-184.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {
@@ -281,6 +289,7 @@ export class CheckoutPage implements OnInit {
       .send(orderData)
       .end((_, response) => {
         if (response) {
+          console.log(JSON.stringify(response.body));
           if (response.ok) {
             Plugins.Toast.show({ text: 'Order placed!' });
             this.data.orders.push(response.body.order);

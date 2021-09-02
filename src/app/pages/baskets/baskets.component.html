@@ -17,20 +17,22 @@
     </div>
   </div>
 
-  <div class="baskets">
-    <div class="basket" *ngFor="let order of delivered" (click)="routeTo(order.id)">
-      <div class="top">
-        <div class="order-number">Order {{order.id}}</div>
-        <div class="space"></div>
-        <div class="price">R{{order.totalPrice}}</div>
-      </div>
-      <div class="bottom">
-        <div class="destination">{{ order.orderingMode === 'collection' ? ['Collection from', order.branch.name].join(' ') : ['Delivery to', order.destination].join(' ') }}</div>
-        <div class="space"></div>
-        <div class="discounted" *ngIf="order.promocodeUsed.discount !== undefined">Discounted</div>
+  <ion-content [scrollY]="true">
+    <div class="baskets">
+      <div class="basket" *ngFor="let order of delivered" (click)="routeTo(order.id)">
+        <div class="top">
+          <div class="order-number">Order #{{order.id}}</div>
+          <div class="space"></div>
+          <div class="price">R{{order.totalPrice}}</div>
+        </div>
+        <div class="bottom">
+          <div class="destination">{{ order.orderingMode === 'collection' ? ['Collection from', order.branch.name].join(' ') : order.destination.address }}</div>
+          <div class="space"></div>
+          <div class="discounted" *ngIf="order.promocodeUsed.discount !== undefined">Discounted</div>
+        </div>
       </div>
     </div>
-  </div>
+  </ion-content>
 
   <div class="no-baskets" *ngIf="delivered && !delivered.length">
     <div class="image">
