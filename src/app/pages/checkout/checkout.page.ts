@@ -34,7 +34,7 @@ export class CheckoutPage implements OnInit {
     private modalCtrl: ModalController,
     private modalEvents: ModalEventsService,
     private googleServices: GoogleapisService
-  ) {}
+  ) { }
 
   ngOnInit() {
     console.log(this.basket)
@@ -119,7 +119,7 @@ export class CheckoutPage implements OnInit {
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://a204-105-4-0-184.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://e98a-105-0-5-193.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {

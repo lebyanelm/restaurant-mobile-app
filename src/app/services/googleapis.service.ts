@@ -59,7 +59,7 @@ export class GoogleapisService {
 
   getUserLocation() {
     return new Promise((resolve, reject) => {
-      Plugins.Geolocation.getCurrentPosition({ enableHighAccuracy: true })
+      Plugins.Geolocation.getCurrentPosition({  })
         .then((position) => {
           const coords = {
                 lat: position.coords.latitude,
@@ -80,7 +80,10 @@ export class GoogleapisService {
                 }
               );
         })
-        .catch((error) => Plugins.Toast.show({text: "Unable to detect your location, please enable your Location services and restart the App."}));
+        .catch((error) => {
+          console.log(error);
+          Plugins.Toast.show({text: "Unable to detect your location, please enable your Location services and restart the App."})
+        });
     });
   }
 }

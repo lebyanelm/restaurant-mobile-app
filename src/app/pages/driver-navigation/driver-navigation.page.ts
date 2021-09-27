@@ -72,7 +72,7 @@ export class DriverNavigationPage implements AfterViewInit {
     private alertController: AlertController,
     private statusService: StatusService,
     private router: Router
-  ) {}
+  ) { }
 
   ngAfterViewInit() {
     this.storage.getItem(environment.customerDataName).then((data) => {
@@ -81,6 +81,35 @@ export class DriverNavigationPage implements AfterViewInit {
       // Find the current connected driver
       this.storage.getItem(environment.driverDataName).then((driverData) => {
         this.driverData = driverData;
+
+        // Retrieve drivers information
+        superagent
+          .get([environment.BACKEND, "drivers?pid=", environment.PARTNER_ID].join(""))
+          .set("Authorization", data.token)
+          .end((_, response) => {
+            if (response) {
+              if (response.status === 200) {
+                const drivers = response.body.drivers;
+                const driver = drivers.find((d) => d.username === this.driverData.username);
+                if (driver) {
+                  this.driverData = driver;
+                  console.log(this.driverData)
+                } else {
+                  Plugins.Toast.show({
+                    text: 'Seems your driver account has been removed.',
+                  });
+                }
+              } else {
+                Plugins.Toast.show({
+                  text: response.body.reason || 'Something went wrong.',
+                });
+              }
+            } else {
+              Plugins.Toast.show({
+                text: 'No internet connection, please check your connection.',
+              });
+            }
+          })
       });
 
       Plugins.Toast.show({
@@ -98,11 +127,6 @@ export class DriverNavigationPage implements AfterViewInit {
         this.activeBranch = option.detail.value;
         this.statusService.setBranch(this.activeBranch);
         if (this.isFirstConnection) {
-          // Load the data that has been synced with the database
-          const driver = this.data.drivers.find(
-            (sDriver) => sDriver.username === this.driverData.username
-          );
-          this.driverData = driver;
           // Check if the driver has any pending deliveries to make
           if (this.driverData && this.driverData.deliveries.length) {
             // Request the order information from the back-end of each order
