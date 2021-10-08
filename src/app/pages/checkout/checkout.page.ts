@@ -34,10 +34,10 @@ export class CheckoutPage implements OnInit {
     private modalCtrl: ModalController,
     private modalEvents: ModalEventsService,
     private googleServices: GoogleapisService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    console.log(this.basket)
+    console.log(this.basket);
     this.storage
       .getItem(environment.customerDataName)
       .then((data) => (this.data = data));
@@ -87,17 +87,21 @@ export class CheckoutPage implements OnInit {
               reject('No connection. Please check your internet connection.');
             }
           });
-      }
+      };
 
       // Find the location of the customer
-      if (this.basket.destination) {
+      if (
+        this.basket.destination ||
+        this.basket.orderingMode === 'collection'
+      ) {
         // Send a request to the backend to find the nearest branch to the customer
         findBranch(this.basket.destination.coords);
       } else {
-        this.setDeliveryAddress()
-          .then((destination: Destination) => findBranch(destination.coords));
+        this.setDeliveryAddress().then((destination: Destination) =>
+          findBranch(destination.coords)
+        );
       }
-    })
+    });
   }
 
   // When payment has been selected, place an order to the nearest restaurant
@@ -119,7 +123,7 @@ export class CheckoutPage implements OnInit {
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://e98a-105-0-5-193.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://d3af-105-8-0-79.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {
