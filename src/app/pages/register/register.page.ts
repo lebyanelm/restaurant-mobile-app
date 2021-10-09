@@ -14,12 +14,9 @@ export class RegisterPage implements OnInit {
   data: any = {};
   error = '';
 
-  constructor(
-    private router: Router
-  ) { }
+  constructor(private router: Router) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   register() {
     this.isLoading = true;
@@ -32,18 +29,24 @@ export class RegisterPage implements OnInit {
       this.data.phoneNumber = '+27' + newPhoneNumber;
     }
 
+    console.log(this.data);
+
+    Plugins.Toast.show({ text: environment.BACKEND });
     superagent
       .post([environment.BACKEND, 'accounts'].join(''))
       .send({ ...this.data, partnerId: environment.PARTNER_ID })
       .end((_, response) => {
+        console.log(response);
         this.isLoading = false;
         if (response) {
           if (response.status === 200) {
             Plugins.Toast.show(response.body.message);
-            this.router.navigate(['phonenumber-verification'], { queryParams: { phoneNumber: this.data.phoneNumber } })
+            this.router.navigate(['phonenumber-verification'], {
+              queryParams: { phoneNumber: this.data.phoneNumber },
+            });
           } else {
             if (response.status === 208) {
-              this.error = 'Account already exists, consider logging in'
+              this.error = 'Account already exists, consider logging in';
             }
           }
         }
