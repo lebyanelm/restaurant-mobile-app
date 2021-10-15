@@ -5,12 +5,12 @@
 // eslint-disable @typescript-eslint/naming-convention
 const environment = {
   production: false,
-  PARTNER_ID: '1591750141414',
+  PARTNER_ID: '1626095160275',
   AppId: 'App-Id',
   GOOGLE_KEY: 'AIzaSyB6RgF7vmUE0mjk_glikiuuSmpGpaNiA24',
-  IO: 'https://apis.nextify.co.za',
+  IO: 'http://localhost:5000',
   ORDER: 'Current-Order-Id',
-  BACKEND: 'https://apis.nextify.co.za/partners/',
+  BACKEND: 'http://localhost:5000/',
   customerDataName: 'Customer-Data',
   driverDataName: 'Driver-Data',
   FACEBOOK_LOGIN_APPID: '2770390493238875',

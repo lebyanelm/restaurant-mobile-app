@@ -14,15 +14,15 @@ import { Plugins } from '@capacitor/core';
   styleUrls: ['./forgot-password.page.scss'],
 })
 export class ForgotPasswordPage implements AfterViewInit {
-  @ViewChild('IonSlides', {static: false}) ionSlides: IonSlides;
-  @ViewChild('PhoneNumber', {static: false}) phoneNumber: ElementRef<HTMLInputElement>;
-  @ViewChild('VerificationCode', {static: false}) verificationCode: ElementRef<HTMLInputElement>;
-  @ViewChild('Password', {static: false}) password: ElementRef<HTMLInputElement>;
-  @ViewChild('NextButton', {static: false}) nextButton: ElementRef<HTMLButtonElement>;
-  @ViewChild('NextButtonText', {static: false}) nextButtonText: ElementRef<HTMLParagraphElement>;
-  @ViewChild('Instructions', {static: false}) instructions: ElementRef<HTMLParagraphElement>;
+  @ViewChild('IonSlides', { static: false }) ionSlides: IonSlides;
+  @ViewChild('PhoneNumber', { static: false }) phoneNumber: ElementRef<HTMLInputElement>;
+  @ViewChild('VerificationCode', { static: false }) verificationCode: ElementRef<HTMLInputElement>;
+  @ViewChild('Password', { static: false }) password: ElementRef<HTMLInputElement>;
+  @ViewChild('NextButton', { static: false }) nextButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('NextButtonText', { static: false }) nextButtonText: ElementRef<HTMLParagraphElement>;
+  @ViewChild('Instructions', { static: false }) instructions: ElementRef<HTMLParagraphElement>;
 
-  autofill = '';
+  autofill = '0747521395';
   isError = false;
   isLoading = false;
   currentSignupStep = 0;
@@ -81,7 +81,7 @@ export class ForgotPasswordPage implements AfterViewInit {
       this.autofill = '+27' + newPhoneNumber;
     }
 
-    superagent.get(environment.BACKEND + 'authentication/verify?p=' + this.autofill)
+    superagent.get(environment.BACKEND + 'accounts/request-reset-password?phonenumber=' + this.autofill)
       .end((_, response) => {
         if (response) {
           if (response.status === 200) {
@@ -114,14 +114,15 @@ export class ForgotPasswordPage implements AfterViewInit {
   verifyPhoneNumber() {
     this.isLoading = true;
     superagent
-      .get(environment.BACKEND + `accounts/verify-number?p=${this.autofill}&c=${this.verificationCode.nativeElement.value}&type=reset`)
+      .post(environment.BACKEND + `accounts/verify-number?type=reset`)
+      .send({ phonenumber: this.phoneNumber.nativeElement.value, code: this.verificationCode.nativeElement.value })
       .end((error, response) => {
+        this.isLoading = false;
         if (!error) {
           if (response.status === 200) {
             this.nextSlide();
-            this.isLoading = false;
             this.isError = false;
-            this.passwordChangeToken = response.body.key;
+            this.passwordChangeToken = response.body.token;
             this.instructions.nativeElement.innerText = 'Be sure to remember it this time. :)';
             this.nextButtonText.nativeElement.innerText = 'Change';
             this.nextButton.nativeElement.onclick = () => { this.changePassword(); };
@@ -142,7 +143,9 @@ export class ForgotPasswordPage implements AfterViewInit {
   changePassword() {
     this.isLoading = true;
     superagent
-      .post(environment.BACKEND + `accounts/reset-password?key=${this.passwordChangeToken}&phone=${this.autofill}&password=${this.password.nativeElement.value}`)
+      .post(environment.BACKEND + `accounts/reset-password`)
+      .send({ password: this.password.nativeElement.value })
+      .set("Authorization", this.passwordChangeToken)
       .end((error, response) => {
         if (!error) {
           Plugins.Toast.show({ text: 'Password reset successfull.' });
