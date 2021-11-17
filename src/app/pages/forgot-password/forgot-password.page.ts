@@ -22,7 +22,7 @@ export class ForgotPasswordPage implements AfterViewInit {
   @ViewChild('NextButtonText', { static: false }) nextButtonText: ElementRef<HTMLParagraphElement>;
   @ViewChild('Instructions', { static: false }) instructions: ElementRef<HTMLParagraphElement>;
 
-  autofill = '0747521395';
+  autofill = '';
   isError = false;
   isLoading = false;
   currentSignupStep = 0;
@@ -115,7 +115,7 @@ export class ForgotPasswordPage implements AfterViewInit {
     this.isLoading = true;
     superagent
       .post(environment.BACKEND + `accounts/verify-number?type=reset`)
-      .send({ phonenumber: this.phoneNumber.nativeElement.value, code: this.verificationCode.nativeElement.value })
+      .send({ phoneNumber: this.phoneNumber.nativeElement.value, code: this.verificationCode.nativeElement.value })
       .end((error, response) => {
         this.isLoading = false;
         if (!error) {
