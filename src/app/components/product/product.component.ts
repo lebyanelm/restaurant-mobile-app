@@ -39,10 +39,9 @@ export class ProductComponent implements OnInit {
     private storage: StorageService,
     private toast: ToastService
   ) {
-    this.storage.getItem(environment.customerDataName)
-      .then((data) => {
-        this.data = data;
-      });
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      this.data = data;
+    });
     this.storage.change.subscribe((data) => {
       if (data.name === environment.customerDataName) {
         this.data = data.data;
@@ -50,8 +49,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   // Adding products to the basket
   incrementToBasket(productId) {
@@ -66,7 +64,7 @@ export class ProductComponent implements OnInit {
   // Removing items from the basket
   decrementFromBasket(productId) {
     if (this.basket.products[productId]) {
-      if ((this.basket.products[productId].quantity - 1) === 0) {
+      if (this.basket.products[productId].quantity - 1 === 0) {
         delete this.basket.products[productId];
       } else {
         this.basket.products[productId].quantity -= 1;
@@ -81,29 +79,31 @@ export class ProductComponent implements OnInit {
   }
 
   getDaysFromMilliseconds(milliseconds: number) {
-    return ((new Date().getTime() - milliseconds) / 8.64e+7);
+    return (new Date().getTime() - milliseconds) / 8.64e7;
   }
 
   likeProduct(id) {
-    post(environment.BACKEND + 'accounts/favorite')
-    .set('Authorization', this.data.token)
-    .send({ uid: this.data.id, productId: id })
-    .end((error, response) => {
-      if (response) {
-        if (response.status === 200) {
-          if (this.data.favorites.indexOf(id) === -1) {
-            this.data.favorites.push(id);
+    post(environment.BACKEND + 'customers/favorite')
+      .set('Authorization', this.data.token)
+      .send({ uid: this.data.id, productId: id })
+      .end((error, response) => {
+        if (response) {
+          if (response.status === 200) {
+            if (this.data.favorites.indexOf(id) === -1) {
+              this.data.favorites.push(id);
+            } else {
+              this.data.favorites.splice(this.data.favorites.indexOf(id), 1);
+            }
+            this.storage.setItem(environment.customerDataName, this.data);
           } else {
-            this.data.favorites.splice(this.data.favorites.indexOf(id), 1);
+            this.toast.show(
+              response.body.reason || 'ERROR: SOMETHING WENT WRONG.'
+            );
           }
-          this.storage.setItem(environment.customerDataName, this.data);
         } else {
-          this.toast.show(response.body.reason || 'ERROR: SOMETHING WENT WRONG.');
+          this.toast.showAlert(true);
         }
-      } else {
-        this.toast.showAlert(true);
-      }
-    });
+      });
   }
 
   hasProduct(id) {
@@ -119,10 +119,9 @@ export class ProductComponent implements OnInit {
 
   async isFavorite(id: string) {
     let exists = false;
-    await this.storage.getItem(environment.customerDataName)
-      .then((data) => {
-        exists = (data.favorites.indexOf(id) !== -1);
-      });
+    await this.storage.getItem(environment.customerDataName).then((data) => {
+      exists = data.favorites.indexOf(id) !== -1;
+    });
     return exists;
   }
 }

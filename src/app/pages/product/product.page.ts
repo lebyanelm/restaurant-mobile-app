@@ -6,7 +6,13 @@ import { ToastService } from './../../services/toast.service';
 import { Product } from './../../interfaces/Product';
 import { ProductsService } from './../../services/products.service';
 import { BasketService } from './../../services/basket.service';
-import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonCheckbox, IonContent, AlertController } from '@ionic/angular';
 import { ExtrasService } from 'src/app/services/extras.service';
@@ -23,7 +29,7 @@ import { SectionOption } from 'src/app/interfaces/SectionOption';
   styleUrls: ['./product.page.scss'],
 })
 export class ProductPage implements AfterViewInit {
-  @ViewChild('MainContent', {static: false}) ionContent: IonContent;
+  @ViewChild('MainContent', { static: false }) ionContent: IonContent;
 
   backButtonPage: string;
   product: Product;
@@ -40,7 +46,8 @@ export class ProductPage implements AfterViewInit {
     placeholder: '',
     name: '',
     price: 0,
-    originalPrice: 0 };
+    originalPrice: 0,
+  };
   sides: Product[] = [];
   basketSides: BasketItem[] = [];
   isFailedToLoadExtras = false;
@@ -60,10 +67,9 @@ export class ProductPage implements AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {
     // Get account data
-    this.storage.getItem(environment.customerDataName)
-      .then((data: User) => {
-        this.data = data;
-      });
+    this.storage.getItem(environment.customerDataName).then((data: User) => {
+      this.data = data;
+    });
 
     const checker = setInterval(() => {
       if (this.product) {
@@ -94,12 +100,16 @@ export class ProductPage implements AfterViewInit {
         }
 
         if (this.product.extras.length) {
-          this.extrasService.getExtras(this.product.extras)
+          this.extrasService
+            .getExtras(this.product.extras)
             .then((extras) => {
               this.extras = extras;
-            }).catch(error => {
+            })
+            .catch((error) => {
               this.isFailedToLoadExtras = true;
-              Plugins.Toast.show({ text: ['Couldn\'t load extras for', this.product.name].join(' ') });
+              Plugins.Toast.show({
+                text: ["Couldn't load extras for", this.product.name].join(' '),
+              });
             });
         }
         clearInterval(checker);
@@ -109,7 +119,9 @@ export class ProductPage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.activetedRoute.paramMap.subscribe(async (param) => {
-      this.product = await this.productService.getProduct(param.get('productId'));
+      this.product = await this.productService.getProduct(
+        param.get('productId')
+      );
       this.bData.id = param.get('productId');
       this.bData = this.basket.products[param.get('productId')] || this.bData;
       if (this.product) {
@@ -136,7 +148,10 @@ export class ProductPage implements AfterViewInit {
   }
 
   selectExtra(extra: Extra): void {
-    const syncObject = this.inBasket() !== -1 ? this.basket.products[this.inBasket()] : this.bData;
+    const syncObject =
+      this.inBasket() !== -1
+        ? this.basket.products[this.inBasket()]
+        : this.bData;
 
     if (syncObject.extras.indexOf(extra.id) === -1) {
       syncObject.extras.push(extra.id);
@@ -150,9 +165,12 @@ export class ProductPage implements AfterViewInit {
   }
 
   selectSectionOption(section: any, option: SectionOption): void {
-    const syncObject: BasketItem = this.inBasket() !== -1 ? this.basket.products[this.inBasket()] : this.bData,
-          // Remove spaces from the name of the section for use in the basket
-          name = section.name.replace(/\s/g, '_');
+    const syncObject: BasketItem =
+        this.inBasket() !== -1
+          ? this.basket.products[this.inBasket()]
+          : this.bData,
+      // Remove spaces from the name of the section for use in the basket
+      name = section.name.replace(/\s/g, '_');
 
     // Find a proper way to append the selected option
     if (!syncObject.selectedOptions[name]) {
@@ -160,16 +178,19 @@ export class ProductPage implements AfterViewInit {
     } else {
       // Check if option has been selected in order to remove it if it does
       if (syncObject.selectedOptions[name].includes(option.name)) {
-        syncObject.selectedOptions[name].splice(syncObject.selectedOptions[name].indexOf(option.name), 1);
+        syncObject.selectedOptions[name].splice(
+          syncObject.selectedOptions[name].indexOf(option.name),
+          1
+        );
       } else {
-       // Check if section is multi-select
-       if (section.isMultiSelect) {
+        // Check if section is multi-select
+        if (section.isMultiSelect) {
           // Add the option in the stack of selected options
           syncObject.selectedOptions[name].push(option.name);
-       } else {
+        } else {
           // Add the option in the stack of selected options
           syncObject.selectedOptions[name] = [option.name];
-       }
+        }
       }
     }
 
@@ -198,7 +219,9 @@ export class ProductPage implements AfterViewInit {
 
     // Also add the sides to the basket
     this.basketSides.forEach((side) => {
-      const index: number = this.basket.products.findIndex((_product) => _product.id === side.id);
+      const index: number = this.basket.products.findIndex(
+        (_product) => _product.id === side.id
+      );
       if (index === -1) {
         this.basket.products.push(side);
       } else {
@@ -249,8 +272,13 @@ export class ProductPage implements AfterViewInit {
   }
 
   async selectSide(side: Product | any) {
-    const syncObject = this.inBasket() !== -1 ? this.basket.products[this.inBasket()] : this.bData;
-    if (!syncObject.quantity) { syncObject.quantity = 1; }
+    const syncObject =
+      this.inBasket() !== -1
+        ? this.basket.products[this.inBasket()]
+        : this.bData;
+    if (!syncObject.quantity) {
+      syncObject.quantity = 1;
+    }
 
     if (syncObject.sides.indexOf(side.id) === -1) {
       const sideObject: BasketItem = {
@@ -265,7 +293,8 @@ export class ProductPage implements AfterViewInit {
         placeholder: side.images[0],
         isSide: true,
         mainProduct: this.product.id,
-        quantity: 1 };
+        quantity: 1,
+      };
 
       syncObject.sides.push(side.id);
       this.basketSides.push(sideObject);
@@ -273,34 +302,56 @@ export class ProductPage implements AfterViewInit {
     } else {
       // Check if the product has any required sides
       if (this.product.noRequiredSides) {
-        if (syncObject.sides.length - 1 < this.product.noRequiredSides && this.inBasket() !== -1) {
+        if (
+          syncObject.sides.length - 1 < this.product.noRequiredSides &&
+          this.inBasket() !== -1
+        ) {
           // Show the user that removing the side will remove the product from the basket
           const alert = await this.alertController.create({
             header: 'Approve your action',
             // tslint:disable-next-line: max-line-length
-            message: [this.product.name, 'requires', this.product.noRequiredSides, 'to be able to remain in the basket. Removing the selected side will remove the product from the basket.'].join(' '),
-            buttons: [{ text: 'Yes, Remove.', handler: () => {
-              for (let index = 0; index < this.basket.products.length; index++) {
-                if (this.basket.products[index].id === this.product.id) {
-                  // Keep the copy of the basket product and remove only the removed side.
-                  this.bData = {...this.basket.products[index]};
-                  this.bData.sides.splice(this.bData.sides.indexOf(side.id), 1);
-                  this.bData.extrasAmount -= parseFloat(side.price);
+            message: [
+              this.product.name,
+              'requires',
+              this.product.noRequiredSides,
+              'to be able to remain in the basket. Removing the selected side will remove the product from the basket.',
+            ].join(' '),
+            buttons: [
+              {
+                text: 'Yes, Remove.',
+                handler: () => {
+                  for (
+                    let index = 0;
+                    index < this.basket.products.length;
+                    index++
+                  ) {
+                    if (this.basket.products[index].id === this.product.id) {
+                      // Keep the copy of the basket product and remove only the removed side.
+                      this.bData = { ...this.basket.products[index] };
+                      this.bData.sides.splice(
+                        this.bData.sides.indexOf(side.id),
+                        1
+                      );
+                      this.bData.extrasAmount -= parseFloat(side.price);
 
-                  this.basketSides = [];
-                  // Find the sides related to this product
-                  this.removeSideFromBasket(side);
+                      this.basketSides = [];
+                      // Find the sides related to this product
+                      this.removeSideFromBasket(side);
 
-                  // Remove the product from the basket and update the related parameters.
-                  this.basket.products.splice(index, 1);
-                  this.basket.count = this.basket.products.length;
-                }
-              }
+                      // Remove the product from the basket and update the related parameters.
+                      this.basket.products.splice(index, 1);
+                      this.basket.count = this.basket.products.length;
+                    }
+                  }
 
-              // Update the view of the changes made
-              this.isAddableToBasket = false;
-              this.cdr.detectChanges();
-            }}, { text: 'No, Cancel.' }]});
+                  // Update the view of the changes made
+                  this.isAddableToBasket = false;
+                  this.cdr.detectChanges();
+                },
+              },
+              { text: 'No, Cancel.' },
+            ],
+          });
           alert.present();
         } else {
           syncObject.sides.splice(syncObject.sides.indexOf(side.id), 1);
@@ -325,7 +376,10 @@ export class ProductPage implements AfterViewInit {
     }
 
     // Check if the required items have been selected
-    if (syncObject.sides.length > this.product.noRequiredSides || syncObject.sides.length === this.product.noRequiredSides) {
+    if (
+      syncObject.sides.length > this.product.noRequiredSides ||
+      syncObject.sides.length === this.product.noRequiredSides
+    ) {
       this.isAddableToBasket = true;
     } else {
       this.isAddableToBasket = false;
@@ -393,24 +447,29 @@ export class ProductPage implements AfterViewInit {
   }
 
   likeProduct() {
-    post(environment.BACKEND + 'accounts/favorite')
-    .set('Authorization', this.data.token)
-    .send({ uid: this.data.id, productId: this.product.id })
-    .end((error, response) => {
-      if (response) {
-        if (response.status === 200) {
-          if (this.data.favorites.indexOf(this.product.id) === -1) {
-            this.data.favorites.push(this.product.id);
+    post(environment.BACKEND + 'customers/favorite')
+      .set('Authorization', this.data.token)
+      .send({ uid: this.data.id, productId: this.product.id })
+      .end((error, response) => {
+        if (response) {
+          if (response.status === 200) {
+            if (this.data.favorites.indexOf(this.product.id) === -1) {
+              this.data.favorites.push(this.product.id);
+            } else {
+              this.data.favorites.splice(
+                this.data.favorites.indexOf(this.product.id),
+                1
+              );
+            }
+            this.storage.setItem(environment.customerDataName, this.data);
           } else {
-            this.data.favorites.splice(this.data.favorites.indexOf(this.product.id), 1);
+            this.toast.show(
+              response.body.reason || 'ERROR: SOMETHING WENT WRONG.'
+            );
           }
-          this.storage.setItem(environment.customerDataName, this.data);
         } else {
-          this.toast.show(response.body.reason || 'ERROR: SOMETHING WENT WRONG.');
+          this.toast.showAlert(true);
         }
-      } else {
-        this.toast.showAlert(true);
-      }
-    });
+      });
   }
 }

@@ -2,7 +2,13 @@ import { ToastService } from './../../services/toast.service';
 import { environment } from './../../../environments/environment';
 import { StorageService } from './../../services/storage.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  ElementRef,
+} from '@angular/core';
 import * as superagent from 'superagent';
 import { ModalController } from '@ionic/angular';
 
@@ -12,10 +18,14 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./add-payment-option.page.scss'],
 })
 export class AddPaymentOptionPage implements OnInit, AfterViewInit {
-  @ViewChild('CardNumberFirst', { static: false }) cardNumberFirst: ElementRef<HTMLInputElement>;
-  @ViewChild('CardNumberSecond', { static: false }) cardNumberSecond: ElementRef<HTMLInputElement>;
-  @ViewChild('CardNumberThird', { static: false }) cardNumberThird: ElementRef<HTMLInputElement>;
-  @ViewChild('CardNumberFourth', { static: false }) cardNumberFourth: ElementRef<HTMLInputElement>;
+  @ViewChild('CardNumberFirst', { static: false })
+  cardNumberFirst: ElementRef<HTMLInputElement>;
+  @ViewChild('CardNumberSecond', { static: false })
+  cardNumberSecond: ElementRef<HTMLInputElement>;
+  @ViewChild('CardNumberThird', { static: false })
+  cardNumberThird: ElementRef<HTMLInputElement>;
+  @ViewChild('CardNumberFourth', { static: false })
+  cardNumberFourth: ElementRef<HTMLInputElement>;
 
   return = '/home';
   data: any = {};
@@ -31,7 +41,8 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
     private ar: ActivatedRoute,
     private storage: StorageService,
     private toast: ToastService,
-    private modalCtrl: ModalController) { }
+    private modalCtrl: ModalController
+  ) {}
 
   ngOnInit() {
     this.ar.queryParams.subscribe((p) => {
@@ -45,8 +56,17 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
       if (this.cardNumberFirst.nativeElement.value.length) {
         const value = this.cardNumberFirst.nativeElement.value;
         // tslint:disable-next-line: max-line-length
-        if ((value.length > 1 && value[0] === '3' && value[1] === '7') || value[0] === '2' || value[0] === '4' || value[0] === '5' || value[0] === '6') {
-          this.data.type = value.length > 1 && value[0] === '3' && value[1] === '7' ? '37' : value[0];
+        if (
+          (value.length > 1 && value[0] === '3' && value[1] === '7') ||
+          value[0] === '2' ||
+          value[0] === '4' ||
+          value[0] === '5' ||
+          value[0] === '6'
+        ) {
+          this.data.type =
+            value.length > 1 && value[0] === '3' && value[1] === '7'
+              ? '37'
+              : value[0];
         }
       } else {
         this.data.type = undefined;
@@ -59,9 +79,11 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
         if (event.key !== 'Backspace') {
           // this.cardNumberSecond.nativeElement
         }
-
       } else if (this.cardNumberFirst.nativeElement.value.length > 4) {
-        this.preventCardNumberOverflow(this.cardNumberFirst.nativeElement, this.cardNumberSecond.nativeElement);
+        this.preventCardNumberOverflow(
+          this.cardNumberFirst.nativeElement,
+          this.cardNumberSecond.nativeElement
+        );
       }
     });
 
@@ -79,7 +101,10 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
           this.cardNumberThird.nativeElement.disabled = false;
           this.cardNumberThird.nativeElement.focus();
         } else if (this.cardNumberSecond.nativeElement.value.length > 4) {
-          this.preventCardNumberOverflow(this.cardNumberSecond.nativeElement, this.cardNumberThird.nativeElement);
+          this.preventCardNumberOverflow(
+            this.cardNumberSecond.nativeElement,
+            this.cardNumberThird.nativeElement
+          );
         }
       }
     });
@@ -97,7 +122,10 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
           this.cardNumberFourth.nativeElement.disabled = false;
           this.cardNumberFourth.nativeElement.focus();
         } else if (this.cardNumberThird.nativeElement.value.length > 4) {
-          this.preventCardNumberOverflow(this.cardNumberThird.nativeElement, this.cardNumberFourth.nativeElement);
+          this.preventCardNumberOverflow(
+            this.cardNumberThird.nativeElement,
+            this.cardNumberFourth.nativeElement
+          );
         }
       }
     });
@@ -119,7 +147,7 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
 
   preventCardNumberOverflow(input, nextInput?) {
     const digits = input.value.split(''),
-          firstFour = [];
+      firstFour = [];
 
     digits.forEach((value) => {
       if (firstFour.length !== 4) {
@@ -134,7 +162,12 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
     }
   }
 
-  validateExpiryInput(input: HTMLInputElement, nextInput: HTMLInputElement, isLast = false, isBaskspace = false) {
+  validateExpiryInput(
+    input: HTMLInputElement,
+    nextInput: HTMLInputElement,
+    isLast = false,
+    isBaskspace = false
+  ) {
     if (isBaskspace) {
       if (input.value.length === 0 && isLast) {
         nextInput.focus();
@@ -146,7 +179,7 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
         }
       } else if (input.value.length > 2) {
         const lastTwoDigits = [],
-              digits = input.value.split('');
+          digits = input.value.split('');
 
         digits.forEach((value) => {
           if (lastTwoDigits.length !== 2) {
@@ -173,37 +206,37 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
       this.cardNumberFirst.nativeElement.value,
       this.cardNumberSecond.nativeElement.value,
       this.cardNumberThird.nativeElement.value,
-      this.cardNumberFourth.nativeElement.value].join('');
+      this.cardNumberFourth.nativeElement.value,
+    ].join('');
 
-    this.storage
-      .getItem(environment.customerDataName)
-      .then((data) => {
-        // Save the card details in the server
-        superagent
-          .post(environment.BACKEND + 'accounts/payment-method')
-          .set('Authorization', data.token)
-          .send(this.data)
-          .end((error, response) => {
-            this.isLoading = false;
-            if (response) {
-              if (response.status === 403) {
-                this.toast.showAlert(false, {
-                  header: response.body.message,
-                  message: 'You are not authorized to do that, that\'s for authenticated users only.',
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      // Save the card details in the server
+      superagent
+        .post(environment.BACKEND + 'customers/payment-method')
+        .set('Authorization', data.token)
+        .send(this.data)
+        .end((error, response) => {
+          this.isLoading = false;
+          if (response) {
+            if (response.status === 403) {
+              this.toast.showAlert(false, {
+                header: response.body.message,
+                message:
+                  "You are not authorized to do that, that's for authenticated users only.",
+              });
+            } else if (response.status === 200) {
+              this.toast.show('Payment method added!');
+              console.log(response.body.card);
+              data.paymentMethods.push(response.body.card);
+              this.storage
+                .setItem(environment.customerDataName, data)
+                .then(() => {
+                  this.modalCtrl.dismiss(response.body.data);
                 });
-              } else if (response.status === 200) {
-                this.toast.show('Payment method added!');
-                console.log(response.body.card);
-                data.paymentMethods.push(response.body.card);
-                this.storage
-                  .setItem(environment.customerDataName, data)
-                  .then(() => {
-                    this.modalCtrl.dismiss(response.body.data);
-                  });
-              }
             }
-          });
-      });
+          }
+        });
+    });
   }
 
   saveChanges() {
@@ -212,76 +245,84 @@ export class AddPaymentOptionPage implements OnInit, AfterViewInit {
       this.cardNumberFirst.nativeElement.value,
       this.cardNumberSecond.nativeElement.value,
       this.cardNumberThird.nativeElement.value,
-      this.cardNumberFourth.nativeElement.value].join('');
+      this.cardNumberFourth.nativeElement.value,
+    ].join('');
 
-    this.storage
-      .getItem(environment.customerDataName)
-      .then((data) => {
-        if (data) {
-          superagent
-            .patch(environment.BACKEND + 'accounts/payment-method')
-            .set('Authorization', data.token)
-            .send(this.data)
-            .end((error, response) => {
-              this.isLoading = false;
-              if (response) {
-                if (response.status === 200) {
-                  for (let index = 0; index < data.paymentMethods.length; index++) {
-                    if (data.paymentMethods[index].id === response.body.card.id) {
-                      data.paymentMethods[index] = response.body.card;
-                      this.storage.setItem(environment.customerDataName, data);
-                      break;
-                    }
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      if (data) {
+        superagent
+          .patch(environment.BACKEND + 'customers/payment-method')
+          .set('Authorization', data.token)
+          .send(this.data)
+          .end((error, response) => {
+            this.isLoading = false;
+            if (response) {
+              if (response.status === 200) {
+                for (
+                  let index = 0;
+                  index < data.paymentMethods.length;
+                  index++
+                ) {
+                  if (data.paymentMethods[index].id === response.body.card.id) {
+                    data.paymentMethods[index] = response.body.card;
+                    this.storage.setItem(environment.customerDataName, data);
+                    break;
                   }
-
-                  this.modalCtrl.dismiss();
-                } else {
-                  this.toast.show(response.body.reason || response.body.message);
                 }
+
+                this.modalCtrl.dismiss();
               } else {
-                this.toast.showAlert(true);
+                this.toast.show(response.body.reason || response.body.message);
               }
-            });
-        } else {
-          this.isLoading = false;
-          this.toast.show('ERROR: Couldn\'t load local data.');
-        }
-      });
+            } else {
+              this.toast.showAlert(true);
+            }
+          });
+      } else {
+        this.isLoading = false;
+        this.toast.show("ERROR: Couldn't load local data.");
+      }
+    });
   }
 
   deletePaymentMethod(paymentMethodId) {
     this.isLoading = true;
-    this.storage
-      .getItem(environment.customerDataName)
-      .then((data) => {
-        if (data) {
-          superagent
-            .delete(environment.BACKEND + 'accounts/payment-method')
-            .set('Authorization', data.token)
-            .send({ paymentMethodId })
-            .end((error, response) => {
-              if (response) {
-                if (response.status === 200) {
-                  for (let index = 0; index < data.paymentMethods.length; index++) {
-                    if (data.paymentMethods[index].id === paymentMethodId) {
-                      data.paymentMethods.splice(index, 1);
-                      this.storage.setItem(environment.customerDataName, data);
-                      break;
-                    }
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      if (data) {
+        superagent
+          .delete(environment.BACKEND + 'customers/payment-method')
+          .set('Authorization', data.token)
+          .send({ paymentMethodId })
+          .end((error, response) => {
+            if (response) {
+              if (response.status === 200) {
+                for (
+                  let index = 0;
+                  index < data.paymentMethods.length;
+                  index++
+                ) {
+                  if (data.paymentMethods[index].id === paymentMethodId) {
+                    data.paymentMethods.splice(index, 1);
+                    this.storage.setItem(environment.customerDataName, data);
+                    break;
                   }
-
-                  this.toast.show('Payment method deleted.');
-                  this.modalCtrl.dismiss({ action: 'delete', id: paymentMethodId });
-                } else {
-                  this.toast.show(response.body.reason || response.body.message);
                 }
+
+                this.toast.show('Payment method deleted.');
+                this.modalCtrl.dismiss({
+                  action: 'delete',
+                  id: paymentMethodId,
+                });
               } else {
-                this.toast.showAlert(true);
+                this.toast.show(response.body.reason || response.body.message);
               }
-            });
-        } else {
-          this.toast.show('ERROR: Couldn\'t load local data');
-        }
-      });
+            } else {
+              this.toast.showAlert(true);
+            }
+          });
+      } else {
+        this.toast.show("ERROR: Couldn't load local data");
+      }
+    });
   }
 }

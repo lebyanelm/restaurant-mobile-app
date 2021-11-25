@@ -29,11 +29,9 @@ export class RegisterPage implements OnInit {
       this.data.phoneNumber = '+27' + newPhoneNumber;
     }
 
-    console.log(this.data);
-
     Plugins.Toast.show({ text: environment.BACKEND });
     superagent
-      .post([environment.BACKEND, 'accounts'].join(''))
+      .post([environment.BACKEND, 'customers'].join(''))
       .send({ ...this.data, partnerId: environment.PARTNER_ID })
       .end((_, response) => {
         console.log(response);

@@ -123,7 +123,7 @@ export class CheckoutPage implements OnInit {
 
   async onlinePaymentCheckout() {
     // Prepare the data to be sent to the OZOW API ENDPOINT
-    const NGROK_TEST_BACKEND = 'https://d3af-105-8-0-79.ngrok.io/';
+    const NGROK_TEST_BACKEND = 'https://c751-41-116-104-238.ngrok.io/';
 
     // eslint-disable @typescript-eslint/naming-convention
     const OZOW_API_DATA = {

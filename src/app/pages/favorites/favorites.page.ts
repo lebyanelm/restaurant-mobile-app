@@ -21,7 +21,7 @@ export class FavoritesPage implements OnInit {
     private productService: ProductsService,
     private router: Router,
     private toast: ToastService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.data = await this.storage.getItem(environment.customerDataName);
@@ -38,12 +38,14 @@ export class FavoritesPage implements OnInit {
   }
 
   openProduct(id: string): void {
-    this.router.navigate(['product', id], {queryParams: {return: '/favorites'}});
+    this.router.navigate(['product', id], {
+      queryParams: { return: '/favorites' },
+    });
   }
 
   clearFavorites(): void {
     superagent
-      .delete(environment.BACKEND + 'accounts/favorites')
+      .delete(environment.BACKEND + 'customers/favorites')
       .set('Authorization', this.data.token)
       .end((error, response) => {
         if (response) {
@@ -52,16 +54,20 @@ export class FavoritesPage implements OnInit {
             this.data.favorites = [];
             this.storage.setItem(environment.customerDataName, this.data);
           } else {
-            this.toast.showAlert({
-              header: response.body.reason || 'ERROR: SOMETHING WENT WRONG',
-              // tslint:disable-next-line: max-line-length
-              message: response.body.message || 'An unexpected error has occured while removing your favorites from your account, sorry for the inconvinience.',
-              buttons: [{ text: 'Retry again' }]
-            }).then((index) => {
-              if (index === 0) {
-                this.clearFavorites();
-              }
-            });
+            this.toast
+              .showAlert({
+                header: response.body.reason || 'ERROR: SOMETHING WENT WRONG',
+                // tslint:disable-next-line: max-line-length
+                message:
+                  response.body.message ||
+                  'An unexpected error has occured while removing your favorites from your account, sorry for the inconvinience.',
+                buttons: [{ text: 'Retry again' }],
+              })
+              .then((index) => {
+                if (index === 0) {
+                  this.clearFavorites();
+                }
+              });
           }
         } else {
           this.toast.showAlert(true);

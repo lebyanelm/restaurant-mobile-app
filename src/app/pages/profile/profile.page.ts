@@ -1,8 +1,20 @@
 import { StorageService } from './../../services/storage.service';
 import { User } from 'src/app/interfaces/User';
-import { Component, ViewChild, AfterViewInit, SecurityContext, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  AfterViewInit,
+  SecurityContext,
+  ElementRef,
+} from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Plugins, CameraResultType, CameraDirection, CameraSource, CameraOptions } from '@capacitor/core';
+import {
+  Plugins,
+  CameraResultType,
+  CameraDirection,
+  CameraSource,
+  CameraOptions,
+} from '@capacitor/core';
 import * as superagent from 'superagent';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController, NavController } from '@ionic/angular';
@@ -15,7 +27,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements AfterViewInit {
-  @ViewChild('UpdateButton', {static: false}) updateButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('UpdateButton', { static: false })
+  updateButton: ElementRef<HTMLButtonElement>;
 
   isLoading = false;
   data: User;
@@ -25,7 +38,7 @@ export class ProfilePage implements AfterViewInit {
     names: '',
     emailAddress: '',
     phoneNumber: '',
-    gender: ''
+    gender: '',
   };
 
   constructor(
@@ -35,30 +48,39 @@ export class ProfilePage implements AfterViewInit {
     private modalCtrl: ModalController,
     public navCtrl: NavController
   ) {
-    this.storage.getItem(environment.customerDataName)
-      .then((data) => {
-        this.data = data;
-        this.avatar = this.data.media.length === 1 ? this.data.media[0] : this.data.media[this.data.media.length - 1];
-      });
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      this.data = data;
+      this.avatar =
+        this.data.media.length === 1
+          ? this.data.media[0]
+          : this.data.media[this.data.media.length - 1];
+    });
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   async getProfilePhoto() {
     const options: CameraOptions = {
-      resultType: CameraResultType.Uri,
-      direction: CameraDirection.Front },
-          form = new FormData();
+        resultType: CameraResultType.Uri,
+        direction: CameraDirection.Front,
+      },
+      form = new FormData();
     let image;
 
     try {
-      image = await Plugins.Camera.getPhoto({...options, source: CameraSource.Prompt});
+      image = await Plugins.Camera.getPhoto({
+        ...options,
+        source: CameraSource.Prompt,
+      });
       this.photo = await fetch(image.webPath).then((r) => r.blob());
       form.append('file', this.photo);
 
       superagent
-        .post(environment.BACKEND + 'assets/upload?isPartner=false&isAvatar=true&token=' + this.data.token)
+        .post(
+          environment.BACKEND +
+            'assets/upload?isPartner=false&isAvatar=true&token=' +
+            this.data.token
+        )
         .attach('file', this.photo)
         .end((_, response) => {
           if (response) {
@@ -70,7 +92,7 @@ export class ProfilePage implements AfterViewInit {
           }
         });
     } catch (e) {
-      Plugins.Toast.show({text: 'No photo has been selected.'});
+      Plugins.Toast.show({ text: 'No photo has been selected.' });
     }
   }
 
@@ -88,7 +110,7 @@ export class ProfilePage implements AfterViewInit {
 
     // Send a request to update the profile details to nextify partners backend
     superagent
-      .patch(environment.BACKEND + 'accounts?source=app')
+      .patch(environment.BACKEND + 'customers?source=app')
       .send(data)
       .set('Authorization', this.data.token)
       .end((_, response) => {
@@ -99,22 +121,32 @@ export class ProfilePage implements AfterViewInit {
 
             // Update the local data
             for (const property in data) {
-              if (typeof data[property] === 'string' && typeof this.data[property] === 'string') {
+              if (
+                typeof data[property] === 'string' &&
+                typeof this.data[property] === 'string'
+              ) {
                 this.data[property] = data[property];
                 this.updatedData[property] = '';
 
                 this.storage.setItem(environment.customerDataName, this.data);
-                this.storage.change.next({ name: environment.customerDataName, data: this.data });
+                this.storage.change.next({
+                  name: environment.customerDataName,
+                  data: this.data,
+                });
               }
             }
 
             this.navCtrl.back();
           } else {
-            Plugins.Toast.show({ text: response.body.reason || 'Something went wrong.' });
+            Plugins.Toast.show({
+              text: response.body.reason || 'Something went wrong.',
+            });
             console.log('Something went wrong.');
           }
         } else {
-          Plugins.Toast.show({ text: 'No connection. Please check your internet connection.' })
+          Plugins.Toast.show({
+            text: 'No connection. Please check your internet connection.',
+          });
           console.log('Something went wrong.');
         }
       });
@@ -127,21 +159,18 @@ export class ProfilePage implements AfterViewInit {
       componentProps: {
         options: {
           header: 'Are you sure?',
-          message: 'You are about to permenantly delete your account, do you approve this action?',
-          buttons: [
-            { text: 'Yes, I\'m cetain' },
-            { text: 'No, cancel' }
-          ]
-        }
-      }
+          message:
+            'You are about to permenantly delete your account, do you approve this action?',
+          buttons: [{ text: "Yes, I'm cetain" }, { text: 'No, cancel' }],
+        },
+      },
     });
 
-    deleteApprovalModal.onDidDismiss()
-      .then((data) => {
-        if (data.data === 0) {
-          this.deleteAccount();
-        }
-      });
+    deleteApprovalModal.onDidDismiss().then((data) => {
+      if (data.data === 0) {
+        this.deleteAccount();
+      }
+    });
 
     deleteApprovalModal.present();
   }
@@ -163,10 +192,14 @@ export class ProfilePage implements AfterViewInit {
             // Log out the user
             this.navCtrl.navigateRoot('/signin');
           } else {
-            Plugins.Toast.show({ text: response.body.reason || 'Something went wrong.' });
+            Plugins.Toast.show({
+              text: response.body.reason || 'Something went wrong.',
+            });
           }
         } else {
-          Plugins.Toast.show({ text: 'No internet connection. Please check your connection and try agaiin.' });
+          Plugins.Toast.show({
+            text: 'No internet connection. Please check your connection and try agaiin.',
+          });
         }
       });
   }

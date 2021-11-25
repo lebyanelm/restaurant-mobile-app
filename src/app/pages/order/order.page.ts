@@ -18,7 +18,8 @@ import { BasketService } from 'src/app/services/basket.service';
   styleUrls: ['./order.page.scss'],
 })
 export class OrderPage implements OnInit {
-  @ViewChild('StaticMapImageContainer', {static: false}) staticMapImageContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('StaticMapImageContainer', { static: false })
+  staticMapImageContainer: ElementRef<HTMLDivElement>;
 
   order: Order;
   extras: any = {};
@@ -33,17 +34,16 @@ export class OrderPage implements OnInit {
     private toastService: ToastService,
     private navCtrl: NavController,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.storage.getItem(environment.customerDataName)
-      .then((data) => {
-        this.route.queryParams.subscribe((d) => {
-          this.data = data;
-          this.order = this.data.orders.find((o) => o.id === d.id);
-          this.getExtras();
-        });
+    this.storage.getItem(environment.customerDataName).then((data) => {
+      this.route.queryParams.subscribe((d) => {
+        this.data = data;
+        this.order = this.data.orders.find((o) => o.id === d.id);
+        this.getExtras();
       });
+    });
   }
 
   goBack() {
@@ -91,11 +91,10 @@ export class OrderPage implements OnInit {
     this.basketService.products.forEach((product) => {
       // Add extras total
       product.extras.forEach((extraId) => {
-        this.extraService.getExtra(extraId)
-          .then((extra) => {
-            console.log('Extra:', extra);
-          });
-      })
+        this.extraService.getExtra(extraId).then((extra) => {
+          console.log('Extra:', extra);
+        });
+      });
     });
 
     this.basketService.update();
@@ -106,52 +105,62 @@ export class OrderPage implements OnInit {
 
   removeOrder() {
     superagent
-      .delete([environment.BACKEND, 'accounts/order'].join(''))
+      .delete([environment.BACKEND, 'customers/order'].join(''))
       .set('Authorization', this.data.token)
       .send({ orderId: this.order.id })
       .end((_, response) => {
         if (response) {
           if (response.status === 200) {
-            const orderIndex = this.data.orders.findIndex((o) => o.id === this.order.id);
-            if (orderIndex)
-              this.data.orders.splice(orderIndex, 1);
-            this.storage.setItem(environment.customerDataName, this.data)
+            const orderIndex = this.data.orders.findIndex(
+              (o) => o.id === this.order.id
+            );
+            if (orderIndex) this.data.orders.splice(orderIndex, 1);
+            this.storage
+              .setItem(environment.customerDataName, this.data)
               .then(() => {
                 this.navCtrl.back();
               });
           } else {
-            this.toastService.showAlert({
-              header: response.body.reason || 'ERROR: SOMETHING WENT WRONG',
+            this.toastService
+              .showAlert({
+                header: response.body.reason || 'ERROR: SOMETHING WENT WRONG',
+                // tslint:disable-next-line: max-line-length
+                message:
+                  response.body.message ||
+                  'An unexpected error has occured while removing your favorites from your account, sorry for the inconvinience.',
+                buttons: [{ text: 'Retry again' }],
+              })
+              .then((value) => {
+                if (value === 0) {
+                  this.removeOrder();
+                }
+              });
+          }
+        } else {
+          this.toastService
+            .showAlert({
+              header: 'ERROR: YOU HAVE NO INTERNET CONNECTION',
               // tslint:disable-next-line: max-line-length
-              message: response.body.message || 'An unexpected error has occured while removing your favorites from your account, sorry for the inconvinience.',
-              buttons: [{ text: 'Retry again' }]
-            }).then((value) => {
+              message:
+                response.body.message ||
+                'Please check your internet connection and try again. We might be offline, contact us if problem is on our side.',
+              buttons: [{ text: 'Retry again' }],
+            })
+            .then((value) => {
               if (value === 0) {
                 this.removeOrder();
               }
             });
-          }
-        } else {
-          this.toastService.showAlert({
-            header: 'ERROR: YOU HAVE NO INTERNET CONNECTION',
-            // tslint:disable-next-line: max-line-length
-            message: response.body.message || 'Please check your internet connection and try again. We might be offline, contact us if problem is on our side.',
-            buttons: [{ text: 'Retry again' }]
-          }).then((value) => {
-            if (value === 0) {
-              this.removeOrder();
-            }
-          });
         }
-    });
+      });
   }
 
   objectToArray(object: any = {}) {
     const keys = Object.keys(object),
-          array = [];
+      array = [];
 
     for (let key of keys) {
-      array.push({ name: key.replace(/_/g, ' '), option: object[key] })
+      array.push({ name: key.replace(/_/g, ' '), option: object[key] });
     }
 
     return array;
@@ -159,14 +168,12 @@ export class OrderPage implements OnInit {
 
   getExtras(): void {
     this.order.products.forEach((product) => {
-      this.extraService.getExtras(product.extras)
-        .then((extras) => {
-          extras.forEach((extra) => {
-            if (!this.extras[product.id])
-              this.extras[product.id] = [];
-            this.extras[product.id].push(extra.name);
-          });
+      this.extraService.getExtras(product.extras).then((extras) => {
+        extras.forEach((extra) => {
+          if (!this.extras[product.id]) this.extras[product.id] = [];
+          this.extras[product.id].push(extra.name);
         });
+      });
     });
   }
 }

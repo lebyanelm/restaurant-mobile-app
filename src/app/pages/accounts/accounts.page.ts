@@ -160,7 +160,7 @@ export class AccountsPage implements AfterViewInit {
   verifyVerificationCode() {
     this.isLoading = true;
     // tslint:disable-next-line: max-line-length
-    let url = environment.BACKEND + `accounts/verify-number?p=${this.phoneNumber.nativeElement.value}&c=${this.phoneNumberVerification.nativeElement.value}&type=create`;
+    let url = environment.BACKEND + `customers/verify-number?p=${this.phoneNumber.nativeElement.value}&c=${this.phoneNumberVerification.nativeElement.value}&type=create`;
     url = encodeURI(url);
     superagent
       .get(url)
@@ -215,7 +215,7 @@ export class AccountsPage implements AfterViewInit {
     this.isLoading = true;
     this.nextButton.nativeElement.disabled = true;
     superagent
-      .post(environment.BACKEND + 'accounts/finish-signup?key=' + this.accountFinishupKey)
+      .post(environment.BACKEND + 'customers/finish-signup?key=' + this.accountFinishupKey)
       .send(this.data)
       .end((error, response) => {
         if (!error) {
